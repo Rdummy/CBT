@@ -1,0 +1,106 @@
+.login-page-wrapper {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    background-color: #fff;
+
+    width: 100vw;
+    height: 100vh;
+}
+
+.login-page--hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 0px 3px 3px rgba(0, 0, 0, 0.2);
+}
+
+.login-form-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 2px 0px 3px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Login Form css */
+
+.logo {
+    border: 0.2rem solid #FFF;
+
+    width: 3rem;
+    height: 3rem;
+}
+
+.auth-container-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-container {
+    background-color: #FFF;
+    color: #4A4A4A;
+    padding: 5rem 6rem;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    text-align: center;
+    box-shadow: 2px 0px 3px 3px rgba(0, 0, 0, 0.2);
+
+}
+
+.form-field {
+    background-color: #FFF;
+    color: #4a4a4a;
+    height: 2rem;
+    width: 100%;
+    padding: 0.2rem 0.5rem;
+}
+
+.checkbox {
+    filter: hue-rotate(0deg);
+    color: white;
+}
+
+.auth-button {
+    background-color: #E71E4A !important;
+    color: #FFFFFF !important;
+    text-transform: none !important;
+    padding: 0.5rem 3rem !important;
+    margin-top: 2rem !important;
+    margin-bottom: 1rem !important;
+
+}
+
+.fields-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.error-message {
+    color: #E71E4A;
+    text-align: left;
+    margin-top: 0rem !important;
+    font-size: 0.8rem;
+}
+
+.form-label {
+    text-align: left;
+    margin-top: 0.8rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.signin--header {
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.end-footer {
+    font-size: 0.8rem;
+}
+
+/* aghfbjkadf */
+.hero-container {
+    text-shadow:
+        0.08rem 0.08rem #4A4A4A;
+}

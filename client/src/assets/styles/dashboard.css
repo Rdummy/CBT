@@ -1,0 +1,16 @@
+.navbar--wrapper{
+    background-color: #E71E4A !important;}
+.user-details--wrapper{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    align-content: center;
+}
+.dashboard-content{
+    padding-top: 3rem;
+    background-color: aliceblue;
+    width: 100%;
+    height: calc(100vh)
+}
+.MuiPagination-text	{
+    color:#fff !important;
+}

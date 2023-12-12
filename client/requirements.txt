@@ -1,0 +1,9 @@
+@mui/material
+@mui/styled-engine-sc
+styled-components
+react-icons
+@fontsource/inter
+@fontsource/lato
+formik
+yup
+axios
