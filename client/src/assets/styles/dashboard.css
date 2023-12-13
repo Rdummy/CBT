@@ -1,3 +1,5 @@
+@import '@fontsource/inter/700.css';
+
 .navbar--wrapper{
     background-color: #E71E4A !important;}
 .user-details--wrapper{
@@ -11,6 +13,13 @@
     width: 100%;
     height: calc(100vh)
 }
-.MuiPagination-text	{
-    color:#fff !important;
+
+.exams-category--header{
+    background-color: #fff;
+}
+.exams-category--header--text{
+    font-weight: 600 !important;
+    font-family: 'Inter' !important;
+    color: #4a4a4a !important;
+    font-size: 1.5rem !important;
 }

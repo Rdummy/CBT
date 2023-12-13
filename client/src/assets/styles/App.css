@@ -8,9 +8,9 @@
 @import '@fontsource/lato/700.css';
 
 .brand-red-bg{
-  background-color: #E71E4A;
-  color: #FFF;
+  background-color: #E71E4A !important;
+  color: #FFF !important;
 }
 .brand-blue-bg{
-  background-color: #0F398E;
+  background-color: #0F398E !important;
 }

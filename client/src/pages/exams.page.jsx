@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Grid,
@@ -8,65 +8,45 @@ import {
   Pagination,
   Stack,
   Toolbar,
+  Button,
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
 
-// Import the exams constant from the external file
 import exams from "../models/exam-data";
-
-function ExamCard({ title, description }) {
-  const [expanded, setExpanded] = useState(false);
-
-  return (
-    <Card sx={{ marginBottom: 1 }}>
-      <CardContent>
-        <Typography variant="h5" sx={{ marginBottom: 1 }}>
-          {title}
-        </Typography>
-        {expanded ? <Typography variant="body2">{description}</Typography> : ""}
-        <Stack direction="row" justifyContent="flex-end" alignItems="center">
-          <Typography
-            variant="subtitle2"
-            onClick={() => setExpanded(!expanded)}
-          >
-            {expanded ? "Hide Description" : "Show Description"}
-          </Typography>
-          <ExpandMore sx={{ fontSize: 20, marginLeft: 1 }} />
-        </Stack>
-      </CardContent>
-    </Card>
-  );
-}
+import ExamCard from "../components/ExamCard";
+import "../assets/styles/dashboard.css";
+import { Link, useNavigate } from "react-router-dom";
 
 function ExamPage() {
-  const [page, setPage] = useState(1);
-  const examsPerPage = 9;
 
-  const handlePageChange = (event, newPage) => {
-    setPage(newPage);
-  };
+  //Pagination
+  const [page, setPage] = useState(1);
+  const examsPerPage = 4;
 
   const displayedExams = exams.slice(
     (page - 1) * examsPerPage,
     page * examsPerPage
   );
+  const handlePageChange = (event, newPage) => {
+    setPage(newPage);
+  };
+
 
   return (
-    <Container maxWidth="lg">
-      <Toolbar
-        style={{
-          backgroundColor: "#0070d1",
-          marginBottom: "1rem",
-          color: "#fff",
-        }}
-      >
-        <Typography variant="h5">Exams to Take</Typography>
+    <Container maxWidth="xxl">
+      <Toolbar className="exams-category--header">
+        <Typography className="exams-category--header--text">
+          Examinations
+        </Typography>
       </Toolbar>
-      <Grid container spacing={2}>
-        {/* Display exams in a 3x3 grid */}
+      <Grid
+        container
+        style={{ gridAutoFlow: "column", backgroundColor: "#d4d4d4" }}
+        sx={{ py: 2, px: 1 }}
+      >
         {displayedExams.map((exam, index) => (
-          <Grid item xs={4} key={index}>
-            <ExamCard title={exam.title} description={exam.description} />
+          <Grid item xs={3} key={index}>
+              <ExamCard key={exam.id} exam={exam} />
           </Grid>
         ))}
       </Grid>
@@ -76,15 +56,16 @@ function ExamPage() {
         onChange={handlePageChange}
         sx={{
           "& ul li button ": {
-            color: "#fff",
+            color: "#4a4a4a",
           },
           "& ul li button svg": {
-            fill: "#fff",
+            fill: "#4a4a4a",
           },
-          marginTop: 2,
+          py: 1,
           display: "flex",
           justifyContent: "flex-end",
-          backgroundColor: "#0070d1",
+          backgroundColor: "#fff",
+          boxShadow: "10px 5px 5px rgba(0, 0, 0, 0.1)",
         }}
       />
     </Container>
