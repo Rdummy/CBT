@@ -9,11 +9,21 @@ import {
   Button,
 } from "@mui/material";
 import Navbar from "../components/Navbar";
+import "../assets/styles/ExamRoutes.css";
+import { SlArrowLeft } from "react-icons/sl";
+import { useEffect, useState } from "react";
 
 function ExamDetailsPage() {
   const { examId } = useParams();
   const selectedExam = exams.find((exam) => exam.id === examId);
   const navigate = useNavigate();
+  
+  const handleReviewClick = () => {
+    navigate(`/dashboard/exams/${examId}/review`, { state: { examId: examId } });
+  };
+  const handleTakeExamClick = () => {
+    navigate(`/dashboard/exams/${examId}/take-exam`, { state: { examId: examId } });
+  };
 
   if (!selectedExam) {
     return <p>Exam not found</p>;
@@ -31,7 +41,7 @@ function ExamDetailsPage() {
               onClick={() => navigate("/dashboard")}
               sx={{ textTransform: "capitalize", px: 2, py: 0.5,borderRadius:"0px" }}
               >
-              Return to Dashboard
+              <SlArrowLeft/> &nbsp; Return to Dashboard
             </Button>
               </Box>
 
@@ -58,10 +68,19 @@ function ExamDetailsPage() {
             >
               <Button
                 className="brand-red-bg"
-                sx={{ textTransform: "capitalize", px: 3, py: 2 }}
+                sx={{ textTransform: "capitalize", px: 3, py: 2, mx: 0.5 }}
+                onClick={handleReviewClick}
               >
                 {" "}
                 Start Reviewing
+              </Button>
+              <Button
+                className="brand-red-bg"
+                sx={{ textTransform: "capitalize", px: 3, py: 2, mx: 0.5 }}
+                onClick={handleTakeExamClick}
+              >
+                {" "}
+                Take Exam
               </Button>
             </Box>
           </CardContent>

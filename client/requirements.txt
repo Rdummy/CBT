@@ -7,3 +7,4 @@ react-icons
 formik
 yup
 axios
+carousel

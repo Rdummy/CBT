@@ -49,11 +49,11 @@ function CBTRoute() {
     },
     {
       path: "/dashboard/exams/:examId/take-exam",
-      element: <TakeExamPage />,
+      element: <TakeExamPage examId/>,
     },
     {
       path: "/dashboard/exams/:examId/review",
-      element: <ReviewExamPage />,
+      element: <ReviewExamPage examId/>,
     },
   ]);
   return <RouterProvider router={router} />;

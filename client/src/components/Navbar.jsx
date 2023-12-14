@@ -50,15 +50,6 @@ export default function Navbar() {
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         <Toolbar>
-          {/* <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton> */}
           <img src={NTS_Logo} className="logo"></img>
           <Typography
             variant="h6"
@@ -82,7 +73,12 @@ export default function Navbar() {
                 <Typography
                   variant="h6"
                   component="div"
-                  sx={{ flexGrow: 1, ml: "1rem", display: 'flex', alignSelf: 'center'}}
+                  sx={{
+                    flexGrow: 1,
+                    ml: "1rem",
+                    display: "flex",
+                    alignSelf: "center",
+                  }}
                 >
                   User Name
                 </Typography>

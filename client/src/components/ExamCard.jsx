@@ -21,19 +21,24 @@ const ExamCard = (props) => {
     const navigate = useNavigate();
     const [shouldNavigate, setShouldNavigate] = useState(false);
 
-  useEffect(() => {
-    if (shouldNavigate) {
-      navigate(`/dashboard/exams/${exam.id}/`);
-      setShouldNavigate(false);
-    }
-  }, [shouldNavigate]);
+  // useEffect(() => {
+  //   if (shouldNavigate) {
+  //     navigate(`/dashboard/exams/${exam.id}/`);
+  //     setShouldNavigate(false);
+  //   }
+  // }, [shouldNavigate]);
+  const handleCardClick = () => {
+    navigate(`/dashboard/exams/${exam.id}/`);
+  };
+
   return (
-    <Button style={{textTransform: "none"}} onClick={() => setShouldNavigate(true)} >
+    <Button style={{textTransform: "none", }} onClick={ handleCardClick} >
       <Card
         sx={{
           display: "flex",
           flexDirection: "column",
-          height: "100%",
+          minHeight: "20rem !important",
+          maxHeight: "100% !important",
           mx: 1,
         }}
       >

@@ -45,8 +45,10 @@ function ExamPage() {
         sx={{ py: 2, px: 1 }}
       >
         {displayedExams.map((exam, index) => (
-          <Grid item xs={3} key={index}>
+          <Grid item xs={3} key={exam.id}>
+            <div className="grid-item--wrapper" style={{minHeight:"100%"}}>
               <ExamCard key={exam.id} exam={exam} />
+            </div>
           </Grid>
         ))}
       </Grid>
