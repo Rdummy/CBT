@@ -10,12 +10,13 @@ import FormGroup from "@mui/material/FormGroup";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import NTS_Logo from "../assets/images/NTS_Logo.png";
-
+import { useNavigate } from "react-router-dom";
 import { MdAccountCircle } from "react-icons/md";
 
 export default function Navbar() {
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     setAuth(event.target.checked);
@@ -27,6 +28,21 @@ export default function Navbar() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    // Clear authentication data when logging out
+    window.localStorage.removeItem("userID");
+    window.localStorage.removeItem("userName");
+    // Clear cookies or any other stored authentication data if present
+
+    // Perform any additional logout-related actions (e.g., redirect to login page)
+    // For example, you might want to redirect users to the login page after logout
+    navigate("/"); // Redirect to your login page
+
+    // For the example, let's update the state to simulate logout
+    setAuth(false);
+    setAnchorEl(null); // Close the menu after logout
   };
 
   return (
@@ -100,6 +116,7 @@ export default function Navbar() {
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </div>
           )}
