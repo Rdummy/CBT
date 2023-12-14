@@ -201,6 +201,11 @@ const exams = [{
           "content": "Pay close attention to grammatical accuracy, clarity, and conciseness in your responses."
       },
       {
+        "type": "openEnded",
+        "question": "Write a short paragraph (5-8 sentences) describing a scene from your favorite book.",
+        "answer": ""
+      },
+      {
           "type": "multipleChoice",
           "question": "Which of the following sentences is grammatically correct?",
           "choices": [
@@ -210,11 +215,6 @@ const exams = [{
               "He went to the store, and will buy a loaf of bread."
           ],
           "correctAnswer": 1
-      },
-      {
-          "type": "openEnded",
-          "question": "Write a short paragraph (5-8 sentences) describing a scene from your favorite book.",
-          "answer": ""
       },
       {
           "type": "trueFalse",
