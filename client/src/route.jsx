@@ -1,4 +1,9 @@
-import { createBrowserRouter, Outlet, RouterProvider,Route} from "react-router-dom";
+import {
+  createBrowserRouter,
+  Outlet,
+  RouterProvider,
+  Route,
+} from "react-router-dom";
 import React from "react";
 // import useAuth from './useAuth';
 //Pages Route Imports
@@ -11,11 +16,12 @@ import TakeExamPage from "./pages/take-exam-page.jsx";
 import ReviewExamPage from "./pages/review-exam-page.jsx";
 import ExamDetailsPage from "./pages/exam-details.jsx";
 import exams from "./models/exam-data.jsx";
+import AddExam from "./pages/add-exam.jsx";
 
 function CBTRoute() {
   const ProtectedRoute = ({ component: Component, ...props }) => {
     const { user, isAuthenticated } = useAuth();
-  
+
     if (!isAuthenticated) {
       return <Navigate to="/" />;
     }
@@ -39,7 +45,7 @@ function CBTRoute() {
         </>
       ),
       children: [
-        { element: <ExamPage />, index:true },
+        { element: <ExamPage />, index: true },
         { path: "dashboard/settings", element: <SettingsPage /> },
       ],
     },
@@ -49,11 +55,15 @@ function CBTRoute() {
     },
     {
       path: "/dashboard/exams/:examId/take-exam",
-      element: <TakeExamPage examId/>,
+      element: <TakeExamPage examId />,
     },
     {
       path: "/dashboard/exams/:examId/review",
-      element: <ReviewExamPage examId/>,
+      element: <ReviewExamPage examId />,
+    },
+    {
+      path: "/add-exam",
+      element: <AddExam />,
     },
   ]);
   return <RouterProvider router={router} />;

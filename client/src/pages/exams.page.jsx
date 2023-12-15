@@ -1,43 +1,83 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Container,
   Grid,
-  Card,
-  CardContent,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Toolbar,
   Typography,
   Pagination,
-  Stack,
-  Toolbar,
-  Button,
 } from "@mui/material";
-import { ExpandMore } from "@mui/icons-material";
 
 import exams from "../models/exam-data";
 import ExamCard from "../components/ExamCard";
 import "../assets/styles/dashboard.css";
-import { Link, useNavigate } from "react-router-dom";
 
 function ExamPage() {
-
-  //Pagination
   const [page, setPage] = useState(1);
   const examsPerPage = 4;
+  const [openModal, setOpenModal] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+  });
 
   const displayedExams = exams.slice(
     (page - 1) * examsPerPage,
     page * examsPerPage
   );
+
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
   };
 
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form submitted with data:", formData);
+    setOpenModal(false);
+    exams.push({
+      id: Date.now().toString(),
+      title: formData.title,
+      description: formData.description,
+    });
+    setFormData({
+      title: "",
+      description: "",
+    });
+  };
 
   return (
     <Container maxWidth="xxl">
-      <Toolbar className="exams-category--header">
+      <Toolbar
+        className="exams-category--header"
+        sx={{ justifyContent: "space-between" }}
+      >
         <Typography className="exams-category--header--text">
           Examinations
         </Typography>
+        <Button variant="contained" color="primary" onClick={handleOpenModal}>
+          Add Exam
+        </Button>
       </Toolbar>
       <Grid
         container
@@ -46,7 +86,7 @@ function ExamPage() {
       >
         {displayedExams.map((exam, index) => (
           <Grid item xs={3} key={exam.id}>
-            <div className="grid-item--wrapper" style={{minHeight:"100%"}}>
+            <div className="grid-item--wrapper" style={{ minHeight: "100%" }}>
               <ExamCard key={exam.id} exam={exam} />
             </div>
           </Grid>
@@ -70,6 +110,36 @@ function ExamPage() {
           boxShadow: "10px 5px 5px rgba(0, 0, 0, 0.1)",
         }}
       />
+
+      <Dialog open={openModal} onClose={handleCloseModal}>
+        <form onSubmit={handleFormSubmit}>
+          <DialogTitle>Add New Exam</DialogTitle>
+          <DialogContent>
+            <TextField
+              label="Title"
+              name="title"
+              value={formData.title}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Description"
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseModal}>Cancel</Button>
+            <Button type="submit" color="primary">
+              Submit
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
     </Container>
   );
 }
