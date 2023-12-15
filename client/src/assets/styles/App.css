@@ -1,16 +1,16 @@
-@import '@fontsource/inter/300.css';
-@import '@fontsource/inter/400.css';
-@import '@fontsource/inter/500.css';
-@import '@fontsource/inter/600.css';
-@import '@fontsource/inter/700.css';
+@import "@fontsource/inter/300.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
 
-@import '@fontsource/lato/900.css';
-@import '@fontsource/lato/700.css';
+@import "@fontsource/lato/900.css";
+@import "@fontsource/lato/700.css";
 
-.brand-red-bg{
-  background-color: #E71E4A !important;
-  color: #FFF !important;
+.brand-red-bg {
+  background-color: #e71e4a !important;
+  color: #fff !important;
 }
-.brand-blue-bg{
-  background-color: #0F398E !important;
+.brand-blue-bg {
+  background-color: #0f398e !important;
 }
