@@ -14,7 +14,6 @@ import {
   Checkbox,
 } from "@mui/material";
 
-// Import ExamCard and any other necessary components or data
 import exams from "../models/exam-data";
 import ExamCard from "../components/ExamCard";
 import "../assets/styles/dashboard.css";
@@ -28,9 +27,15 @@ function ExamPage() {
     description: "",
   });
 
-  // Array to keep track of selected exams
   const [selectedExams, setSelectedExams] = useState([]);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editFormData, setEditFormData] = useState({
+    title: "",
+    description: "",
+  });
+  const [selectedExamToEdit, setSelectedExamToEdit] = useState(null);
 
   const displayedExams = exams.slice(
     (page - 1) * examsPerPage,
@@ -96,6 +101,7 @@ function ExamPage() {
       console.log("No exams selected for deletion");
     }
   };
+
   const handleCloseDeleteConfirmation = () => {
     setDeleteConfirmationOpen(false);
   };
@@ -103,6 +109,46 @@ function ExamPage() {
   const handleDeleteConfirmed = () => {
     handleDeleteExams();
     handleCloseDeleteConfirmation();
+  };
+
+  const handleOpenEditModal = () => {
+    setEditModalOpen(true);
+    // Check if exactly one exam is selected for editing
+    if (selectedExams.length === 1) {
+      const selectedExam = exams.find((exam) =>
+        selectedExams.includes(exam.id)
+      );
+      setSelectedExamToEdit(selectedExam);
+      setEditFormData({
+        title: selectedExam.title,
+        description: selectedExam.description,
+      });
+    } else {
+      // Provide feedback if no or multiple exams are selected for editing
+      console.log("Please select exactly one exam to edit.");
+    }
+  };
+
+  const handleCloseEditModal = () => {
+    setEditModalOpen(false);
+    setSelectedExamToEdit(null);
+  };
+
+  const handleEditInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditFormData({
+      ...editFormData,
+      [name]: value,
+    });
+  };
+
+  const handleEditFormSubmit = (e) => {
+    e.preventDefault();
+    if (selectedExamToEdit) {
+      selectedExamToEdit.title = editFormData.title;
+      selectedExamToEdit.description = editFormData.description;
+    }
+    handleCloseEditModal();
   };
 
   return (
@@ -123,9 +169,18 @@ function ExamPage() {
             variant="contained"
             color="error"
             onClick={handleOpenDeleteConfirmation}
-            disabled={selectedExams.length === 0} // Disable button if no exams are selected
+            disabled={selectedExams.length === 0}
           >
             Delete Exams
+          </Button>
+          <span style={{ marginRight: 10 }} />
+          <Button
+            variant="contained"
+            style={{ color: "white" }}
+            onClick={handleOpenEditModal}
+            disabled={selectedExams.length !== 1}
+          >
+            Edit
           </Button>
         </div>
       </Toolbar>
@@ -195,7 +250,6 @@ function ExamPage() {
         </form>
       </Dialog>
 
-      {/* Delete Confirmation Dialog */}
       <Dialog
         open={deleteConfirmationOpen}
         onClose={handleCloseDeleteConfirmation}
@@ -212,6 +266,36 @@ function ExamPage() {
             Delete
           </Button>
         </DialogActions>
+      </Dialog>
+
+      <Dialog open={editModalOpen} onClose={handleCloseEditModal}>
+        <form onSubmit={handleEditFormSubmit}>
+          <DialogTitle>Edit Exam</DialogTitle>
+          <DialogContent>
+            <TextField
+              label="Title"
+              name="title"
+              value={editFormData.title}
+              onChange={handleEditInputChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Description"
+              name="description"
+              value={editFormData.description}
+              onChange={handleEditInputChange}
+              fullWidth
+              margin="normal"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseEditModal}>Cancel</Button>
+            <Button type="submit" color="primary">
+              Save
+            </Button>
+          </DialogActions>
+        </form>
       </Dialog>
     </Container>
   );
