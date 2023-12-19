@@ -16,7 +16,11 @@ import TakeExamPage from "./pages/take-exam-page.jsx";
 import ReviewExamPage from "./pages/review-exam-page.jsx";
 import ExamDetailsPage from "./pages/exam-details.jsx";
 import exams from "./models/exam-data.jsx";
+<<<<<<< HEAD
 import Navbar from "./components/Navbar.jsx";
+=======
+import AddExam from "./pages/add-exam.jsx";
+>>>>>>> a284e7631f0e7a9a49e7a5c15209ce4d103d903f
 
 function CBTRoute() {
   const ProtectedRoute = ({ component: Component, ...props }) => {
@@ -47,8 +51,27 @@ function CBTRoute() {
         {path: "/dashboard/exams/:examId/review", element: <ReviewExamPage examId />,},
       ],
     },
+<<<<<<< HEAD
 
 
+=======
+    {
+      path: "/dashboard/exams/:examId",
+      element: <ExamDetailsPage />,
+    },
+    {
+      path: "/dashboard/exams/:examId/take-exam",
+      element: <TakeExamPage examId />,
+    },
+    {
+      path: "/dashboard/exams/:examId/review",
+      element: <ReviewExamPage examId />,
+    },
+    {
+      path: "/add-exam",
+      element: <AddExam />,
+    },
+>>>>>>> a284e7631f0e7a9a49e7a5c15209ce4d103d903f
   ]);
   return <RouterProvider router={router} />;
 }
