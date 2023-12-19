@@ -1,121 +1,130 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import exams from "../models/exam-data";
 
-// Import UI components
 import {
   Card,
   CardContent,
   Box,
   Typography,
   Button,
-  List,
-  ListItem,
-  ListItemText,
-  Radio,
+  IconButton,
 } from "@mui/material";
-import exams from "../models/exam-data";
-import QuestionCard from "../components/Exam Components/QuestionCard";
-import ChoiceButton from "../components/Exam Components/ChoiceButton";
-import OpenEndedTextField from "../components/Exam Components/OpenEnded";
-import TrueFalseButtons from "../components/Exam Components/TrueFalseQuestion";
-function TakeExamPage() {
+
+import ReturnDashboard from "../components/ReturnDashboard.jsx";
+import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
+
+import "../assets/styles/take-exam.css";
+const QuestionChoice = ({ choice, index, selectedAnswer, onSelect }) => {
+  const isSelected = selectedAnswer === index;
+  const letter = String.fromCharCode(65 + index);
+
+  return (
+    <Box
+      borderRadius={0}
+      padding={1}
+      backgroundColor={isSelected ? "primary.main" : "#E4E4E4"}
+      marginBottom={1}
+      boxShadow={2}
+      color={isSelected ? "white" : "gray.700"}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === "Enter" && onSelect(index)}
+      onClick={() => onSelect(index)}
+    >
+      <Typography className="letter-choice" color={isSelected ? "white" : "#8a8a8a"}>
+        {letter}
+      </Typography>
+      <Typography variant="button" textTransform={"none"}>
+        {choice}
+      </Typography>
+      {isSelected && <IconButton color={"#347634"} size="small">Selected</IconButton>}
+    </Box>
+  );
+};
+
+const TakeExamPage = () => {
   const { examId } = useParams();
   const selectedExam = exams.find((exam) => exam.id === examId);
 
-  // Store chosen answers in an array
-  const [chosenAnswers, setChosenAnswers] = useState([]);
-
-  useEffect(() => {
-    // Initialize chosenAnswers with empty values
-    setChosenAnswers(new Array(selectedExam.questions.length).fill(""));
-  }, [selectedExam]);
-
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-
-  const handleAnswerSelection = (answer, questionIndex) => {
-    const updatedAnswers = [...chosenAnswers];
-    updatedAnswers[questionIndex] = answer;
-    setChosenAnswers(updatedAnswers);
-  };
-
-  const handleSubmitAnswer = () => {
-    if (currentQuestionIndex === selectedExam.questions.length - 1) {
-      // Calculate score and navigate to review
-      const score = calculateScore(chosenAnswers, selectedExam.questions);
-      navigateToReview(selectedExam, chosenAnswers, score);
-    } else {
-      // Go to the next question
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    }
-  };
-
-  const calculateScore = (chosenAnswers, questions) => {
-    // Implement your logic for calculating score based on chosen and correct answers
-    // ... your scoring logic here ...
-  };
-
-  const navigateToReview = (exam, chosenAnswers, score) => {
-    // Implement navigation to the review page with necessary data (exam, answers, score)
-    // ... your navigation logic here ...
-  };
-
-  if (!selectedExam) {
-    return <p>Exam not found</p>;
-  }
+  const [chosenAnswers, setChosenAnswers] = useState({});
 
   const { questions, title } = selectedExam;
   const currentQuestion = questions[currentQuestionIndex];
 
-  return (
-    <div>
-      <h1>Take Exam: {title}</h1>
-      <Card>
-        <CardContent>
-          <QuestionCard question={currentQuestion} />
-          {renderAnswerOptions()}
-          <Box sx={{ mt: 3 }}>
-            <Button variant="contained" onClick={handleSubmitAnswer}>
-              {currentQuestionIndex === selectedExam.questions.length - 1
-                ? "Submit Exam"
-                : "Next Question"}
-            </Button>
-          </Box>
-        </CardContent>
-      </Card>
-    </div>
-  );
-
-  function renderAnswerOptions() {
-    switch (currentQuestion.type) {
-      case "multipleChoice":
-        return currentQuestion.choices.map((choice, index) => (
-          <ChoiceButton
-            key={choice}
-            choice={choice}
-            onAnswerSelect={(answer) => handleAnswerSelection(answer, currentQuestionIndex)}
-            isSelected={chosenAnswers[currentQuestionIndex] === choice}
-          />
-        ));
-      case "openEnded":
-        return (
-          <OpenEndedTextField
-            value={chosenAnswers[currentQuestionIndex]}
-            onChange={(event) =>
-              handleAnswerSelection(event.target.value, currentQuestionIndex)
-            }
-          />
-        );
-      case "trueFalse":
-        return (
-          <TrueFalseButtons
-            onAnswerSelect={handleAnswerSelection}
-            selectedAnswer={chosenAnswers[currentQuestionIndex]}
-          />
-        );
-      default:
-        return "";
+  const prevQuestion = () => {
+    setCurrentQuestionIndex(currentQuestionIndex - 1);
+    // setCurrentQuestion(selectedExam.questions[currentQuestionIndex]);
+  };
+  const handleSubmitAnswer = () => {
+    if (currentQuestionIndex < selectedExam.questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      // return score
     }
-  }
-}
+  };
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+
+  const handleSelectChoice = (index) => {
+    setSelectedAnswer(index);
+  };
+
+  return (
+    <>
+      <div className="take-exam-content--wrapper">
+        <ReturnDashboard />
+        <h2 style={{ marginTop: "1rem" }}> {title} </h2>
+        <Card>
+          <CardContent sx={{ p: "2rem" }}>
+            <div className="question--header">
+              Question # {currentQuestionIndex + 1}
+              {console.log("Questions array length: ", questions.length)}
+              {console.log("Current: ", currentQuestion)}
+            </div>
+            <span>{currentQuestion.question}</span>
+            {currentQuestion.choices.map((choice, index) => (
+              <QuestionChoice
+                key={index}
+                choice={choice}
+                index={index}
+                selectedAnswer={selectedAnswer}
+                onSelect={handleSelectChoice}
+              />
+            ))}
+
+            {/* Question Foot Note */}
+            <div className="question--footnote">
+              {currentQuestionIndex > 0 ? (
+                <Button
+                  className="brand-red-bg"
+                  variant="contained"
+                  style={{ textTransform: "capitalize" }}
+                  onClick={prevQuestion}
+                >
+                  <SlArrowLeft size={"0.5rem"} /> &nbsp; Back
+                </Button>
+              ) : (
+                <Button disabled>Back</Button>
+              )}
+              {currentQuestionIndex < selectedExam.questions.length - 1 ? (
+                <Button
+                  className="brand-red-bg"
+                  variant="contained"
+                  style={{ textTransform: "capitalize" }}
+                  onClick={handleSubmitAnswer}
+                >
+                  Next &nbsp; <SlArrowRight size={"0.5rem"} />
+                </Button>
+              ) : (
+                <Button disabled>Next</Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </>
+  );
+};
 
 export default TakeExamPage;

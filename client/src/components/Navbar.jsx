@@ -46,8 +46,8 @@ export default function Navbar() {
   };
 
   return (
-    <Box sx={{ width: "30rem" }}>
-      <FormGroup>
+    <Box sx={{ width: "30rem", marginBottom: "3rem"}}>
+      {/* <FormGroup>
         <FormControlLabel
           control={
             <Switch
@@ -58,7 +58,7 @@ export default function Navbar() {
           }
           label={auth ? "Logout" : "Login"}
         />
-      </FormGroup>
+      </FormGroup> */}
 
       <AppBar
         className="navbar--wrapper"

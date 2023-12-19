@@ -1,0 +1,22 @@
+.take-exam-content--wrapper{
+    width: 100vw;
+    padding: 1rem 3rem;
+}
+.question--header{
+    font-family: 'Inter';
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
+.question--footnote{
+    display: flex ;
+    justify-content: flex-end ;
+    margin-top: 1rem;
+    gap: 1rem;
+}
+.letter-choice{
+    font-family: 'Inter' !important;
+    font-weight: 700 !important;
+    display: inline-flex !important;
+    margin-right: 0.3rem !important;
+    margin-left: 1rem !important;
+}

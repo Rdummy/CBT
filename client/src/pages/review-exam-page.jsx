@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import CarouselItem from "./CarouselItem";
+import Navbar from "../components/Navbar";
+import ReturnDashboard from "../components/ReturnDashboard";
 
 const ReviewExamPage = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -34,57 +36,65 @@ const ReviewExamPage = () => {
   };
 
   return (
-    <div className="carousel">
-      <div
-        className="inner"
-        style={{ transform: `translate(-${activeIndex * 100}%)` }}
-      >
-        {items.map((item) => {
-          return <CarouselItem item={item} width={"100%"} />;
-        })}
+    <>
+      <div className="return--wrapper" style={{backgroundColor: "#ddd", boxShadow: "0 0 10px black;",border: "0.1rem solid #a4a4a4"}}>
+        <ReturnDashboard />
       </div>
+      <div className="review-page--wrapper">
+        <div className="carousel">
+          <div
+            className="inner"
+            style={{ transform: `translate(-${activeIndex * 100}%)` }}
+          >
+            {items.map((item) => {
+              return <CarouselItem item={item} width={"100%"} />;
+            })}
+          </div>
 
-      <div className="carousel-buttons">
-        <button
-          className="button-arrow"
-          onClick={() => {
-            updateIndex(activeIndex - 1);
-          }}
-        >
-          <span class="material-symbols-outlined">arrow_back_ios</span>{" "}
-        </button>
-        <div className="indicators">
-          {items.map((item, index) => {
-            return (
-              <button
-                className="indicator-buttons"
-                onClick={() => {
-                  updateIndex(index);
-                }}
-              >
-                <span
-                  className={`material-symbols-outlined ${
-                    index === activeIndex
-                      ? "indicator-symbol-active"
-                      : "indicator-symbol"
-                  }`}
-                >
-                  radio_button_checked
-                </span>
-              </button>
-            );
-          })}
+          <div className="carousel-buttons">
+            <button
+              className="button-arrow"
+              onClick={() => {
+                updateIndex(activeIndex - 1);
+              }}
+            >
+              <span class="material-symbols-outlined">arrow_back_ios</span>{" "}
+            </button>
+            <div className="indicators">
+              {items.map((item, index) => {
+                return (
+                  <button
+                    className="indicator-buttons"
+                    onClick={() => {
+                      updateIndex(index);
+                    }}
+                  >
+                    <span
+                      className={`material-symbols-outlined ${
+                        index === activeIndex
+                          ? "indicator-symbol-active"
+                          : "indicator-symbol"
+                      }`}
+                    >
+                      radio_button_checked
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+            <button
+              className="button-arrow"
+              onClick={() => {
+                updateIndex(activeIndex + 1);
+              }}
+            >
+              <span class="material-symbols-outlined">arrow_forward_ios</span>
+            </button>
+          </div>
         </div>
-        <button
-          className="button-arrow"
-          onClick={() => {
-            updateIndex(activeIndex + 1);
-          }}
-        >
-          <span class="material-symbols-outlined">arrow_forward_ios</span>
-        </button>
+        {/* 2nd Item */}
       </div>
-    </div>
+    </>
   );
 };
 

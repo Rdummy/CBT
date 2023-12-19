@@ -2,7 +2,19 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
 import axios from "axios";
+import styled from "styled-components";
+import NTS_Logo from "../assets/images/NTS_Logo.png";
 
+
+const StyledTextField = styled(TextField)`
+  .MuiTextField-root .field-wrapper  {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+`;
 const RegistrationForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -49,58 +61,86 @@ const RegistrationForm = () => {
     }
   };
   return (
-    <div className="auth-container-wrapper">
-      <div className="auth-container">
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="fields-wrapper">
-            <TextField
-              fullWidth
-              label="Email"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-            <TextField
-              fullWidth
-              label="Password"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-            <TextField
-              fullWidth
-              label="Username"
-              name="username"
-              type="text"
-              value={formData.username}
-              onChange={handleChange}
-            />
-            <TextField
-              fullWidth
-              label="Role"
-              name="user_role"
-              type="text"
-              value={formData.user_role}
-              onChange={handleChange}
-            />
-            <TextField
-              fullWidth
-              label="User Type"
-              name="user_type"
-              type="text"
-              value={formData.user_type}
-              onChange={handleChange}
-            />
-          </div>
+    <>
+      <div className="auth-container-wrapper">
+        <div className="auth-container">
+          <form onSubmit={handleSubmit} className="auth-form">
+        <img src={NTS_Logo} alt="Company Logo" className="logo" />
+              <div className="signin--header" style={{fontWeight: "700", marginBottom: "1rem"}}>Sign In</div>
+            <div className="fields-wrapper" style={{ gap: "0.5rem"}}>
+              <StyledTextField
+                fullWidth
+                size="small"
+                label="Email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                style={{padding: "0px !important"}}
+                  sx={{ my: 0,  }}
+              />
+              <StyledTextField
+                fullWidth
+                size="small"
+                label="Password"
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                style={{padding: "0px !important"}}
+                  sx={{ my: 0,  }}
+              />
+              <StyledTextField
+                fullWidth
+                size="small"
+                label="Username"
+                name="username"
+                type="text"
+                value={formData.username}
+                onChange={handleChange}
+                style={{padding: "0px !important"}}
+                  sx={{ my: 0,  }}
+              />
+              <StyledTextField
+                fullWidth
+                size="small"
+                label="Role"
+                name="user_role"
+                type="text"
+                value={formData.user_role}
+                onChange={handleChange}
+                style={{padding: "0px !important"}}
+                  sx={{ my: 0,  }}
+              />
+              <StyledTextField
+                fullWidth
+                size="small"
+                label="User Type"
+                name="user_type"
+                type="text"
+                value={formData.user_type}
+                onChange={handleChange}
+                style={{padding: "0px !important"}}
+                  sx={{ my: 0,  }}
+              />
+            </div>
 
-          <Button type="submit" className="auth-button" disabled={isSubmitting}>
-            Register
-          </Button>
-        </form>
+            <Button
+              type="submit"
+              className="auth-button"
+              disabled={isSubmitting}
+            >
+              Register
+            </Button>
+            <div className="end-footer">
+              <p className="login-text">
+                Already have an account? <a href="/">Log In</a>
+              </p>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

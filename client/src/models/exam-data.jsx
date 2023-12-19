@@ -195,16 +195,8 @@ const exams = [{
           }
       ]
   },
+    "instructions": "Pay close attention to grammatical accuracy, clarity, and conciseness in your responses.",
   "questions": [
-      {
-          "type": "generalTips",
-          "content": "Pay close attention to grammatical accuracy, clarity, and conciseness in your responses."
-      },
-      {
-        "type": "openEnded",
-        "question": "Write a short paragraph (5-8 sentences) describing a scene from your favorite book.",
-        "answer": ""
-      },
       {
           "type": "multipleChoice",
           "question": "Which of the following sentences is grammatically correct?",
@@ -217,14 +209,29 @@ const exams = [{
           "correctAnswer": 1
       },
       {
-          "type": "trueFalse",
-          "question": "The comma is always used to separate clauses.",
+        "type": "multipleChoice",
+        "question": "This is a test?",
+        "choices": [
+            "He went to the store, and buy a loaf of bread.",
+            "He went to the store, and bought a loaf of bread.",
+            "He went to the store, and buying a loaf of bread.",
+            "He went to the store, and will buy a loaf of bread."
+        ],
+        "correctAnswer": 1
+    },
+
+      {
+          "type": "multipleChoice",
+          "question": "Which of the following sentences is grammatically correct?",
           "choices": [
-              "True",
-              "False"
+              "He went to the store, and buy a loaf of bread.",
+              "He went to the store, and bought a loaf of bread.",
+              "He went to the store, and buying a loaf of bread.",
+              "He went to the store, and will buy a loaf of bread."
           ],
-          "correctAnswer": 0
-      }
+          "correctAnswer": 1
+      },
+
   ]
 }]
 

@@ -1,13 +1,21 @@
-import { Button } from "@mui/material";
+import React from "react";
+import Button from "@mui/material/Button";
 
-function ChoiceButton({ choice, onAnswerSelect, isSelected }) {
-    return (
-      <Button
-        variant="contained"
-        onClick={() => onAnswerSelect(choice)}
-        selected={isSelected}
-      >
-        {choice}
-      </Button>
-    );
-  }export default ChoiceButton;
+const ChoiceButton = ({ choice, chosenLabel, onAnswerSelect, isSelected }) => {
+  const handleClick = () => {
+    onAnswerSelect(); // Trigger answer selection handler
+  };
+
+  return (
+    <Button
+      variant="outlined"
+      sx={{ margin: 1 }}
+      color={isSelected ? "primary" : "default"}
+      onClick={handleClick}
+    >
+      {choice} {isSelected && `(${chosenLabel})`}
+    </Button>
+  );
+};
+
+export default ChoiceButton;

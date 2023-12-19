@@ -1,7 +1,7 @@
 import React from 'react'
 import HeroTypewriter from '../components/HeroTypewriter'
 import "../assets/styles/authentication.css"
-import LoginForm from '../components/LoginForm'
+import LoginForm from '../components/Forms/LoginForm'
 
 function Login() {
   return (

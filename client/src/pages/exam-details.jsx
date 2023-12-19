@@ -12,17 +12,22 @@ import Navbar from "../components/Navbar";
 import "../assets/styles/ExamRoutes.css";
 import { SlArrowLeft } from "react-icons/sl";
 import { useEffect, useState } from "react";
+import ReturnDashboard from "../components/ReturnDashboard";
 
 function ExamDetailsPage() {
   const { examId } = useParams();
   const selectedExam = exams.find((exam) => exam.id === examId);
   const navigate = useNavigate();
-  
+
   const handleReviewClick = () => {
-    navigate(`/dashboard/exams/${examId}/review`, { state: { examId: examId } });
+    navigate(`/dashboard/exams/${examId}/review`, {
+      state: { examId: examId },
+    });
   };
   const handleTakeExamClick = () => {
-    navigate(`/dashboard/exams/${examId}/take-exam`, { state: { examId: examId } });
+    navigate(`/dashboard/exams/${examId}/take-exam`, {
+      state: { examId: examId },
+    });
   };
 
   if (!selectedExam) {
@@ -35,15 +40,9 @@ function ExamDetailsPage() {
       <div className="exam-details--wrapper">
         <Card sx={{ m: 5, p: 5 }}>
           <CardContent>
-          <Box sx={{ mb:4, opacity:0.7,  }}>
-            <Button
-              variant="contained"
-              onClick={() => navigate("/dashboard")}
-              sx={{ textTransform: "capitalize", px: 2, py: 0.5,borderRadius:"0px" }}
-              >
-              <SlArrowLeft/> &nbsp; Return to Dashboard
-            </Button>
-              </Box>
+            <Box sx={{ mb: 4, opacity: 0.7 }}>
+              <ReturnDashboard/>
+            </Box>
 
             <Typography variant="h5" sx={{ mt: 2 }}>
               {selectedExam.title}
@@ -63,9 +62,7 @@ function ExamDetailsPage() {
                 Created: {selectedExam.createdAt}
               </Typography>
             </Box>
-            <Box
-              sx={{ display: "flex", justifyContent: "flex-end", py: 2 }}
-            >
+            <Box sx={{ display: "flex", justifyContent: "flex-end", py: 2 }}>
               <Button
                 className="brand-red-bg"
                 sx={{ textTransform: "capitalize", px: 3, py: 2, mx: 0.5 }}

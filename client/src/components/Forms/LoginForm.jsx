@@ -2,8 +2,8 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import "../assets/styles/authentication.css";
-import NTS_Logo from "../assets/images/NTS_Logo.png";
+import "../../assets/styles/authentication.css";
+import NTS_Logo from "../../assets/images/NTS_Logo.png";
 import { Button } from "@mui/material";
 import axios from 'axios';
 

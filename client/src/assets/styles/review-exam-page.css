@@ -92,3 +92,7 @@ body {
 .indicator-symbol-active {
   color: #ffffff;
 }
+/* Ram */
+.review-page--wrapper{
+  display: grid;
+}

@@ -2,13 +2,14 @@ import React from 'react';
 import Navbar from '../components/Navbar'
 import "../assets/styles/dashboard.css"
 import ExamPage from '../pages/exams.page';
+import { Outlet } from 'react-router-dom';
 
 function Dashboard() {
   return (
     <>
-    <Navbar/>
-    <div className="dashboard-content">
-      <ExamPage/>
+    <div className="dashboard-content" >
+      <Navbar/>
+      <Outlet/>
     </div>
     </>
   )
