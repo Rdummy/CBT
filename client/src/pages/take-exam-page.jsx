@@ -12,123 +12,70 @@ import {
   ListItem,
   ListItemText,
   Radio,
-  TextField,
-  Checkbox,
 } from "@mui/material";
-
+import exams from "../models/exam-data";
+import QuestionCard from "../components/Exam Components/QuestionCard";
+import ChoiceButton from "../components/Exam Components/ChoiceButton";
+import OpenEndedTextField from "../components/Exam Components/OpenEnded";
+import TrueFalseButtons from "../components/Exam Components/TrueFalseQuestion";
 function TakeExamPage() {
   const { examId } = useParams();
   const selectedExam = exams.find((exam) => exam.id === examId);
 
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState({});
+  // Store chosen answers in an array
+  const [chosenAnswers, setChosenAnswers] = useState([]);
 
   useEffect(() => {
-    // Initialize answers object with empty values
-    const initialAnswers = {};
-    exam.questions.forEach((question) => {
-      initialAnswers[question.id] = "";
-    });
-    setAnswers(initialAnswers);
-  }, [exam]);
+    // Initialize chosenAnswers with empty values
+    setChosenAnswers(new Array(selectedExam.questions.length).fill(""));
+  }, [selectedExam]);
+
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+  const handleAnswerSelection = (answer, questionIndex) => {
+    const updatedAnswers = [...chosenAnswers];
+    updatedAnswers[questionIndex] = answer;
+    setChosenAnswers(updatedAnswers);
+  };
 
   const handleSubmitAnswer = () => {
-    // Update answer for current question
-    const answer = getAnswerForQuestion(exam.questions[currentQuestionIndex]);
-    setAnswers({
-      ...answers,
-      [exam.questions[currentQuestionIndex].id]: answer,
-    });
-
-    // Check if this is the last question
-    if (currentQuestionIndex === exam.questions.length - 1) {
-      // Submit the exam and navigate to results page
-      console.log("Submit answers:", answers);
-      // TODO: Implement actual exam submission logic
-      // navigate("/dashboard/exams/${examId}/results");
+    if (currentQuestionIndex === selectedExam.questions.length - 1) {
+      // Calculate score and navigate to review
+      const score = calculateScore(chosenAnswers, selectedExam.questions);
+      navigateToReview(selectedExam, chosenAnswers, score);
     } else {
       // Go to the next question
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   };
 
-  const getAnswerForQuestion = (question) => {
-    switch (question.type) {
-      case "multipleChoice":
-        return document.querySelector('input[name="question-choice"]:checked')
-          .value;
-      case "openEnded":
-        return document.getElementById("open-ended-answer").value;
-      case "trueFalse":
-        return document.getElementById("true-false-answer").checked;
-      default:
-        return "";
-    }
+  const calculateScore = (chosenAnswers, questions) => {
+    // Implement your logic for calculating score based on chosen and correct answers
+    // ... your scoring logic here ...
   };
 
-  if (!exam) {
+  const navigateToReview = (exam, chosenAnswers, score) => {
+    // Implement navigation to the review page with necessary data (exam, answers, score)
+    // ... your navigation logic here ...
+  };
+
+  if (!selectedExam) {
     return <p>Exam not found</p>;
   }
 
-  const currentQuestion = exam.questions[currentQuestionIndex];
+  const { questions, title } = selectedExam;
+  const currentQuestion = questions[currentQuestionIndex];
 
   return (
     <div>
-      <h1>Take Exam: {exam.title}</h1>
+      <h1>Take Exam: {title}</h1>
       <Card>
         <CardContent>
-          <Box>
-            <Typography variant="h5">{currentQuestion.question}</Typography>
-            {currentQuestion.type === "generalTips" && (
-              <Typography>{currentQuestion.content}</Typography>
-            )}
-            {currentQuestion.type === "multipleChoice" && (
-              <List>
-                {currentQuestion.choices.map((choice, index) => (
-                  <ListItem key={index}>
-                    <Radio
-                      name="question-choice"
-                      value={index}
-                      checked={answers[currentQuestion.id] === index}
-                    />
-                    <ListItemText>{choice}</ListItemText>
-                  </ListItem>
-                ))}
-              </List>
-            )}
-            {currentQuestion.type === "openEnded" && (
-              <TextField
-                id="open-ended-answer"
-                multiline
-                rows={4}
-                value={answers[currentQuestion.id]}
-                onChange={(event) =>
-                  setAnswers({
-                    ...answers,
-                    [currentQuestion.id]: event.target.value,
-                  })
-                }
-              />
-            )}
-            {currentQuestion.type === "trueFalse" && (
-              <>
-                <Checkbox
-                  id="true-false-answer"
-                  checked={answers[currentQuestion.id]}
-                  onChange={(event) =>
-                    setAnswers({
-                      ...answers,
-                      [currentQuestion.id]: event.target.checked,
-                    })
-                  }
-                />
-                <label htmlFor="true-false-answer">True</label>
-              </>
-            )}
-          </Box>
+          <QuestionCard question={currentQuestion} />
+          {renderAnswerOptions()}
           <Box sx={{ mt: 3 }}>
             <Button variant="contained" onClick={handleSubmitAnswer}>
-              {currentQuestionIndex === exam.questions.length - 1
+              {currentQuestionIndex === selectedExam.questions.length - 1
                 ? "Submit Exam"
                 : "Next Question"}
             </Button>
@@ -137,4 +84,38 @@ function TakeExamPage() {
       </Card>
     </div>
   );
-}export default TakeExamPage
+
+  function renderAnswerOptions() {
+    switch (currentQuestion.type) {
+      case "multipleChoice":
+        return currentQuestion.choices.map((choice, index) => (
+          <ChoiceButton
+            key={choice}
+            choice={choice}
+            onAnswerSelect={(answer) => handleAnswerSelection(answer, currentQuestionIndex)}
+            isSelected={chosenAnswers[currentQuestionIndex] === choice}
+          />
+        ));
+      case "openEnded":
+        return (
+          <OpenEndedTextField
+            value={chosenAnswers[currentQuestionIndex]}
+            onChange={(event) =>
+              handleAnswerSelection(event.target.value, currentQuestionIndex)
+            }
+          />
+        );
+      case "trueFalse":
+        return (
+          <TrueFalseButtons
+            onAnswerSelect={handleAnswerSelection}
+            selectedAnswer={chosenAnswers[currentQuestionIndex]}
+          />
+        );
+      default:
+        return "";
+    }
+  }
+}
+
+export default TakeExamPage;
