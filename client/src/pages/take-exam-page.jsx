@@ -32,13 +32,20 @@ const QuestionChoice = ({ choice, index, selectedAnswer, onSelect }) => {
       onKeyDown={(e) => e.key === "Enter" && onSelect(index)}
       onClick={() => onSelect(index)}
     >
-      <Typography className="letter-choice" color={isSelected ? "white" : "#8a8a8a"}>
+      <Typography
+        className="letter-choice"
+        color={isSelected ? "white" : "#8a8a8a"}
+      >
         {letter}
       </Typography>
       <Typography variant="button" textTransform={"none"}>
         {choice}
       </Typography>
-      {isSelected && <IconButton color={"#347634"} size="small">Selected</IconButton>}
+      {isSelected && (
+        <IconButton color={"#347634"} size="small">
+          Selected
+        </IconButton>
+      )}
     </Box>
   );
 };
@@ -49,6 +56,8 @@ const TakeExamPage = () => {
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [chosenAnswers, setChosenAnswers] = useState({});
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [score, setScore] = useState(null);
 
   const { questions, title } = selectedExam;
   const currentQuestion = questions[currentQuestionIndex];
@@ -58,18 +67,36 @@ const TakeExamPage = () => {
     // setCurrentQuestion(selectedExam.questions[currentQuestionIndex]);
   };
   const handleSubmitAnswer = () => {
+    const nextQuestionIndex = currentQuestionIndex + 1;
+
     if (currentQuestionIndex < selectedExam.questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setCurrentQuestionIndex(nextQuestionIndex);
+      setSelectedAnswer(chosenAnswers[nextQuestionIndex]);
     } else {
-      // return score
+      computeScore();
     }
   };
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
 
   const handleSelectChoice = (index) => {
-    setSelectedAnswer(index);
+    setChosenAnswers({ ...chosenAnswers, [currentQuestionIndex]: index });
   };
 
+  const computeScore = () => {
+    const totalQuestions = selectedExam.questions.length;
+    const correctAnswers = selectedExam.questions.reduce(
+      (count, question, index) => {
+        const correctAnswer = question.correctAnswer;
+        const userAnswer = chosenAnswers[index];
+        return userAnswer !== undefined && userAnswer === correctAnswer
+          ? count + 1
+          : count;
+      },
+      0
+    );
+
+    const calculatedScore = (correctAnswers / totalQuestions) * 100;
+    setScore(calculatedScore.toFixed(2));
+  };
   return (
     <>
       <div className="take-exam-content--wrapper">
@@ -79,8 +106,13 @@ const TakeExamPage = () => {
           <CardContent sx={{ p: "2rem" }}>
             <div className="question--header">
               Question # {currentQuestionIndex + 1}
-              {console.log("Questions array length: ", questions.length)}
-              {console.log("Current: ", currentQuestion)}
+              <div className="question--score">
+                {score !== null && (
+                  <div>
+                    <Typography variant="h6">Your Score: {score} % </Typography>
+                  </div>
+                )}
+              </div>
             </div>
             <span>{currentQuestion.question}</span>
             {currentQuestion.choices.map((choice, index) => (
@@ -88,7 +120,7 @@ const TakeExamPage = () => {
                 key={index}
                 choice={choice}
                 index={index}
-                selectedAnswer={selectedAnswer}
+                selectedAnswer={chosenAnswers[currentQuestionIndex]}
                 onSelect={handleSelectChoice}
               />
             ))}
@@ -117,7 +149,14 @@ const TakeExamPage = () => {
                   Next &nbsp; <SlArrowRight size={"0.5rem"} />
                 </Button>
               ) : (
-                <Button disabled>Next</Button>
+                <Button
+                  className="brand-blue-bg"
+                  variant="contained"
+                  style={{ textTransform: "capitalize" }}
+                  onClick={handleSubmitAnswer}
+                >
+                  Submit
+                </Button>
               )}
             </div>
           </CardContent>

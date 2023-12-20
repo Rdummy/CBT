@@ -206,7 +206,8 @@ const exams = [{
               "He went to the store, and buying a loaf of bread.",
               "He went to the store, and will buy a loaf of bread."
           ],
-          "correctAnswer": 1
+          "correctAnswer": 1,
+          "explanation": " Test Explanation Lorem Ipsum dolor"
       },
       {
         "type": "multipleChoice",
@@ -217,7 +218,8 @@ const exams = [{
             "He went to the store, and buying a loaf of bread.",
             "He went to the store, and will buy a loaf of bread."
         ],
-        "correctAnswer": 1
+        "correctAnswer": 1,
+        "explanation": " Test Explanation Lorem Ipsum dolor"
     },
 
       {
@@ -229,7 +231,8 @@ const exams = [{
               "He went to the store, and buying a loaf of bread.",
               "He went to the store, and will buy a loaf of bread."
           ],
-          "correctAnswer": 1
+          "correctAnswer": 1,
+          "explanation": " Test Explanation Lorem Ipsum dolor"
       },
 
   ]

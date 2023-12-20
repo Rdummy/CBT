@@ -72,7 +72,7 @@ export default function Navbar() {
             component="div"
             sx={{ flexGrow: 1, ml: "1rem" }}
           >
-            CBS Examination
+            CBT Examination
           </Typography>
           {auth && (
             <div>

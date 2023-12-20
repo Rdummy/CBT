@@ -1,7 +1,7 @@
 import React from 'react'
 import HeroTypewriter from '../components/HeroTypewriter'
 import "../assets/styles/authentication.css"
-import RegistrationForm from '../components/RegistrationForm'
+import RegistrationForm from '../components/Forms/RegistrationForm'
 
 function Register() {
   return (

@@ -20,3 +20,9 @@
     margin-right: 0.3rem !important;
     margin-left: 1rem !important;
 }
+.question--score{
+    display: inline-flexbox;
+    justify-content: flex-end;
+    font-weight: 700;
+    color: #454545;
+}
