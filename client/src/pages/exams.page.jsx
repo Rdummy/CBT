@@ -14,7 +14,6 @@ import {
   Checkbox,
 } from "@mui/material";
 
-// Import ExamCard and any other necessary components or data
 import exams from "../models/exam-data";
 import ExamCard from "../components/ExamCard";
 import "../assets/styles/dashboard.css";
@@ -27,10 +26,6 @@ function ExamPage() {
     title: "",
     description: "",
   });
-
-  // Array to keep track of selected exams
-  const [selectedExams, setSelectedExams] = useState([]);
-  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
 
   const displayedExams = exams.slice(
     (page - 1) * examsPerPage,
@@ -72,39 +67,6 @@ function ExamPage() {
     });
   };
 
-  const handleDeleteExams = () => {
-    exams.splice(
-      exams.findIndex((exam) => selectedExams.includes(exam.id)),
-      selectedExams.length
-    );
-    setSelectedExams([]);
-    setPage(1);
-  };
-
-  const toggleCheckbox = (examId) => {
-    if (selectedExams.includes(examId)) {
-      setSelectedExams(selectedExams.filter((id) => id !== examId));
-    } else {
-      setSelectedExams([...selectedExams, examId]);
-    }
-  };
-
-  const handleOpenDeleteConfirmation = () => {
-    if (selectedExams.length > 0) {
-      setDeleteConfirmationOpen(true);
-    } else {
-      console.log("No exams selected for deletion");
-    }
-  };
-  const handleCloseDeleteConfirmation = () => {
-    setDeleteConfirmationOpen(false);
-  };
-
-  const handleDeleteConfirmed = () => {
-    handleDeleteExams();
-    handleCloseDeleteConfirmation();
-  };
-
   return (
     <Container maxWidth="xxl">
       <Toolbar
@@ -118,15 +80,6 @@ function ExamPage() {
           <Button variant="contained" color="primary" onClick={handleOpenModal}>
             Add Exam
           </Button>
-          <span style={{ marginRight: 10 }} />
-          <Button
-            variant="contained"
-            color="error"
-            onClick={handleOpenDeleteConfirmation}
-            disabled={selectedExams.length === 0} // Disable button if no exams are selected
-          >
-            Delete Exams
-          </Button>
         </div>
       </Toolbar>
       <Grid
@@ -137,10 +90,6 @@ function ExamPage() {
         {displayedExams.map((exam, index) => (
           <Grid item xs={3} key={exam.id}>
             <div className="grid-item--wrapper" style={{ minHeight: "100%" }}>
-              <Checkbox
-                checked={selectedExams.includes(exam.id)}
-                onChange={() => toggleCheckbox(exam.id)}
-              />
               <ExamCard key={exam.id} exam={exam} />
             </div>
           </Grid>
@@ -193,25 +142,6 @@ function ExamPage() {
             </Button>
           </DialogActions>
         </form>
-      </Dialog>
-
-      {/* Delete Confirmation Dialog */}
-      <Dialog
-        open={deleteConfirmationOpen}
-        onClose={handleCloseDeleteConfirmation}
-      >
-        <DialogTitle>Confirm Delete</DialogTitle>
-        <DialogContent>
-          <Typography>
-            Are you sure you want to delete the selected exams?
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDeleteConfirmation}>Cancel</Button>
-          <Button onClick={handleDeleteConfirmed} color="error">
-            Delete
-          </Button>
-        </DialogActions>
       </Dialog>
     </Container>
   );

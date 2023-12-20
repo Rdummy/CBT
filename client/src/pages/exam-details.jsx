@@ -1,33 +1,42 @@
 import { useNavigate, useParams } from "react-router-dom";
-import exams from "../models/exam-data";
-import {
-  Card,
-  CardContent,
-  Box,
-  Typography,
-  Avatar,
-  Button,
-} from "@mui/material";
+import exams from "../models/exam-data"; // Assuming you're importing your exam data from an external file
+import { Card, CardContent, Box, Typography, Button } from "@mui/material";
 import Navbar from "../components/Navbar";
 import "../assets/styles/ExamRoutes.css";
-import { SlArrowLeft } from "react-icons/sl";
-import { useEffect, useState } from "react";
 import ReturnDashboard from "../components/ReturnDashboard";
+import { useState } from "react";
 
 function ExamDetailsPage() {
   const { examId } = useParams();
-  const selectedExam = exams.find((exam) => exam.id === examId);
   const navigate = useNavigate();
+
+  // Assuming exams is a state variable and setExams is a setter function for the state
+  const [examList, setExamList] = useState(exams);
+  const selectedExam = examList.find((exam) => exam.id === examId);
 
   const handleReviewClick = () => {
     navigate(`/dashboard/exams/${examId}/review`, {
       state: { examId: examId },
     });
   };
+
   const handleTakeExamClick = () => {
     navigate(`/dashboard/exams/${examId}/take-exam`, {
       state: { examId: examId },
     });
+  };
+
+  const handleDeleteExam = () => {
+    const updatedExams = examList.filter((exam) => exam.id !== examId);
+    setExamList(updatedExams);
+    navigate("/dashboard");
+    // You might add a confirmation message or notification for successful deletion
+  };
+
+  const handleEditExam = () => {
+    navigate(`/dashboard/exams/${examId}/edit`);
+    // You might also pass the selectedExam data to the edit page if needed
+    // navigate(`/dashboard/exams/${examId}/edit`, { state: { selectedExam } });
   };
 
   if (!selectedExam) {
@@ -38,10 +47,36 @@ function ExamDetailsPage() {
     <>
       <Navbar />
       <div className="exam-details--wrapper">
-        <Card sx={{ m: 5, p: 5 }}>
+        <Card sx={{ m: 5 }}>
           <CardContent>
-            <Box sx={{ mb: 4, opacity: 0.7 }}>
-              <ReturnDashboard/>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 4,
+                opacity: 0.7,
+              }}
+            >
+              <ReturnDashboard />
+              <Box>
+                <Button
+                  variant="contained"
+                  className="brand-red-bg"
+                  sx={{ textTransform: "capitalize", mr: 2 }}
+                  onClick={handleDeleteExam}
+                >
+                  Delete Exam
+                </Button>
+                <Button
+                  variant="contained"
+                  className="brand-red-bg"
+                  sx={{ textTransform: "capitalize" }}
+                  onClick={handleEditExam}
+                >
+                  Edit Exam
+                </Button>
+              </Box>
             </Box>
 
             <Typography variant="h5" sx={{ mt: 2 }}>
@@ -62,6 +97,7 @@ function ExamDetailsPage() {
                 Created: {selectedExam.createdAt}
               </Typography>
             </Box>
+
             <Box sx={{ display: "flex", justifyContent: "flex-end", py: 2 }}>
               <Button
                 className="brand-red-bg"
