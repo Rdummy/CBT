@@ -14,6 +14,7 @@ import SettingsPage from "./pages/settings.page.jsx";
 import ExamPage from "./pages/exams.page.jsx";
 import TakeExamPage from "./pages/take-exam-page.jsx";
 import ReviewExamPage from "./pages/review-exam-page.jsx";
+import EditExamPage from "./pages/edit-exam-page.jsx";
 import ExamDetailsPage from "./pages/exam-details.jsx";
 import exams from "./models/exam-data.jsx";
 import Navbar from "./components/Navbar.jsx";
@@ -38,13 +39,24 @@ function CBTRoute() {
       element: <Register />,
     },
     {
-      path: "/dashboard", element: (<Dashboard />),
+      path: "/dashboard",
+      element: <Dashboard />,
       children: [
         { element: <ExamPage />, index: true },
         { path: "dashboard/settings", element: <SettingsPage /> },
         { path: "/dashboard/exams/:examId", element: <ExamDetailsPage /> },
-        { path: "/dashboard/exams/:examId/take-exam",element: <TakeExamPage examId />, },
-        {path: "/dashboard/exams/:examId/review", element: <ReviewExamPage examId />,},
+        {
+          path: "/dashboard/exams/:examId/take-exam",
+          element: <TakeExamPage examId />,
+        },
+        {
+          path: "/dashboard/exams/:examId/review",
+          element: <ReviewExamPage examId />,
+        },
+        {
+          path: "/dashboard/exams/:examId/edit",
+          element: <EditExamPage examId />,
+        },
       ],
     },
   ]);
