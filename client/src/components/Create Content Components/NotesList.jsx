@@ -12,7 +12,6 @@ const NoteList = ({
     <div className="notes-list">
       {noted.map((note) => (
         <Note
-          key={note.id} // Add a unique key prop
           id={note.id}
           title={note.title}
           description={note.description}
