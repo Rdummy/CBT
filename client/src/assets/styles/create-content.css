@@ -1,0 +1,319 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Roboto:wght@500&display=swap");
+
+/*--------------------------------------------------------------------------------------------------------*/
+/*CREATE CONTENT--------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------
+*/
+
+body {
+  margin: 0;
+}
+h1 {
+  margin-top: 40px;
+}
+.container {
+  max-width: 1000px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  text-align: center;
+}
+
+.add-topic {
+  margin-top: 5px;
+  padding-top: 15px;
+  border-color: rgb(146, 146, 146);
+  border-radius: 5px;
+  resize: none;
+  background-color: #7e7e7ea6;
+  text-align: center;
+  font-size: 2rem;
+  font-family: "Poppins", sans-serif;
+  height: 60px;
+  overflow: hidden;
+}
+.add-topic::placeholder {
+  align-self: center;
+  font-weight: 100;
+  color: rgb(0, 0, 0);
+}
+
+.toggle-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.toggle-button button {
+  margin: 0 10px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 1px;
+  background-color: #e67569;
+  font-family: "Poppins", sans-serif;
+  color: #000;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  background-color: #ededed;
+  min-height: 25px;
+  border-radius: 15px;
+  padding: 5px;
+  margin-top: 20px;
+  margin-bottom: 1.5em;
+}
+.search-icons {
+  margin-right: 10px;
+}
+.search input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: none;
+  background-color: #ededed;
+}
+.search input:focus {
+  outline: none;
+}
+
+.notes-list {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+/*--------------------------------------------------------------------------------------------------------*/
+/*ADDNOTE CSS --------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------
+*/
+.new {
+  background-color: #fe8a8a;
+  border-radius: 10px;
+  padding: 1rem;
+  min-height: 270px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  white-space: pre-wrap;
+  overflow: hidden;
+  word-wrap: break-word;
+  transition: all 0.4s;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.075);
+}
+.add-title {
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  resize: none;
+  caret-color: rgb(255, 255, 255);
+  background-color: #8f8f8f;
+}
+.add-description {
+  margin: 10px;
+  border: none;
+  border-radius: 5px;
+  resize: none;
+  background-color: aquamarine;
+  caret-color: rgb(0, 0, 0);
+}
+textarea {
+  color: rgb(0, 0, 0);
+}
+textarea:focus {
+  outline: none;
+}
+.add-image {
+  margin: 10px;
+  width: 90px;
+}
+
+.save {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.save:hover {
+  background-color: #4caf4fbd;
+  cursor: pointer;
+}
+
+.icon-footer :hover {
+  color: #e74c3c;
+}
+/*--------------------------------------------------------------------------------------------------------*/
+/*NOTE CSS --------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------
+*/
+.note {
+  background-color: #fef68a;
+  border-radius: 10px;
+  padding: 1rem;
+  min-height: 270px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  white-space: pre-wrap;
+  overflow: hidden;
+  word-wrap: break-word;
+  transition: all 0.4s;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.075);
+}
+.editing {
+  background-color: #fef68a;
+  border-radius: 10px;
+  padding: 1rem;
+  min-height: 270px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  white-space: pre-wrap;
+  overflow: hidden;
+  word-wrap: break-word;
+  transition: all 0.4s;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.075);
+}
+.edit-desc {
+  margin-bottom: 20px;
+}
+.note:hover {
+  transform: translateY(-0.5rem);
+  box-shadow: 0 2.4rem 4.8rem rgba(0, 0, 0, 0.192);
+}
+.note-title {
+  font-size: 30px;
+  font-weight: 300;
+  font-family: "Poppins", sans-serif;
+}
+
+.delete-icon {
+  cursor: pointer;
+  font-size: 25px;
+}
+.edit-icon {
+  cursor: pointer;
+  font-size: 25px;
+}
+.cancel {
+  background-color: #d85e5e;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.cancel:hover {
+  background-color: #d85e5ebd;
+}
+/*--------------------------------------------------------------------------------------------------------*/
+/*CAROUSEL CSS --------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------
+*/
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+
+/* Add this CSS to your existing styles or create a new CSS file */
+
+.carousel {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 20px auto;
+  max-width: 800px; /* Adjust as needed */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.inner {
+  white-space: nowrap;
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.carousel-item {
+  height: 490px;
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 100%;
+  box-sizing: border-box;
+}
+
+.carousel-visual {
+  width: 250px;
+  padding: 0 20px 0 20px;
+}
+.carousel-visual {
+  width: 300px;
+  padding: 0 20px 0 20px;
+  background-color: #ffffff; /* Add a default background color */
+}
+
+.carousel-item-head {
+  position: absolute;
+  top: 3rem;
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+
+.carousel-item-body {
+  width: 400px;
+  font-size: 1rem;
+  margin: 30px 0 20px 0;
+  padding: 0 20px 0 20px;
+  white-space: normal;
+  color: #6fb1f0;
+  word-wrap: break-word;
+}
+
+.carousel-buttons {
+  position: absolute;
+  top: 90%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+}
+
+.button-arrow {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  outline: none;
+}
+
+.indicators {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.indicator-buttons {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  margin: 0 5px;
+}
+
+.indicator-symbol,
+.indicator-symbol-active {
+  font-size: 20px;
+  color: #999;
+}
+
+.indicator-symbol-active {
+  color: #e94e4e;
+}

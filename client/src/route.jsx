@@ -18,6 +18,8 @@ import EditExamPage from "./pages/edit-exam-page.jsx";
 import ExamDetailsPage from "./pages/exam-details.jsx";
 import exams from "./models/exam-data.jsx";
 import Navbar from "./components/Navbar.jsx";
+import CreateExam from "./pages/create-content.jsx";
+import CreateContent from "./pages/create-content.jsx";
 
 function CBTRoute() {
   const ProtectedRoute = ({ component: Component, ...props }) => {
@@ -44,6 +46,10 @@ function CBTRoute() {
       children: [
         { element: <ExamPage />, index: true },
         { path: "dashboard/settings", element: <SettingsPage /> },
+        {
+          path: "/dashboard/exams/:examId/create-content",
+          element: <CreateContent />,
+        },
         { path: "/dashboard/exams/:examId", element: <ExamDetailsPage /> },
         {
           path: "/dashboard/exams/:examId/take-exam",
@@ -53,12 +59,6 @@ function CBTRoute() {
           path: "/dashboard/exams/:examId/review",
           element: <ReviewExamPage examId />,
         },
-        {
-          path: "/dashboard/exams/:examId/edit",
-          element: <EditExamPage examId />,
-        },
-
-        {path: "/dashboard/exams/:examId/take-exam/submit", element: <ReviewExamPage examId />,},
       ],
     },
   ]);

@@ -1,25 +1,26 @@
-@import '@fontsource/inter/700.css';
+@import "@fontsource/inter/700.css";
 
-.navbar--wrapper{
-    background-color: #E71E4A !important;}
-.user-details--wrapper{
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    align-content: center;
+.navbar--wrapper {
+  background-color: #e71e4a !important;
 }
-.dashboard-content{
-    padding-top: 3rem;
-    background-color: aliceblue;
-    width: 100%;
-    height: calc(100vh)
+.user-details--wrapper {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-content: center;
+}
+.dashboard-content {
+  padding-top: 3rem;
+  background-color: aliceblue;
+  width: 100%;
+  height: calc(100vh);
 }
 
-.exams-category--header{
-    background-color: #fff;
+.exams-category--header {
+  background-color: #fff;
 }
-.exams-category--header--text{
-    font-weight: 600 !important;
-    font-family: 'Inter' !important;
-    color: #4a4a4a !important;
-    font-size: 1.5rem !important;
+.exams-category--header--text {
+  font-weight: 600 !important;
+  font-family: "Inter" !important;
+  color: #4a4a4a !important;
+  font-size: 1.5rem !important;
 }

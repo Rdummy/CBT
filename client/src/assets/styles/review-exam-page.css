@@ -66,6 +66,7 @@ body {
   border: none;
   cursor: pointer;
   margin-top: 20px;
+  color: #26343f;
 }
 
 .indicators {
@@ -73,6 +74,7 @@ body {
   justify-content: space-around;
   align-items: center;
   margin-top: 20px;
+  outline: none;
 }
 
 .indicator-buttons {
@@ -86,13 +88,13 @@ body {
 }
 
 .indicator-symbol {
-  color: #26343f;
+  color: #7c7c7c;
 }
 
 .indicator-symbol-active {
-  color: #ffffff;
+  color: #e03e3e;
 }
 /* Ram */
-.review-page--wrapper{
+.review-page--wrapper {
   display: grid;
 }

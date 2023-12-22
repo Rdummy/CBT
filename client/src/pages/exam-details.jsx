@@ -38,6 +38,11 @@ function ExamDetailsPage() {
     // You might also pass the selectedExam data to the edit page if needed
     // navigate(`/dashboard/exams/${examId}/edit`, { state: { selectedExam } });
   };
+  const handleCreateContentClick = () => {
+    navigate(`/dashboard/exams/${examId}/create-content`, {
+      state: { examId: examId },
+    });
+  };
 
   if (!selectedExam) {
     return <p>Exam not found</p>;
@@ -57,26 +62,28 @@ function ExamDetailsPage() {
                 mb: 4,
                 opacity: 0.7,
               }}
-            >
+            />
+            <ReturnDashboard />
+            <Box>
+              <Button
+                variant="contained"
+                className="brand-red-bg"
+                sx={{ textTransform: "capitalize", mr: 2 }}
+                onClick={handleDeleteExam}
+              >
+                Delete Exam
+              </Button>
+              <Button
+                variant="contained"
+                className="brand-red-bg"
+                sx={{ textTransform: "capitalize" }}
+                onClick={handleEditExam}
+              >
+                Edit Exam
+              </Button>
+            </Box>
+            <Box sx={{ mb: 4, opacity: 0.7 }}>
               <ReturnDashboard />
-              <Box>
-                <Button
-                  variant="contained"
-                  className="brand-red-bg"
-                  sx={{ textTransform: "capitalize", mr: 2 }}
-                  onClick={handleDeleteExam}
-                >
-                  Delete Exam
-                </Button>
-                <Button
-                  variant="contained"
-                  className="brand-red-bg"
-                  sx={{ textTransform: "capitalize" }}
-                  onClick={handleEditExam}
-                >
-                  Edit Exam
-                </Button>
-              </Box>
             </Box>
 
             <Typography variant="h5" sx={{ mt: 2 }}>
@@ -114,6 +121,14 @@ function ExamDetailsPage() {
               >
                 {" "}
                 Take Exam
+              </Button>
+              <Button
+                className="brand-red-bg"
+                sx={{ textTransform: "capitalize", px: 3, py: 2, mx: 0.5 }}
+                onClick={handleCreateContentClick}
+              >
+                {" "}
+                Create Content
               </Button>
             </Box>
           </CardContent>
