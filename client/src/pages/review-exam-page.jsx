@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import CarouselItem from "./CarouselItem";
-import Navbar from "../components/Navbar";
 import ReturnDashboard from "../components/ReturnDashboard";
 
 const ReviewExamPage = () => {

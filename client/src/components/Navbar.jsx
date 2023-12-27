@@ -47,19 +47,6 @@ export default function Navbar() {
 
   return (
     <Box sx={{ width: "30rem", marginBottom: "3rem"}}>
-      {/* <FormGroup>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={auth}
-              onChange={handleChange}
-              aria-label="login switch"
-            />
-          }
-          label={auth ? "Logout" : "Login"}
-        />
-      </FormGroup> */}
-
       <AppBar
         className="navbar--wrapper"
         position="fixed"
@@ -101,6 +88,7 @@ export default function Navbar() {
               </div>
               <Menu
                 id="menu-appbar"
+                
                 anchorEl={anchorEl}
                 anchorOrigin={{
                   vertical: "top",

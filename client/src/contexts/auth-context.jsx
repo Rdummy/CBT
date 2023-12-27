@@ -4,16 +4,18 @@ const AuthContext = createContext()
 
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null)
-
+    const [isAuthenticated, setisAuthenticated] = useState();
+    
     const login = (userData) => {
         // TODO: validate user data here
         setUser(userData)
+        setisAuthenticated(true)
     }
     const logout = () =>{
         setUser(null)
+        setisAuthenticated(false)
     }
 
-    const isAuthenticated = () => !!user;
 
     const isAdmin = () => user.role ===  'admin';
 
@@ -23,3 +25,4 @@ export const AuthProvider = ({children}) => {
         </AuthContext.Provider>
     )
 }
+export const useAuth = () => useContext(AuthContext)
