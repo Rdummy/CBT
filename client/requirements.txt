@@ -1,10 +1,9 @@
-@mui/material
-@mui/styled-engine-sc
-styled-components
-react-icons
-@fontsource/inter
-@fontsource/lato
-formik
-yup
-axios
+@mui/material === npm i @mui/material
+@mui/styled-engine-sc styled-components === npm install @mui/material @mui/styled-engine-sc styled-components
+react-icons === npm install react-icons
+@fontsource/inter === npm i @fontsource/inter
+@fontsource/lato === npm install @fontsource/lato
+formik === npm i formik
+yup === npm i yup
+axios === npm i axios
 carousel

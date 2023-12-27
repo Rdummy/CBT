@@ -20,6 +20,8 @@ import exams from "./models/exam-data.jsx";
 import Navbar from "./components/Navbar.jsx";
 import PrivateRoute from './components/Auth/PrivateRoute.jsx'
 import { AuthProvider, useAuth } from "./contexts/auth-context.jsx";
+import CreateExam from "./pages/create-content.jsx";
+import CreateContent from "./pages/create-content.jsx";
 
 function CBTRoute() {
   const { user, isAuthenticated } = useAuth();
@@ -44,8 +46,12 @@ function CBTRoute() {
         // </AuthProvider>
           ,
         { element: <ExamPage />, index: true },
-        { path: "settings", element: <SettingsPage /> },
-        { path: "exams/:examId", element: <ExamDetailsPage /> },
+        { path: "dashboard/settings", element: <SettingsPage /> },
+        {
+          path: "/dashboard/exams/:examId/create-content",
+          element: <CreateContent />,
+        },
+        { path: "/dashboard/exams/:examId", element: <ExamDetailsPage /> },
         {
           path: "exams/:examId/take-exam",
           element: <TakeExamPage examId />,
