@@ -17,9 +17,9 @@ import { useNavigate } from "react-router-dom";
 const ExamCard = (props) => {
   const { exam } = props;
 
-    // Navigation
-    const navigate = useNavigate();
-    const [shouldNavigate, setShouldNavigate] = useState(false);
+  // Navigation
+  const navigate = useNavigate();
+  const [shouldNavigate, setShouldNavigate] = useState(false);
 
   // useEffect(() => {
   //   if (shouldNavigate) {
@@ -32,7 +32,7 @@ const ExamCard = (props) => {
   };
 
   return (
-    <Button style={{textTransform: "none", }} onClick={ handleCardClick} >
+    <Button style={{ textTransform: "none" }} onClick={handleCardClick}>
       <Card
         sx={{
           display: "flex",

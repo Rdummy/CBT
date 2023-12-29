@@ -1,3 +1,4 @@
+// Note.jsx
 import React, { useState } from "react";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 
@@ -13,22 +14,25 @@ const Note = ({
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedImage, setEditedImage] = useState(imageUrl);
+  const characterLimit = 200;
 
   const handleEditClick = () => {
     setIsEditing(true);
   };
+
   const handleChangetitle = (event) => {
     setEditedTitle(event.target.value);
   };
 
   const handleChangeDesc = (event) => {
-    setEditedDescription(event.target.value);
+    if (characterLimit - event.target.value.length >= 0) {
+      setEditedDescription(event.target.value);
+    }
   };
 
   const handleSaveClick = () => {
     handleEditNote(id, editedTitle, editedDescription, editedImage);
     setIsEditing(false);
-    console.log(setIsEditing);
   };
 
   const handleCancelClick = () => {
@@ -49,22 +53,25 @@ const Note = ({
       {isEditing ? (
         <>
           <input
-            className="add-title edit-title"
+            className="add-title"
             value={editedTitle}
             onChange={handleChangetitle}
           />
+          <textarea
+            className="add-description"
+            value={editedDescription}
+            onChange={handleChangeDesc}
+          ></textarea>
           <input
-            className="add-image edit-image"
+            className="add-image"
             type="file"
             accept="image/*"
             onChange={handleImageChange}
           />
           {editedImage && <img src={editedImage} alt="Note Image" />}
-          <textarea
-            className="add-description edit-desc"
-            value={editedDescription}
-            onChange={handleChangeDesc}
-          ></textarea>
+          <div className="note-footer">
+            <small>{characterLimit - editedDescription.length} Remaining</small>
+          </div>
         </>
       ) : (
         <>
@@ -73,18 +80,18 @@ const Note = ({
           {imageUrl && <img src={imageUrl} alt="Note Image" />}
         </>
       )}
-      <div className="note-footer">
+      <div className="note-footer footer">
         {isEditing ? (
-          <div className="edit-footer footer">
+          <>
             <button className="save" onClick={handleSaveClick}>
               Save
             </button>
             <button className="cancel" onClick={handleCancelClick}>
               Cancel
             </button>
-          </div>
+          </>
         ) : (
-          <div className="icon-footer footer">
+          <>
             <MdEdit
               onClick={handleEditClick}
               className="edit-icon"
@@ -95,7 +102,7 @@ const Note = ({
               className="delete-icon"
               size="1.3em"
             />
-          </div>
+          </>
         )}
       </div>
     </div>
