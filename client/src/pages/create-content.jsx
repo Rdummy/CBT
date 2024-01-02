@@ -3,7 +3,9 @@ import { nanoid } from "nanoid";
 import NotesList from "../components/Create Content Components/NotesList";
 import ViewCarousel from "../components/Create Content Components/ViewCarousel";
 import Search from "../components/Create Content Components/Search";
+import ReturnDashboard from "../components/ReturnDashboard";
 import "../assets/styles/create-content.css";
+
 function CreateContent() {
   const [notes, setNotes] = useState([]);
   const [topic, setTopic] = useState("");
@@ -75,8 +77,8 @@ function CreateContent() {
       <div className="toggle-button">
         <button onClick={() => setDisplayMode("notes")}>Show Notes</button>
         <button onClick={() => setDisplayMode("carousel")}>Show Slides</button>
-        {/* <button>Save Content</button>
-        <button>Show Content</button> */}
+        <button>Save Content</button>
+        {/* <button>Show Content</button> */}
       </div>
 
       <Search handleSearchNote={setSearchText} />

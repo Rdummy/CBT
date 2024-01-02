@@ -37,6 +37,7 @@ const ReviewExamPage = () => {
 
   return (
     <>
+      <Navbar />
       <div
         className="return--wrapper"
         style={{

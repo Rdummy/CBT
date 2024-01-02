@@ -200,9 +200,15 @@ textarea:focus {
   cursor: pointer;
   font-size: 25px;
 }
+.delete-icon:hover {
+  color: #e94e4e;
+}
 .edit-icon {
   cursor: pointer;
   font-size: 25px;
+}
+.edit-icon :hover {
+  color: #6fb1f0;
 }
 .cancel {
   background-color: #d85e5e;
