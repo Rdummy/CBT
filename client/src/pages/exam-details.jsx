@@ -4,6 +4,9 @@ import { Card, CardContent, Box, Typography, Button } from "@mui/material";
 import "../assets/styles/ExamRoutes.css";
 import ReturnDashboard from "../components/ReturnDashboard";
 import { useState } from "react";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { FaEdit } from "react-icons/fa";
+
 
 function ExamDetailsPage() {
   const { examId } = useParams();
@@ -12,6 +15,7 @@ function ExamDetailsPage() {
   // Assuming exams is a state variable and setExams is a setter function for the state
   const [examList, setExamList] = useState(exams);
   const selectedExam = examList.find((exam) => exam.id === examId);
+  
 
   const handleReviewClick = () => {
     navigate(`/dashboard/exams/${examId}/review`, {
@@ -52,37 +56,29 @@ function ExamDetailsPage() {
       <div className="exam-details--wrapper">
         <Card sx={{ m: 5 }}>
           <CardContent>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                mb: 4,
-                opacity: 0.7,
-              }}
-            />
-            <ReturnDashboard />
-            <Box>
+            <Box style={{display:"flex", justifyContent: "space-between"}}>
+              <ReturnDashboard />
+              <div>
+
               <Button
                 variant="contained"
-                className="brand-red-bg"
-                sx={{ textTransform: "capitalize", mr: 2 }}
+                className="exam-details--button"
+                sx={{ textTransform: "capitalize", mr: 2, borderRadius: "0rem"}}
                 onClick={handleDeleteExam}
               >
-                Delete Exam
+                <RiDeleteBin6Line /> &nbsp; Delete 
               </Button>
               <Button
                 variant="contained"
-                className="brand-red-bg"
-                sx={{ textTransform: "capitalize" }}
+                className="exam-details--button"
+                sx={{ textTransform: "capitalize", borderRadius: "0rem"}}
                 onClick={handleEditExam}
-              >
-                Edit Exam
+                >
+               <FaEdit/> &nbsp; Edit 
               </Button>
+                </div>
             </Box>
-            <Box sx={{ mb: 4, opacity: 0.7 }}>
-              <ReturnDashboard />
-            </Box>
+
 
             <Typography variant="h5" sx={{ mt: 2 }}>
               {selectedExam.title}

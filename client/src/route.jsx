@@ -18,10 +18,13 @@ import EditExamPage from "./pages/edit-exam-page.jsx";
 import ExamDetailsPage from "./pages/exam-details.jsx";
 import exams from "./models/exam-data.jsx";
 import Navbar from "./components/Navbar.jsx";
-import PrivateRoute from './components/Auth/PrivateRoute.jsx'
+import PrivateRoute from "./components/Auth/PrivateRoute.jsx";
 import { AuthProvider, useAuth } from "./contexts/auth-context.jsx";
 import CreateExam from "./pages/create-content.jsx";
 import CreateContent from "./pages/create-content.jsx";
+import OverviewAdmin from "./pages/overview-page.jsx";
+import SettingsAdmin from "./pages/settings-page.jsx";
+import EmployeesAdmin from "./pages/employees-admin.jsx";
 
 function CBTRoute() {
   const { user, isAuthenticated } = useAuth();
@@ -42,11 +45,21 @@ function CBTRoute() {
         // <AuthProvider>
         <PrivateRoute path="/" roles={[user]}>
           <Outlet />
-        </PrivateRoute>
+        </PrivateRoute>,
         // </AuthProvider>
-          ,
         { element: <ExamPage />, index: true },
-        { path: "dashboard/settings", element: <SettingsPage /> },
+        {
+          path: "/dashboard/overview",
+          element: <OverviewAdmin />,
+        },
+        {
+          path: "/dashboard/settings",
+          element: <SettingsAdmin />,
+        },
+        {
+          path: "/dashboard/employees",
+          element: <EmployeesAdmin />,
+        },
         {
           path: "/dashboard/exams/:examId/create-content",
           element: <CreateContent />,
@@ -64,15 +77,21 @@ function CBTRoute() {
           path: "exams/:examId/edit",
           element: <EditExamPage examId />,
         },
-        { path: "exams/:examId/take-exam/submit", element: <ReviewExamPage examId /> },
+        {
+          path: "exams/:examId/take-exam/submit",
+          element: <ReviewExamPage examId />,
+        },
       ],
     },
   ]);
 
   return (
-    <AuthProvider> {/* Wrap the entire RouterProvider with AuthProvider */}
+    <AuthProvider>
+      {" "}
+      {/* Wrap the entire RouterProvider with AuthProvider */}
       <RouterProvider router={router} />
     </AuthProvider>
-  );}
+  );
+}
 
 export default CBTRoute;

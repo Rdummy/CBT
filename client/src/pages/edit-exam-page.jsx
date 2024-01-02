@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import exams from "../models/exam-data";
+import { Button, Box, Typography, TextField } from "@mui/material";
 
 const EditExamPage = () => {
   const [examsData, setExamsData] = useState(exams);
@@ -30,23 +31,47 @@ const EditExamPage = () => {
   };
 
   return (
-    <div>
-      <h1>Edit Exam</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="title">Title:</label>
-        <input type="text" id="title" name="title" />
+    // <div>
+    //   <h1>Edit Exam</h1>
+    //   <form onSubmit={handleSubmit}>
+    //     <label htmlFor="title">Title:</label>
+    //     <input type="text" id="title" name="title" />
 
-        <label htmlFor="description">Description:</label>
-        <textarea
+    //     <label htmlFor="description">Description:</label>
+    //     <textarea
+    //       id="description"
+    //       name="description"
+    //       rows="4"
+    //       cols="50"
+    //     ></textarea>
+
+    //     <button type="submit">Submit</button>
+    //   </form>
+    // </div>
+    <Box>
+      <Typography variant="h3"> Edit Exam</Typography>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="title"> Title: </label>
+        <br />
+        <TextField type="text" id="title" name="title" size="small"/>
+        <br />
+        <br />
+        <label htmlFor="title"> Description: </label>
+        <br />
+        <TextField
           id="description"
           name="description"
-          rows="4"
-          cols="50"
-        ></textarea>
-
-        <button type="submit">Submit</button>
+          multiline
+          size="small"
+          rows={3}
+          maxRows={4}
+          style={{ width: "50rem", height: "5rem" }}
+        />
+        <br />
+        <br />
+        <Button type="submit" className="brand-blue-bg"  sx={{px:2,py:0.6, borderRadius: "0rem"}}> Submit </Button>
       </form>
-    </div>
+    </Box>
   );
 };
 

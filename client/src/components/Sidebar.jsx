@@ -21,26 +21,30 @@ import { IoIosPeople } from "react-icons/io";
 import { SlGraph } from "react-icons/sl";
 import { CiSettings } from "react-icons/ci";
 
-
 export default function Sidebar() {
   const navigate = useNavigate();
 
   const handleSidebarClick = (text) => {
     switch (text) {
-      case "Dashboard":
+      case "Overview":
+        navigate("/dashboard/overview");
+        break;
+      case "Examinations":
         navigate("/dashboard");
         break;
-      case "Content":
-        navigate("/content");
+      case "Employees":
+        navigate("/dashboard/employees");
         break;
-      // Add cases for other list items as needed
       default:
         break;
     }
   };
+
+  const handleSettingsClick = () => {
+    navigate("/dashboard/settings")
+  }
   return (
     <Box sx={{ display: "flex", width: "100%" }}>
-      {/* <CssBaseline /> */}
       <Drawer
         className="test"
         variant="permanent"
@@ -69,7 +73,7 @@ export default function Sidebar() {
           </Typography>
           <Divider />
           <List>
-            {["Overview","Examinations", "Employees", ].map((text, index) => (
+            {["Overview", "Examinations", "Employees"].map((text, index) => (
               <ListItem key={text} disablePadding>
                 <ListItemButton onClick={() => handleSidebarClick(text)}>
                   <ListItemIcon className="sidebar--icons">
@@ -90,7 +94,7 @@ export default function Sidebar() {
           <List>
             {["Settings"].map((text, index) => (
               <ListItem key={text} disablePadding>
-                <ListItemButton>
+                <ListItemButton  onClick={() => handleSettingsClick()}>
                   <ListItemIcon>
                     {index === 0 && <CiSettings size={"1.5rem"} />}
                   </ListItemIcon>
