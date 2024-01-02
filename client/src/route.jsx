@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import React from "react";
 // import useAuth from './useAuth';
-//Pages Route Imports
+// Pages Route Imports
 import Login from "./pages/login.page.jsx";
 import Register from "./pages/register.page.jsx";
 import Dashboard from "./layouts/dashboard.page.jsx";
@@ -19,17 +19,16 @@ import ExamDetailsPage from "./pages/exam-details.jsx";
 import ResultExamPage from "./pages/result-page.jsx";
 import exams from "./models/exam-data.jsx";
 import Navbar from "./components/Navbar.jsx";
+import PrivateRoute from "./components/Auth/PrivateRoute.jsx";
+import { AuthProvider, useAuth } from "./contexts/auth-context.jsx";
+import CreateExam from "./pages/create-content.jsx";
+import CreateContent from "./pages/create-content.jsx";
+import OverviewAdmin from "./pages/overview-page.jsx";
+import SettingsAdmin from "./pages/settings-page.jsx";
+import EmployeesAdmin from "./pages/employees-admin.jsx";
 
 function CBTRoute() {
-  const ProtectedRoute = ({ component: Component, ...props }) => {
-    const { user, isAuthenticated } = useAuth();
-
-    if (!isAuthenticated) {
-      return <Navigate to="/" />;
-    }
-    return <Route {...props} component={Component} />;
-  };
-
+  const { user, isAuthenticated } = useAuth();
   const router = createBrowserRouter([
     {
       path: "/",
@@ -43,19 +42,40 @@ function CBTRoute() {
       path: "/dashboard",
       element: <Dashboard />,
       children: [
+        // Protect all routes within the "/dashboard" route
+        // <AuthProvider>
+        <PrivateRoute path="/" roles={[user]}>
+          <Outlet />
+        </PrivateRoute>,
+        // </AuthProvider>
         { element: <ExamPage />, index: true },
-        { path: "dashboard/settings", element: <SettingsPage /> },
+        {
+          path: "/dashboard/overview",
+          element: <OverviewAdmin />,
+        },
+        {
+          path: "/dashboard/settings",
+          element: <SettingsAdmin />,
+        },
+        {
+          path: "/dashboard/employees",
+          element: <EmployeesAdmin />,
+        },
+        {
+          path: "/dashboard/exams/:examId/create-content",
+          element: <CreateContent />,
+        },
         { path: "/dashboard/exams/:examId", element: <ExamDetailsPage /> },
         {
-          path: "/dashboard/exams/:examId/take-exam",
+          path: "exams/:examId/take-exam",
           element: <TakeExamPage examId />,
         },
         {
-          path: "/dashboard/exams/:examId/review",
+          path: "exams/:examId/review",
           element: <ReviewExamPage examId />,
         },
         {
-          path: "/dashboard/exams/:examId/edit",
+          path: "exams/:examId/edit",
           element: <EditExamPage examId />,
         },
 
@@ -70,7 +90,14 @@ function CBTRoute() {
       ],
     },
   ]);
-  return <RouterProvider router={router} />;
+
+  return (
+    <AuthProvider>
+      {" "}
+      {/* Wrap the entire RouterProvider with AuthProvider */}
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 
 export default CBTRoute;

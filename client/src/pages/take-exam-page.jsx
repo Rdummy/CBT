@@ -9,46 +9,14 @@ import {
   Typography,
   Button,
   IconButton,
+  Container,
 } from "@mui/material";
-
+import QuestionChoice from "../components/ExamComponents/QuestionChoice.jsx"
 import ReturnDashboard from "../components/ReturnDashboard.jsx";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-
+import "../components/ExamComponents/QuestionChoice.jsx"
 import "../assets/styles/take-exam.css";
-const QuestionChoice = ({ choice, index, selectedAnswer, onSelect }) => {
-  const isSelected = selectedAnswer === index;
-  const letter = String.fromCharCode(65 + index);
 
-  return (
-    <Box
-      borderRadius={0}
-      padding={1}
-      backgroundColor={isSelected ? "primary.main" : "#E4E4E4"}
-      marginBottom={1}
-      boxShadow={2}
-      color={isSelected ? "white" : "gray.700"}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => e.key === "Enter" && onSelect(index)}
-      onClick={() => onSelect(index)}
-    >
-      <Typography
-        className="letter-choice"
-        color={isSelected ? "white" : "#8a8a8a"}
-      >
-        {letter}
-      </Typography>
-      <Typography variant="button" textTransform={"none"}>
-        {choice}
-      </Typography>
-      {isSelected && (
-        <IconButton color={"#347634"} size="small">
-          Selected
-        </IconButton>
-      )}
-    </Box>
-  );
-};
 
 const TakeExamPage = () => {
   const navigate = useNavigate();
@@ -60,7 +28,7 @@ const TakeExamPage = () => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [score, setScore] = useState(null);
 
-  const { questions, title } = selectedExam;
+  const { questions, title, instructions } = selectedExam;
   const currentQuestion = questions[currentQuestionIndex];
   const [shouldNavigate, setShouldNavigate] = useState(false);
 
@@ -106,71 +74,72 @@ const TakeExamPage = () => {
     setScore(calculatedScore.toFixed(2));
   };
   return (
-    <>
-      <div className="take-exam-content--wrapper">
+    <Box className="take-exam-content--wrapper" boxShadow={2}>
+      <div className="exam-question--header">
         <ReturnDashboard />
         <h2 style={{ marginTop: "1rem" }}> {title} </h2>
-        <Card>
-          <CardContent sx={{ p: "2rem" }}>
-            <div className="question--header">
-              Question # {currentQuestionIndex + 1}
-              <div className="question--score">
-                {score !== null && (
-                  <div>
-                    <Typography variant="h6">Your Score: {score} % </Typography>
-                  </div>
-                )}
-              </div>
-            </div>
-            <span>{currentQuestion.question}</span>
-            {currentQuestion.choices.map((choice, index) => (
-              <QuestionChoice
-                key={index}
-                choice={choice}
-                index={index}
-                selectedAnswer={chosenAnswers[currentQuestionIndex]}
-                onSelect={handleSelectChoice}
-              />
-            ))}
-
-            {/* Question Foot Note */}
-            <div className="question--footnote">
-              {currentQuestionIndex > 0 ? (
-                <Button
-                  className="brand-red-bg"
-                  variant="contained"
-                  style={{ textTransform: "capitalize" }}
-                  onClick={prevQuestion}
-                >
-                  <SlArrowLeft size={"0.5rem"} /> &nbsp; Back
-                </Button>
-              ) : (
-                <Button disabled>Back</Button>
-              )}
-              {currentQuestionIndex < selectedExam.questions.length - 1 ? (
-                <Button
-                  className="brand-red-bg"
-                  variant="contained"
-                  style={{ textTransform: "capitalize" }}
-                  onClick={handleSubmitAnswer}
-                >
-                  Next &nbsp; <SlArrowRight size={"0.5rem"} />
-                </Button>
-              ) : (
-                <Button
-                  className="brand-blue-bg"
-                  variant="contained"
-                  style={{ textTransform: "capitalize" }}
-                  onClick={handleSubmitAnswer}
-                >
-                  Submit
-                </Button>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+        <span> Instructions: {instructions}</span>
       </div>
-    </>
+      <Card className="exam-card">
+        <CardContent >
+          <div className="question--header">
+            Question # {currentQuestionIndex + 1}
+            <div className="question--score">
+              {score !== null && (
+                <div>
+                  <Typography variant="h6">Your Score: {score} % </Typography>
+                </div>
+              )}
+            </div>
+          </div>
+          <span>{currentQuestion.question}</span>
+          {currentQuestion.choices.map((choice, index) => (
+            <QuestionChoice
+              key={index}
+              choice={choice}
+              index={index}
+              selectedAnswer={chosenAnswers[currentQuestionIndex]}
+              onSelect={handleSelectChoice}
+            />
+          ))}
+
+          {/* Question Foot Note */}
+          <div className="question--footnote">
+            {currentQuestionIndex > 0 ? (
+              <Button
+                className="brand-red-bg"
+                variant="contained"
+                style={{ textTransform: "capitalize" }}
+                onClick={prevQuestion}
+              >
+                <SlArrowLeft size={"0.5rem"} /> &nbsp; Back
+              </Button>
+            ) : (
+              <Button disabled>Back</Button>
+            )}
+            {currentQuestionIndex < selectedExam.questions.length - 1 ? (
+              <Button
+                className="brand-red-bg"
+                variant="contained"
+                style={{ textTransform: "capitalize" }}
+                onClick={handleSubmitAnswer}
+              >
+                Next &nbsp; <SlArrowRight size={"0.5rem"} />
+              </Button>
+            ) : (
+              <Button
+                className="brand-blue-bg"
+                variant="contained"
+                style={{ textTransform: "capitalize" }}
+                onClick={handleSubmitAnswer}
+              >
+                Submit
+              </Button>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
 

@@ -1,6 +1,9 @@
 .exam-details--wrapper{
-    background-color: #454545;
     height: 100vh;
     margin-top: -2.4rem;
     padding-top: 5rem;
+}
+.exam-details--button{
+    background-color: aliceblue !important;
+    color:#0f398e !important;
 }

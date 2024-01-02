@@ -1,10 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom";
 import exams from "../models/exam-data"; // Assuming you're importing your exam data from an external file
 import { Card, CardContent, Box, Typography, Button } from "@mui/material";
-import Navbar from "../components/Navbar";
 import "../assets/styles/ExamRoutes.css";
 import ReturnDashboard from "../components/ReturnDashboard";
 import { useState } from "react";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { FaEdit } from "react-icons/fa";
+
 
 function ExamDetailsPage() {
   const { examId } = useParams();
@@ -13,6 +15,7 @@ function ExamDetailsPage() {
   // Assuming exams is a state variable and setExams is a setter function for the state
   const [examList, setExamList] = useState(exams);
   const selectedExam = examList.find((exam) => exam.id === examId);
+  
 
   const handleReviewClick = () => {
     navigate(`/dashboard/exams/${examId}/review`, {
@@ -38,6 +41,11 @@ function ExamDetailsPage() {
     // You might also pass the selectedExam data to the edit page if needed
     // navigate(`/dashboard/exams/${examId}/edit`, { state: { selectedExam } });
   };
+  const handleCreateContentClick = () => {
+    navigate(`/dashboard/exams/${examId}/create-content`, {
+      state: { examId: examId },
+    });
+  };
 
   if (!selectedExam) {
     return <p>Exam not found</p>;
@@ -45,39 +53,32 @@ function ExamDetailsPage() {
 
   return (
     <>
-      <Navbar />
       <div className="exam-details--wrapper">
         <Card sx={{ m: 5 }}>
           <CardContent>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                mb: 4,
-                opacity: 0.7,
-              }}
-            >
+            <Box style={{display:"flex", justifyContent: "space-between"}}>
               <ReturnDashboard />
-              <Box>
-                <Button
-                  variant="contained"
-                  className="brand-red-bg"
-                  sx={{ textTransform: "capitalize", mr: 2 }}
-                  onClick={handleDeleteExam}
+              <div>
+
+              <Button
+                variant="contained"
+                className="exam-details--button"
+                sx={{ textTransform: "capitalize", mr: 2, borderRadius: "0rem"}}
+                onClick={handleDeleteExam}
+              >
+                <RiDeleteBin6Line /> &nbsp; Delete 
+              </Button>
+              <Button
+                variant="contained"
+                className="exam-details--button"
+                sx={{ textTransform: "capitalize", borderRadius: "0rem"}}
+                onClick={handleEditExam}
                 >
-                  Delete Exam
-                </Button>
-                <Button
-                  variant="contained"
-                  className="brand-red-bg"
-                  sx={{ textTransform: "capitalize" }}
-                  onClick={handleEditExam}
-                >
-                  Edit Exam
-                </Button>
-              </Box>
+               <FaEdit/> &nbsp; Edit 
+              </Button>
+                </div>
             </Box>
+
 
             <Typography variant="h5" sx={{ mt: 2 }}>
               {selectedExam.title}
@@ -114,6 +115,14 @@ function ExamDetailsPage() {
               >
                 {" "}
                 Take Exam
+              </Button>
+              <Button
+                className="brand-red-bg"
+                sx={{ textTransform: "capitalize", px: 3, py: 2, mx: 0.5 }}
+                onClick={handleCreateContentClick}
+              >
+                {" "}
+                Create Content
               </Button>
             </Box>
           </CardContent>
