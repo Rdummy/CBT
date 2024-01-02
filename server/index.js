@@ -4,7 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import { userRouter } from "./routes/users.js";
 import { tableRouter } from "./routes/table_users.js";
-import { ExamRouter } from "./routes/exam.js";
+import { examTitleRouter } from "./routes/exam_title.js";
 
 dotenv.config();
 
@@ -14,10 +14,10 @@ app.use(express.json());
 
 app.use("/auth", userRouter);
 app.use("/auth", tableRouter);
-app.use("/exam", ExamRouter);
+app.use("/exam-title", examTitleRouter);
 
 mongoose.connect(
-  "mongodb+srv://raineheartcajes:novatechset2023@novatechset.pmauabk.mongodb.net/sample?retryWrites=true&w=majority"
+  "mongodb+srv://raineheartcajes:cbtexam@novatechset.pmauabk.mongodb.net/cbtdb?retryWrites=true&w=majority"
 );
 
 app.listen(3001, () => console.log("Server Started"));

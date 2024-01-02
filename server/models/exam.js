@@ -1,12 +1,33 @@
 import mongoose from "mongoose";
 
-const ExamSchema = new mongoose.Schema({
-  id: { type: String, required: true, unique: true },
-  title: { type: String, required: true },
-  logo: { type: String, required: true },
-  status: { type: String, required: true },
-  description: { type: String, required: true },
-  createdAt: { type: Date, required: true },
+const slideSchema = new mongoose.Schema({
+  header: String,
+  bodyText: mongoose.Schema.Types.Mixed,
+  image: String,
 });
 
-export const ExamModel = mongoose.model("exams", ExamSchema);
+const questionSchema = new mongoose.Schema({
+  type: String,
+  question: String,
+  choices: [String],
+  correctAnswer: Number,
+  explanation: String,
+});
+
+const examSchema = new mongoose.Schema({
+  id: String,
+  title: String,
+  logo: String,
+  description: String,
+  status: String,
+  createdAt: Date,
+  reviewerContent: {
+    slides: [slideSchema],
+  },
+  instructions: String,
+  questions: [questionSchema],
+});
+
+const Exam = mongoose.model("exams", examSchema);
+
+module.exports = Exam;

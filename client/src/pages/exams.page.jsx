@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   Container,
   Grid,
@@ -11,7 +12,6 @@ import {
   Toolbar,
   Typography,
   Pagination,
-  Checkbox,
 } from "@mui/material";
 
 import exams from "../models/exam-data";
@@ -52,19 +52,33 @@ function ExamPage() {
     });
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted with data:", formData);
     setOpenModal(false);
-    exams.push({
-      id: Date.now().toString(),
-      title: formData.title,
-      description: formData.description,
-    });
-    setFormData({
-      title: "",
-      description: "",
-    });
+
+    try {
+      const response = await axios.post("http://localhost:3001/exam-title", {
+        title: formData.title,
+        description: formData.description,
+      });
+
+      // Assuming the response includes the newly created exam data
+      const newExam = response.data;
+
+      exams.push({
+        id: newExam.id,
+        title: newExam.title,
+        description: newExam.description,
+      });
+
+      setFormData({
+        title: "",
+        description: "",
+      });
+    } catch (error) {
+      console.error("Error adding new exam:", error);
+    }
   };
 
   return (

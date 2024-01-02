@@ -1,52 +1,92 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import exams from "../models/exam-data";
+import { Container, Typography, TextField, Button } from "@mui/material";
+import { useParams, useNavigate } from "react-router-dom";
 
 const EditExamPage = () => {
-  const [examsData, setExamsData] = useState(exams);
+  const { examId } = useParams();
+  const navigate = useNavigate();
 
-  const editExam = (examId, newTitle, newDescription) => {
-    const updatedExams = examsData.map((exam) => {
-      if (exam.id === examId) {
-        return {
-          ...exam,
-          title: newTitle,
-          description: newDescription,
-        };
-      }
-      return exam;
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+  });
+
+  useEffect(() => {
+    // Fetch the specific exam data based on the examId
+    const selectedExam = exams.find((exam) => exam.id === examId);
+    if (selectedExam) {
+      setFormData({
+        title: selectedExam.title,
+        description: selectedExam.description,
+      });
+    }
+  }, [examId]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
     });
-
-    setExams(updatedExams);
   };
 
-  // Function to handle the form submission
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Retrieve the new title and description from the form fields
-    const newTitle = event.target.elements.title.value;
-    const newDescription = event.target.elements.description.value;
-    // Use the editExam function to update the exams data
-    editExam("4768ab12983c432e9842d25a", newTitle, newDescription);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Find the index of the exam in the examsData array
+    const examIndex = exams.findIndex((exam) => exam.id === examId);
+
+    // Create a copy of the examsData array to avoid directly mutating state
+    const updatedExams = [...exams];
+
+    // Update the selected exam's title and description
+    updatedExams[examIndex] = {
+      ...updatedExams[examIndex],
+      title: formData.title,
+      description: formData.description,
+    };
+
+    // Update the state or perform any necessary actions like API calls to update the data
+    // For simplicity, here we're just logging the updated data
+    console.log("Updated Exams Data:", updatedExams);
+
+    // Redirect to a different route after successful update
+    navigate("/dashboard"); // You may navigate to a specific route
   };
 
   return (
-    <div>
-      <h1>Edit Exam</h1>
+    <Container maxWidth="sm">
+      <Typography variant="h4" gutterBottom>
+        Edit Exam
+      </Typography>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="title">Title:</label>
-        <input type="text" id="title" name="title" />
-
-        <label htmlFor="description">Description:</label>
-        <textarea
+        <TextField
+          id="title"
+          name="title"
+          label="Title"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={formData.title}
+          onChange={handleInputChange}
+        />
+        <TextField
           id="description"
           name="description"
-          rows="4"
-          cols="50"
-        ></textarea>
-
-        <button type="submit">Submit</button>
+          label="Description"
+          multiline
+          rows={4}
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={formData.description}
+          onChange={handleInputChange}
+        />
+        <Button type="submit" variant="contained" color="primary">
+          Submit
+        </Button>
       </form>
-    </div>
+    </Container>
   );
 };
 

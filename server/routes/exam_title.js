@@ -1,19 +1,15 @@
 import express from "express";
-import { ExamModel } from "../models/exam.js";
+import { ExamTitleModel } from "../models/exam_title.js";
 
 const router = express.Router();
 
-router.post("/exam", async (req, res) => {
+router.post("/exam-title", async (req, res) => {
   try {
-    const { id, title, logo, description, status, createdAt } = req.body;
+    const { title, description } = req.body;
 
-    const newExam = new ExamModel({
-      id,
+    const newExam = new ExamTitleModel({
       title,
-      logo,
       description,
-      status,
-      createdAt,
     });
 
     await newExam.save();
@@ -27,4 +23,4 @@ router.post("/exam", async (req, res) => {
   }
 });
 
-export { router as ExamRouter };
+export { router as examTitleRouter };

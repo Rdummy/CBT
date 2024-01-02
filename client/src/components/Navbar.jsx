@@ -45,21 +45,11 @@ export default function Navbar() {
     setAnchorEl(null); // Close the menu after logout
   };
 
-  return (
-    <Box sx={{ width: "30rem", marginBottom: "3rem"}}>
-      {/* <FormGroup>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={auth}
-              onChange={handleChange}
-              aria-label="login switch"
-            />
-          }
-          label={auth ? "Logout" : "Login"}
-        />
-      </FormGroup> */}
+  // Fetch the username from localStorage
+  const storedUserName = localStorage.getItem("userName");
 
+  return (
+    <Box sx={{ width: "30rem", marginBottom: "3rem" }}>
       <AppBar
         className="navbar--wrapper"
         position="fixed"
@@ -96,7 +86,7 @@ export default function Navbar() {
                     alignSelf: "center",
                   }}
                 >
-                  User Name
+                  {storedUserName || "User Name"}
                 </Typography>
               </div>
               <Menu

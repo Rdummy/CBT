@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import exams from "../models/exam-data";
 
 import {
@@ -51,6 +51,7 @@ const QuestionChoice = ({ choice, index, selectedAnswer, onSelect }) => {
 };
 
 const TakeExamPage = () => {
+  const navigate = useNavigate();
   const { examId } = useParams();
   const selectedExam = exams.find((exam) => exam.id === examId);
 
@@ -61,11 +62,17 @@ const TakeExamPage = () => {
 
   const { questions, title } = selectedExam;
   const currentQuestion = questions[currentQuestionIndex];
+  const [shouldNavigate, setShouldNavigate] = useState(false);
 
   const prevQuestion = () => {
     setCurrentQuestionIndex(currentQuestionIndex - 1);
     // setCurrentQuestion(selectedExam.questions[currentQuestionIndex]);
   };
+  useEffect(() => {
+    if (shouldNavigate) {
+      navigate(`/dashboard/exams/${examId}/take-exam/result/${score}`);
+    }
+  }, [shouldNavigate, score, navigate, examId]);
   const handleSubmitAnswer = () => {
     const nextQuestionIndex = currentQuestionIndex + 1;
 
@@ -74,6 +81,7 @@ const TakeExamPage = () => {
       setSelectedAnswer(chosenAnswers[nextQuestionIndex]);
     } else {
       computeScore();
+      setShouldNavigate(true);
     }
   };
 

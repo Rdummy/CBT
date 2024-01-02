@@ -16,6 +16,7 @@ import TakeExamPage from "./pages/take-exam-page.jsx";
 import ReviewExamPage from "./pages/review-exam-page.jsx";
 import EditExamPage from "./pages/edit-exam-page.jsx";
 import ExamDetailsPage from "./pages/exam-details.jsx";
+import ResultExamPage from "./pages/result-page.jsx";
 import exams from "./models/exam-data.jsx";
 import Navbar from "./components/Navbar.jsx";
 
@@ -58,7 +59,14 @@ function CBTRoute() {
           element: <EditExamPage examId />,
         },
 
-        {path: "/dashboard/exams/:examId/take-exam/submit", element: <ReviewExamPage examId />,},
+        {
+          path: "/dashboard/exams/:examId/take-exam/submit",
+          element: <ReviewExamPage examId />,
+        },
+        {
+          path: "/dashboard/exams/:examId/take-exam/result/:score",
+          element: <ResultExamPage examId />,
+        },
       ],
     },
   ]);
