@@ -15,14 +15,13 @@ function Dashboard() {
 
         <div className={isAdmin ? "dashboard__admin" : "dashboard__user"}>
           {isAdmin ? <Sidebar /> : ""}
-          <Outlet  className={isAdmin ? "outlet--with-sidebar" : "outlet--full-width"} />
+          <Outlet
+            className={isAdmin ? "outlet--with-sidebar" : "outlet--full-width"}
+          />
         </div>
       </div>
     </>
   );
-  );
 }
-
-export default Dashboard;
 
 export default Dashboard;
