@@ -8,14 +8,14 @@ import {
   Toolbar,
 } from "@mui/material";
 import ReturnDashboard from "../components/ReturnDashboard.jsx";
-import exams from "../models/exam-data"; // Importing exam data
+import exams from "../models/exam-data";
 
 const ExamResultPage = () => {
   const { score, examId } = useParams();
   const selectedExam = exams.find((exam) => exam.id === examId);
   const { questions } = selectedExam;
 
-  // Retrieve chosen answers from local storage (assuming it's stored during the exam)
+  // Retrieve chosen answers from localStorage
   const storedAnswers = JSON.parse(
     localStorage.getItem(`chosenAnswers_${examId}`)
   );
@@ -53,8 +53,6 @@ const ExamResultPage = () => {
             <Typography variant="h6">
               Your Score: {score !== undefined ? `${score}%` : "Calculating..."}
             </Typography>
-
-            {/* Displaying answers */}
             <div>
               <Typography variant="h5" gutterBottom>
                 Correct and Incorrect Answers:
@@ -64,9 +62,23 @@ const ExamResultPage = () => {
                   <Typography variant="subtitle1">
                     Question {index + 1}: {question.question}
                   </Typography>
-                  <Typography variant="body1">
+                  <Typography
+                    variant="body1"
+                    style={{
+                      color:
+                        storedAnswers &&
+                        storedAnswers[index] !== undefined &&
+                        question.choices
+                          ? storedAnswers[index] === question.correctAnswer
+                            ? "green"
+                            : "red"
+                          : "black",
+                    }}
+                  >
                     Your Answer:{" "}
-                    {storedAnswers[index] !== undefined
+                    {storedAnswers &&
+                    storedAnswers[index] !== undefined &&
+                    question.choices
                       ? question.choices[storedAnswers[index]]
                       : "Not answered"}
                   </Typography>
