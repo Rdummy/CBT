@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import exams from "../models/exam-data"; // Assuming you're importing your exam data from an external file
+
 import { Card, CardContent, Box, Typography, Button } from "@mui/material";
 import "../assets/styles/ExamRoutes.css";
 import ReturnDashboard from "../components/ReturnDashboard";

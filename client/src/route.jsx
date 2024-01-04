@@ -9,6 +9,7 @@ import React from "react";
 // Pages Route Imports
 import Login from "./pages/login.page.jsx";
 import Register from "./pages/register.page.jsx";
+
 import Dashboard from "./layouts/dashboard.page.jsx";
 import SettingsPage from "./pages/settings.page.jsx";
 import ExamPage from "./pages/exams.page.jsx";
@@ -17,7 +18,7 @@ import ReviewExamPage from "./pages/review-exam-page.jsx";
 import EditExamPage from "./pages/edit-exam-page.jsx";
 import ExamDetailsPage from "./pages/exam-details.jsx";
 import ResultExamPage from "./pages/result-page.jsx";
-import exams from "./models/exam-data.jsx";
+
 import Navbar from "./components/Navbar.jsx";
 import PrivateRoute from "./components/Auth/PrivateRoute.jsx";
 import { AuthProvider, useAuth } from "./contexts/auth-context.jsx";
@@ -26,6 +27,7 @@ import CreateContent from "./pages/create-content.jsx";
 import OverviewAdmin from "./pages/overview-page.jsx";
 import SettingsAdmin from "./pages/settings-page.jsx";
 import EmployeesAdmin from "./pages/employees-admin.jsx";
+import ForgotPassword from "./components/Forms/ForgotForm.jsx";
 
 function CBTRoute() {
   const { user, isAuthenticated } = useAuth();
@@ -37,6 +39,10 @@ function CBTRoute() {
     {
       path: "/register",
       element: <Register />,
+    },
+    {
+      path: "/forgot",
+      element: <ForgotPassword />,
     },
     {
       path: "/dashboard",

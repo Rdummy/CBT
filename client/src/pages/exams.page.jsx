@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
   Container,
@@ -14,7 +14,7 @@ import {
   Pagination,
 } from "@mui/material";
 
-import exams from "../models/exam-data";
+import examsData from "../models/exam-data";
 import ExamCard from "../components/ExamCard";
 import "../assets/styles/dashboard.css";
 
@@ -25,12 +25,19 @@ function ExamPage() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    _id: "",
   });
+
+  // State to manage exams
+  const [exams, setExams] = useState(examsData); // Initial exams data
 
   const displayedExams = exams.slice(
     (page - 1) * examsPerPage,
     page * examsPerPage
   );
+  useEffect(() => {
+    getExams();
+  }, []);
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
@@ -51,6 +58,12 @@ function ExamPage() {
       [name]: value,
     });
   };
+  const getExams = async () => {
+    axios.get("http://localhost:3001/exam/exam-title").then((response) => {
+      setExams(response.data);
+      console.log(response);
+    });
+  };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -58,19 +71,30 @@ function ExamPage() {
     setOpenModal(false);
 
     try {
-      const response = await axios.post("http://localhost:3001/exam-title", {
-        title: formData.title,
-        description: formData.description,
-      });
+      const response = await axios.post(
+        "http://localhost:3001/exam/exam-title",
+        {
+          title: formData.title,
+          description: formData.description,
+        }
+      );
+
+      // console.log(response);
+      if (response.statusText === "Created") {
+        console.log("Exam added successfully");
+      }
 
       // Assuming the response includes the newly created exam data
       const newExam = response.data;
 
-      exams.push({
-        id: newExam.id,
-        title: newExam.title,
-        description: newExam.description,
-      });
+      setExams((prevExams) => [
+        ...prevExams,
+        {
+          id: newExam.id,
+          title: newExam.title,
+          description: newExam.description,
+        },
+      ]);
 
       setFormData({
         title: "",
@@ -101,10 +125,10 @@ function ExamPage() {
         style={{ gridAutoFlow: "column", backgroundColor: "#d4d4d4" }}
         sx={{ py: 2, px: 1 }}
       >
-        {displayedExams.map((exam, index) => (
+        {displayedExams.map((exam) => (
           <Grid item xs={3} key={exam.id}>
             <div className="grid-item--wrapper" style={{ minHeight: "100%" }}>
-              <ExamCard key={exam.id} exam={exam} />
+              <ExamCard key={exam.id} exam={exam} /> {/* Unique key prop */}
             </div>
           </Grid>
         ))}
