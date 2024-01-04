@@ -1,0 +1,90 @@
+.exam-result-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.exam-result-content {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.result-label {
+  color: black;
+}
+
+.result-label.passed {
+  color: green;
+}
+
+.result-label.failed {
+  color: red;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.previous,
+.next,
+.page {
+  margin: 0 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  font-size: 14px;
+  color: black;
+  margin-bottom: 30px;
+}
+
+.previous:hover,
+.next:hover,
+.page:hover,
+.active {
+  background-color: #ee8080a8;
+}
+
+.check-mark {
+  color: green;
+}
+
+.cross-mark {
+  color: red;
+}
+
+.pagination-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.results-container {
+  transition: 0.5s ease-in-out;
+  max-height: 0;
+  overflow: hidden;
+  max-height: 25px;
+  opacity: 0;
+}
+
+.results-container.show {
+  transition: 1s ease-in-out;
+  max-height: 1000px; /* Adjust the value based on your content height */
+  opacity: 1;
+}
+
+.renderPagination-container {
+  opacity: 0;
+}
+
+.renderPagination-container.show {
+  transition: 2s ease-in-out;
+  opacity: 1;
+}

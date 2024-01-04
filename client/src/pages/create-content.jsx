@@ -67,13 +67,13 @@ function CreateContent() {
   return (
     <div className="container">
       <h1>CONTENT CREATOR</h1>
-      <textarea
+      {/* <textarea
         className="add-topic"
         cols="50"
         placeholder="Type to add a Topic title..."
         value={topic}
         onChange={(e) => setTopic(e.target.value)}
-      ></textarea>
+      ></textarea> */}
       <div className="toggle-button">
         <button onClick={() => setDisplayMode("notes")}>Show Notes</button>
         <button onClick={() => setDisplayMode("carousel")}>Show Slides</button>

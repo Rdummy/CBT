@@ -2,21 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import exams from "../models/exam-data";
 
-import {
-  Card,
-  CardContent,
-  Box,
-  Typography,
-  Button,
-  IconButton,
-  Container,
-} from "@mui/material";
-import QuestionChoice from "../components/ExamComponents/QuestionChoice.jsx"
+import { Card, CardContent, Box, Typography, Button } from "@mui/material";
+import QuestionChoice from "../components/ExamComponents/QuestionChoice.jsx";
 import ReturnDashboard from "../components/ReturnDashboard.jsx";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import "../components/ExamComponents/QuestionChoice.jsx"
+import "../components/ExamComponents/QuestionChoice.jsx";
 import "../assets/styles/take-exam.css";
-
 
 const TakeExamPage = () => {
   const navigate = useNavigate();
@@ -27,20 +18,15 @@ const TakeExamPage = () => {
   const [chosenAnswers, setChosenAnswers] = useState({});
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [score, setScore] = useState(null);
+  const [shouldNavigate, setShouldNavigate] = useState(false);
 
   const { questions, title, instructions } = selectedExam;
   const currentQuestion = questions[currentQuestionIndex];
-  const [shouldNavigate, setShouldNavigate] = useState(false);
 
   const prevQuestion = () => {
     setCurrentQuestionIndex(currentQuestionIndex - 1);
-    // setCurrentQuestion(selectedExam.questions[currentQuestionIndex]);
   };
-  useEffect(() => {
-    if (shouldNavigate) {
-      navigate(`/dashboard/exams/${examId}/take-exam/result/${score}`);
-    }
-  }, [shouldNavigate, score, navigate, examId]);
+
   const handleSubmitAnswer = () => {
     const nextQuestionIndex = currentQuestionIndex + 1;
 
@@ -49,8 +35,16 @@ const TakeExamPage = () => {
       setSelectedAnswer(chosenAnswers[nextQuestionIndex]);
     } else {
       computeScore();
+      storeUserAnswers();
       setShouldNavigate(true);
     }
+  };
+
+  const storeUserAnswers = () => {
+    localStorage.setItem(
+      `chosenAnswers_${examId}`,
+      JSON.stringify(chosenAnswers)
+    );
   };
 
   const handleSelectChoice = (index) => {
@@ -73,6 +67,13 @@ const TakeExamPage = () => {
     const calculatedScore = (correctAnswers / totalQuestions) * 100;
     setScore(calculatedScore.toFixed(2));
   };
+
+  useEffect(() => {
+    if (shouldNavigate) {
+      navigate(`/dashboard/exams/${examId}/take-exam/result/${score}`);
+    }
+  }, [shouldNavigate, score, navigate, examId]);
+
   return (
     <Box className="take-exam-content--wrapper" boxShadow={2}>
       <div className="exam-question--header">
@@ -81,7 +82,7 @@ const TakeExamPage = () => {
         <span> Instructions: {instructions}</span>
       </div>
       <Card className="exam-card">
-        <CardContent >
+        <CardContent>
           <div className="question--header">
             Question # {currentQuestionIndex + 1}
             <div className="question--score">
@@ -102,8 +103,6 @@ const TakeExamPage = () => {
               onSelect={handleSelectChoice}
             />
           ))}
-
-          {/* Question Foot Note */}
           <div className="question--footnote">
             {currentQuestionIndex > 0 ? (
               <Button

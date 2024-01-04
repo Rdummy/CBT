@@ -40,7 +40,7 @@ const AddNote = ({ handleAddnote }) => {
         className="add-title"
         rows="8"
         cols="10"
-        placeholder="Type to add a note..."
+        placeholder="Type to add a title or header..."
         value={noteTitle}
         onChange={handleChangetitle}
       ></textarea>

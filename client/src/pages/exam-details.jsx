@@ -28,6 +28,7 @@ function ExamDetailsPage() {
   };
 
   const handleDeleteExam = () => {
+    ``;
     const updatedExams = examList.filter((exam) => exam.id !== examId);
     setExamList(updatedExams);
     navigate("/dashboard");
