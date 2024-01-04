@@ -64,23 +64,24 @@ const ExamResultPage = () => {
           <CardContent sx={{ p: "2rem" }}>
             <Typography variant="h4" gutterBottom>
               Exam Result
+              <Typography
+                variant="h6"
+                style={{
+                  color:
+                    score !== undefined
+                      ? parseFloat(score) >= 50
+                        ? "green"
+                        : "red"
+                      : "black",
+                }}
+              >
+                {getResultLabel()}
+              </Typography>
             </Typography>
             <Typography variant="h6">
               Your Score: {score !== undefined ? `${score}%` : "Calculating..."}
             </Typography>
-            <Typography
-              variant="h6"
-              style={{
-                color:
-                  score !== undefined
-                    ? parseFloat(score) >= 50
-                      ? "green"
-                      : "red"
-                    : "black",
-              }}
-            >
-              {getResultLabel()}
-            </Typography>
+
             <div>
               <Typography variant="h5" gutterBottom>
                 Correct and Incorrect Answers:
@@ -124,7 +125,7 @@ const ExamResultPage = () => {
             </div>
             <Box mt={4}>
               <Typography variant="h5" gutterBottom>
-                What you know {getIconForAnswer(true)}:
+                {getIconForAnswer(true)} What you know :
               </Typography>
               {questions.map((question, index) => (
                 <div key={index}>
@@ -139,7 +140,7 @@ const ExamResultPage = () => {
             </Box>
             <Box mt={4}>
               <Typography variant="h5" gutterBottom>
-                What you should Review {getIconForAnswer(false)}:
+                {getIconForAnswer(false)} What you should Review :
               </Typography>
               {questions.map((question, index) => (
                 <div key={index}>

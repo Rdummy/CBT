@@ -52,7 +52,7 @@ const Note = ({
     <div className={`note ${isEditing ? "editing" : ""}`}>
       {isEditing ? (
         <>
-          <input
+          <textarea
             className="add-title"
             value={editedTitle}
             onChange={handleChangetitle}
