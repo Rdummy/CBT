@@ -218,9 +218,6 @@ const ExamResultPage = () => {
                   <Typography variant="body1">
                     Explanation: {question.explanation}
                   </Typography>
-                  <Typography variant="body1">
-                    Knowledge: {question.knowledge}
-                  </Typography>
                   <br />
                 </div>
               ))}

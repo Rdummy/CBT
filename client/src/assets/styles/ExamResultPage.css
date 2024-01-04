@@ -60,6 +60,13 @@
 .cross-mark {
   color: red;
 }
+.your-answer.correct {
+  color: green; /* Set the color for correct answers */
+}
+
+.your-answer.incorrect {
+  color: red; /* Set the color for incorrect answers */
+}
 
 .pagination-container {
   margin-top: 20px;
