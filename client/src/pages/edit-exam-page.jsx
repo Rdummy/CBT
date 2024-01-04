@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import exams from "../models/exam-data";
 import { Button, Box, Typography, TextField } from "@mui/material";
+import { useParams, useNavigate } from "react-router-dom";
 
 const EditExamPage = () => {
   const { examId } = useParams();

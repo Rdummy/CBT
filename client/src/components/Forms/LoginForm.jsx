@@ -75,7 +75,7 @@ const LoginForm = () => {
           </Button>
           <div className="end-footer">
             <p className="forgot-password">
-              Forgot your password? <a href="#">Reset it here</a>
+              Forgot your password? <a href="/forgot">Reset it here</a>
             </p>
             <hr />
             <p className="signup-text">

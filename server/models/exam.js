@@ -15,7 +15,6 @@ const questionSchema = new mongoose.Schema({
 });
 
 const examSchema = new mongoose.Schema({
-  id: String,
   title: String,
   logo: String,
   description: String,
@@ -28,6 +27,4 @@ const examSchema = new mongoose.Schema({
   questions: [questionSchema],
 });
 
-const Exam = mongoose.model("exams", examSchema);
-
-module.exports = Exam;
+export const ExamModel = mongoose.model("exams", examSchema);
