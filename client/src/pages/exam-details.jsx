@@ -7,7 +7,6 @@ import { useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaEdit } from "react-icons/fa";
 
-
 function ExamDetailsPage() {
   const { examId } = useParams();
   const navigate = useNavigate();
@@ -15,7 +14,6 @@ function ExamDetailsPage() {
   // Assuming exams is a state variable and setExams is a setter function for the state
   const [examList, setExamList] = useState(exams);
   const selectedExam = examList.find((exam) => exam.id === examId);
-  
 
   const handleReviewClick = () => {
     navigate(`/dashboard/exams/${examId}/review`, {
@@ -30,6 +28,7 @@ function ExamDetailsPage() {
   };
 
   const handleDeleteExam = () => {
+    ``;
     const updatedExams = examList.filter((exam) => exam.id !== examId);
     setExamList(updatedExams);
     navigate("/dashboard");
@@ -56,29 +55,31 @@ function ExamDetailsPage() {
       <div className="exam-details--wrapper">
         <Card sx={{ m: 5 }}>
           <CardContent>
-            <Box style={{display:"flex", justifyContent: "space-between"}}>
+            <Box style={{ display: "flex", justifyContent: "space-between" }}>
               <ReturnDashboard />
               <div>
-
-              <Button
-                variant="contained"
-                className="exam-details--button"
-                sx={{ textTransform: "capitalize", mr: 2, borderRadius: "0rem"}}
-                onClick={handleDeleteExam}
-              >
-                <RiDeleteBin6Line /> &nbsp; Delete 
-              </Button>
-              <Button
-                variant="contained"
-                className="exam-details--button"
-                sx={{ textTransform: "capitalize", borderRadius: "0rem"}}
-                onClick={handleEditExam}
+                <Button
+                  variant="contained"
+                  className="exam-details--button"
+                  sx={{
+                    textTransform: "capitalize",
+                    mr: 2,
+                    borderRadius: "0rem",
+                  }}
+                  onClick={handleDeleteExam}
                 >
-               <FaEdit/> &nbsp; Edit 
-              </Button>
-                </div>
+                  <RiDeleteBin6Line /> &nbsp; Delete
+                </Button>
+                <Button
+                  variant="contained"
+                  className="exam-details--button"
+                  sx={{ textTransform: "capitalize", borderRadius: "0rem" }}
+                  onClick={handleEditExam}
+                >
+                  <FaEdit /> &nbsp; Edit
+                </Button>
+              </div>
             </Box>
-
 
             <Typography variant="h5" sx={{ mt: 2 }}>
               {selectedExam.title}

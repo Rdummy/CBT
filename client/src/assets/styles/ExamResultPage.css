@@ -1,3 +1,29 @@
+.exam-result-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.exam-result-content {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.result-label {
+  color: black;
+}
+
+.result-label.passed {
+  color: green;
+}
+
+.result-label.failed {
+  color: red;
+}
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -26,7 +52,7 @@
 .active {
   background-color: #ee8080a8;
 }
-/* Define styles for the check and cross marks */
+
 .check-mark {
   color: green;
 }
@@ -34,10 +60,12 @@
 .cross-mark {
   color: red;
 }
+
 .pagination-container {
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
 .results-container {
   transition: 0.5s ease-in-out;
   max-height: 0;
@@ -51,9 +79,11 @@
   max-height: 1000px; /* Adjust the value based on your content height */
   opacity: 1;
 }
+
 .renderPagination-container {
   opacity: 0;
 }
+
 .renderPagination-container.show {
   transition: 2s ease-in-out;
   opacity: 1;

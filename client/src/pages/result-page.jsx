@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import ReturnDashboard from "../components/ReturnDashboard.jsx";
 import exams from "../models/exam-data";
-import "../assets/styles/ExamResultPage.css";
+import "../assets/styles/ExamResultPage.css"; // Import your CSS file here
 
 const itemsPerPage = 1;
 
@@ -149,38 +149,33 @@ const ExamResultPage = () => {
   };
 
   return (
-    <Container
-      maxWidth="false"
-      disableGutters
-      sx={{
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <div className="exam-result-container">
       <Toolbar
         className="exams-category--header"
         sx={{ justifyContent: "space-between" }}
       ></Toolbar>
-      <Container
-        maxWidth="xxl"
-        sx={{
-          width: "100%",
-          flexGrow: 1,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Card sx={{ width: "100%", maxWidth: 900, marginTop: "2rem" }}>
+      <div className="exam-result-content">
+        <Card>
           <ReturnDashboard />
-          <CardContent sx={{ p: "2rem" }}>
+          <CardContent>
             <Typography variant="h4" gutterBottom>
               Exam Result
             </Typography>
 
             <Typography variant="h6">
               Your Score: {score !== undefined ? `${score}%` : "Calculating..."}
+            </Typography>
+            <Typography
+              variant="h6"
+              className={`result-label ${
+                score !== undefined
+                  ? parseFloat(score) >= 50
+                    ? "passed"
+                    : "failed"
+                  : ""
+              }`}
+            >
+              {getResultLabel()}
             </Typography>
 
             <div className={`results-container ${showResults ? "show" : ""}`}>
@@ -192,17 +187,16 @@ const ExamResultPage = () => {
                   </Typography>
                   <Typography
                     variant="body1"
-                    style={{
-                      color:
-                        storedAnswers &&
-                        storedAnswers[offset + index] !== undefined &&
-                        question.choices
-                          ? storedAnswers[offset + index] ===
-                            question.correctAnswer
-                            ? "green"
-                            : "red"
-                          : "black",
-                    }}
+                    className={`your-answer ${
+                      storedAnswers &&
+                      storedAnswers[offset + index] !== undefined &&
+                      question.choices
+                        ? storedAnswers[offset + index] ===
+                          question.correctAnswer
+                          ? "correct"
+                          : "incorrect"
+                        : ""
+                    }`}
                   >
                     Your Answer:{" "}
                     {storedAnswers &&
@@ -287,8 +281,8 @@ const ExamResultPage = () => {
             </div>
           </CardContent>
         </Card>
-      </Container>
-    </Container>
+      </div>
+    </div>
   );
 };
 
