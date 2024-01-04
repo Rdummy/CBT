@@ -23,4 +23,13 @@ router.post("/exam-title", async (req, res) => {
   }
 });
 
+router.get("/exam-title", async (req, res) => {
+  try {
+    const data = await ExamTitleModel.find();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 export { router as examTitleRouter };

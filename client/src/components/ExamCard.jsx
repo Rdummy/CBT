@@ -1,7 +1,5 @@
-import { CiClock1 } from "react-icons/ci";
-
+import React from "react";
 import {
-  Avatar,
   Box,
   Button,
   Card,
@@ -11,24 +9,14 @@ import {
   SvgIcon,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { CiClock1 } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 
-const ExamCard = (props) => {
-  const { exam } = props;
-
-  // Navigation
+const ExamCard = ({ exam }) => {
   const navigate = useNavigate();
-  const [shouldNavigate, setShouldNavigate] = useState(false);
 
-  // useEffect(() => {
-  //   if (shouldNavigate) {
-  //     navigate(`/dashboard/exams/${exam.id}/`);
-  //     setShouldNavigate(false);
-  //   }
-  // }, [shouldNavigate]);
   const handleCardClick = () => {
-    navigate(`/dashboard/exams/${exam.id}/`);
+    navigate(`/dashboard/exams/${exam.Id}/`);
   };
 
   return (
@@ -50,7 +38,6 @@ const ExamCard = (props) => {
               pb: 3,
             }}
           >
-            {/* <img src={exam.logo} variant="square" alt="" /> */}
           </Box>
           <Typography align="center" gutterBottom variant="h5">
             {exam.title}
@@ -91,4 +78,5 @@ const ExamCard = (props) => {
     </Button>
   );
 };
+
 export default ExamCard;
