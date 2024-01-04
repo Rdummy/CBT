@@ -21,12 +21,6 @@ const ExamCard = (props) => {
   const navigate = useNavigate();
   const [shouldNavigate, setShouldNavigate] = useState(false);
 
-  // useEffect(() => {
-  //   if (shouldNavigate) {
-  //     navigate(`/dashboard/exams/${exam.id}/`);
-  //     setShouldNavigate(false);
-  //   }
-  // }, [shouldNavigate]);
   const handleCardClick = () => {
     navigate(`/dashboard/exams/${exam.id}/`);
   };
@@ -50,7 +44,6 @@ const ExamCard = (props) => {
               pb: 3,
             }}
           >
-            {/* <img src={exam.logo} variant="square" alt="" /> */}
           </Box>
           <Typography align="center" gutterBottom variant="h5">
             {exam.title}

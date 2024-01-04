@@ -4,7 +4,7 @@ const HeroTypewriter = () => {
   const [typedText, setTypedText] = useState("");
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0); // Track current string index
-  const typedStrings = ["Examination", "Training", "Hiring", "test"];
+  const typedStrings = ["Examination", "Training", "Hiring", "Test"];
 
   // Use try-catch block to handle potential errors
   // try {

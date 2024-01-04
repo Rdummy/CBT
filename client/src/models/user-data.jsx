@@ -6,8 +6,7 @@ const users = [{
     email: "jdoe@novatechset.com", 
     password: "1sdfds",
     role: "Junior Software Engineer",
-    enrolledExam: [ObjectID],
-    completedExams: [
+    Exams: [
         {
             examId: 1,
             attempts: [{

@@ -14,3 +14,43 @@
 .brand-blue-bg {
   background-color: #0f398e !important;
   color: #fff !important;}
+
+  @media only screen and (max-width: 600px) {
+    :root{
+      font-size: 16px;
+    }
+  }
+  
+  /* Small devices (portrait tablets and large phones, 600px and up) */
+  @media only screen and (min-width: 600px) {
+    :root{
+      font-size: 16px;
+    }
+  }
+  
+  /* Medium devices (landscape tablets, 768px and up) */
+  @media only screen and (min-width: 768px) {
+    :root{
+      font-size: 16px;
+    }
+  }
+  
+  /* Large devices (laptops/desktops, 992px and up) */
+  @media only screen and (min-width: 992px) {
+    :root{
+      font-size: 12px;
+    }
+  }
+  /* Extra large devices (large laptops and desktops, 1200px and up) */
+  @media only screen and (min-width: 1200px) {
+    :root{
+      font-size: 12px;
+    }
+  }
+  
+  @media only screen and (min-width: 1900px) {
+    :root{
+      font-size: 17px;
+    }
+  }
+  

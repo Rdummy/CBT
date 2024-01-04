@@ -51,7 +51,7 @@ const RegistrationForm = () => {
       <div className="auth-container">
         <form onSubmit={handleSubmit} className="auth-form">
           <img src={NTS_Logo} alt="Company Logo" className="logo" />
-          <div className="signin--header" style={{ fontWeight: "700", marginBottom: "1rem" }}>Sign In</div>
+          <div className="signin--header" style={{ fontWeight: "700", marginBottom: "1rem" }}>Sign Up</div>
           <div className="fields-wrapper" style={{ gap: "0.5rem" }}>
             {/* TextField component is used for consistent styling */}
             <TextField
