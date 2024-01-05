@@ -7,4 +7,4 @@ const ExamTitleSchema = new mongoose.Schema({
   status: String,
 });
 
-export const ExamTitleModel = mongoose.model("exam_titles", ExamTitleSchema);
+export const ExamTitleModel = mongoose.model("exam_title", ExamTitleSchema);

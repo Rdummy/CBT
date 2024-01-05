@@ -1,5 +1,5 @@
 import express from "express";
-import { ExamModel } from "../models/exam.js";
+import { ExamTitleModel } from "../models/exam_title.js";
 
 const router = express.Router();
 
@@ -7,10 +7,10 @@ router.post("/exam-title", async (req, res) => {
   try {
     const { title, description, id } = req.body;
 
-    const newExam = new ExamModel({
+    const newExam = new ExamTitleModel({
       title,
       description,
-      id
+      id,
     });
 
     await newExam.save();
