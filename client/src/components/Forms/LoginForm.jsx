@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from "@mui/material";
 import NTS_Logo from "../../assets/images/NTS_Logo.png";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -15,6 +22,9 @@ const LoginSchema = Yup.object().shape({
 });
 
 const LoginForm = () => {
+  const [openDialog, setOpenDialog] = useState(false); // State to handle dialog visibility
+  const [loginAttempts, setLoginAttempts] = useState(0); // Track login attempts
+  const [locked, setLocked] = useState(false); // State to manage lock status
   const {
     register,
     handleSubmit,
@@ -24,27 +34,43 @@ const LoginForm = () => {
   });
   const navigate = useNavigate();
 
-  // Function to handle login submission
+  useEffect(() => {
+    if (loginAttempts >= 5) {
+      setLocked(true);
+      const timer = setTimeout(() => {
+        setLocked(false);
+        setLoginAttempts(0);
+      }, 300000); // Lock for 5 minutes (300,000 milliseconds)
+      return () => clearTimeout(timer);
+    }
+  }, [loginAttempts]);
+
   const loginEvent = async (data) => {
+    if (locked) {
+      setOpenDialog(true);
+      return;
+    }
+
     try {
-      // Make a POST request using Axios
       const response = await axios.post("http://localhost:3001/auth/signin", {
         username: data.Username,
         password: data.password,
       });
 
-      // Handle successful login response
       console.log("Login successful:", response.data);
 
-      // Save the username to localStorage upon successful login
       localStorage.setItem("userName", data.Username);
 
-      // Redirect to a new page upon successful login
-      navigate("/dashboard"); // Change the route as needed
+      navigate("/dashboard");
     } catch (error) {
-      // Handle login error
       console.error("Login error:", error.message);
+      setLoginAttempts((prevAttempts) => prevAttempts + 1);
+      setOpenDialog(true);
     }
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   return (
@@ -84,6 +110,25 @@ const LoginForm = () => {
           </div>
         </form>
       </div>
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Error</DialogTitle>
+        <DialogContent>
+          {locked ? (
+            <DialogContentText>
+              Please try again in 5 minutes.
+            </DialogContentText>
+          ) : (
+            <DialogContentText>
+              Username or Password is not correct.
+            </DialogContentText>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
