@@ -13,8 +13,6 @@ import {
   Typography,
   Pagination,
 } from "@mui/material";
-
-// import examsData from "../models/exam-data";
 import ExamCard from "../components/ExamCard";
 import "../assets/styles/dashboard.css";
 
@@ -28,18 +26,14 @@ function ExamPage() {
     _id: "",
   });
 
-  // State to manage exams
-  const [exams, setExams] = useState([]); // Initial exams data
-  useEffect(() => {
-    getExams().then((response) => {
-      setExams(response.data);
-    });
-  }, []);
+  // State to manage exams (using actual data only)
+  const [exams, setExams] = useState([]);
 
-  const displayedExams = exams.slice(
-    (page - 1) * examsPerPage,
-    page * examsPerPage
-  );
+  const displayedExams = exams.slice((page - 1) * examsPerPage, page * examsPerPage);
+
+  useEffect(() => {
+    getExams();
+  }, []);
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
@@ -60,11 +54,14 @@ function ExamPage() {
       [name]: value,
     });
   };
+
   const getExams = async () => {
-    axios.get("http://localhost:3001/exam/exam-title").then((response) => {
+    try {
+      const response = await axios.get("http://localhost:3001/exam/exam-title");
       setExams(response.data);
-      console.log(response);
-    });
+    } catch (error) {
+      console.error("Error fetching exams:", error);
+    }
   };
 
   const handleFormSubmit = async (e) => {
@@ -130,7 +127,7 @@ function ExamPage() {
         {displayedExams.map((exam) => (
           <Grid item xs={3} key={exam.id}>
             <div className="grid-item--wrapper" style={{ minHeight: "100%" }}>
-              <ExamCard key={exam.id} exam={exam} /> {/* Unique key prop */}
+            <ExamCard key={exam.id} exam={exam} displayedExams={displayedExams} />
             </div>
           </Grid>
         ))}

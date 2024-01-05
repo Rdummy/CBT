@@ -1,15 +1,16 @@
 import express from "express";
-import { ExamTitleModel } from "../models/exam_title.js";
+import { ExamModel } from "../models/exam.js";
 
 const router = express.Router();
 
 router.post("/exam-title", async (req, res) => {
   try {
-    const { title, description } = req.body;
+    const { title, description, id } = req.body;
 
-    const newExam = new ExamTitleModel({
+    const newExam = new ExamModel({
       title,
       description,
+      id
     });
 
     await newExam.save();
@@ -25,7 +26,7 @@ router.post("/exam-title", async (req, res) => {
 
 router.get("/exam-title", async (req, res) => {
   try {
-    const data = await ExamTitleModel.find();
+    const data = await ExamModel.find();
     res.json(data);
   } catch (err) {
     res.status(500).json({ message: err.message });

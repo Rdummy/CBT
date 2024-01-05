@@ -1,18 +1,30 @@
 import { useNavigate, useParams } from "react-router-dom";
-
 import { Card, CardContent, Box, Typography, Button } from "@mui/material";
 import "../assets/styles/ExamRoutes.css";
 import ReturnDashboard from "../components/ReturnDashboard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaEdit } from "react-icons/fa";
+import axios from "axios";
 
 function ExamDetailsPage() {
   const { examId } = useParams();
   const navigate = useNavigate();
-
-  // Assuming exams is a state variable and setExams is a setter function for the state
+  const [exams, setExams] = useState([]); 
+  useEffect(() => {
+    getExams().then((response) => {
+      setExams(response.data);
+    });
+  }, []);
+  
+  const getExams = async () => {
+    axios.get("http://localhost:3001/exam/exam-title").then((response) => {
+      setExams(response.data);
+      console.log(response.data);
+    });
+  };
   const [examList, setExamList] = useState(exams);
+  console.log("exam list: ", examList)
   const selectedExam = examList.find((exam) => exam.id === examId);
 
   const handleReviewClick = () => {
@@ -29,7 +41,7 @@ function ExamDetailsPage() {
 
   const handleDeleteExam = () => {
     ``;
-    const updatedExams = examList.filter((exam) => exam.id !== examId);
+    const updatedExams = examList.filter((exams) => exams.id !== examId);
     setExamList(updatedExams);
     navigate("/dashboard");
     // You might add a confirmation message or notification for successful deletion
@@ -47,7 +59,7 @@ function ExamDetailsPage() {
   };
 
   if (!selectedExam) {
-    return <p>Exam not found</p>;
+    return <p>Exam not found {examId} and {exams.id}</p>;
   }
 
   return (

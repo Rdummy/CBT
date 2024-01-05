@@ -12,11 +12,11 @@ import {
 import { CiClock1 } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 
-const ExamCard = ({ exam }) => {
+function ExamCard({ exam, displayedExams }) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate(`/dashboard/exams/${exam.Id}/`);
+    navigate(`/dashboard/exams/${exam.id}/`);
   };
 
   return (
