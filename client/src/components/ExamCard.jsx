@@ -16,7 +16,7 @@ function ExamCard({ exam, displayedExams }) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate(`/dashboard/exams/${exam.id}/`);
+    navigate(`/dashboard/exams/${exam._id}/`);
   };
 
   return (
@@ -37,8 +37,7 @@ function ExamCard({ exam, displayedExams }) {
               justifyContent: "center",
               pb: 3,
             }}
-          >
-          </Box>
+          ></Box>
           <Typography align="center" gutterBottom variant="h5">
             {exam.title}
           </Typography>
@@ -77,6 +76,6 @@ function ExamCard({ exam, displayedExams }) {
       </Card>
     </Button>
   );
-};
+}
 
 export default ExamCard;

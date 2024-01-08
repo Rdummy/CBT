@@ -1,5 +1,6 @@
 import express from "express";
 import { ExamTitleModel } from "../models/exam_title.js";
+import { ExamModel } from "../models/exam.js";
 
 const router = express.Router();
 
@@ -26,7 +27,7 @@ router.post("/exam-title", async (req, res) => {
 
 router.get("/exam-title", async (req, res) => {
   try {
-    const data = await ExamModel.find();
+    const data = await ExamTitleModel.find();
     res.json(data);
   } catch (err) {
     res.status(500).json({ message: err.message });
