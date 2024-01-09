@@ -4,34 +4,46 @@ import { Button, TextField } from "@mui/material";
 import axios from "axios";
 import NTS_Logo from "../../assets/images/NTS_Logo.png";
 
-
 const RegistrationForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    confirmPassword: "", // Added confirmPassword field
     username: "",
     user_role: "",
     user_type: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check if passwords match
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
     setIsSubmitting(true);
+
     try {
       await axios.post("http://localhost:3001/auth/signup", formData);
       alert("Registration Completed");
+
+      // Save user_type to local storage
+      localStorage.setItem("user_type", formData.user_type);
+      localStorage.setItem("username", formData.username);
+
       setFormData({
         email: "",
         password: "",
+        confirmPassword: "",
         username: "",
         user_role: "",
         user_type: "",
@@ -45,13 +57,17 @@ const RegistrationForm = () => {
     }
   };
 
-
   return (
     <div className="auth-container-wrapper">
       <div className="auth-container">
         <form onSubmit={handleSubmit} className="auth-form">
           <img src={NTS_Logo} alt="Company Logo" className="logo" />
-          <div className="signin--header" style={{ fontWeight: "700", marginBottom: "1rem" }}>Sign Up</div>
+          <div
+            className="signin--header"
+            style={{ fontWeight: "700", marginBottom: "1rem" }}
+          >
+            Sign Up
+          </div>
           <div className="fields-wrapper" style={{ gap: "0.5rem" }}>
             {/* TextField component is used for consistent styling */}
             <TextField
@@ -70,6 +86,15 @@ const RegistrationForm = () => {
               name="password"
               type="password"
               value={formData.password}
+              onChange={handleChange}
+            />
+            <TextField
+              fullWidth
+              size="small"
+              label="Confirm Password"
+              name="confirmPassword"
+              type="password"
+              value={formData.confirmPassword}
               onChange={handleChange}
             />
             <TextField
@@ -100,11 +125,7 @@ const RegistrationForm = () => {
               onChange={handleChange}
             />
           </div>
-          <Button
-            type="submit"
-            className="auth-button"
-            disabled={isSubmitting}
-          >
+          <Button type="submit" className="auth-button" disabled={isSubmitting}>
             Register
           </Button>
           <div className="end-footer">
@@ -117,6 +138,5 @@ const RegistrationForm = () => {
     </div>
   );
 };
-
 
 export default RegistrationForm;

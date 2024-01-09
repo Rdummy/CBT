@@ -4,7 +4,7 @@ import { Button, TextField } from "@mui/material";
 import axios from "axios";
 import NTS_Logo from "../../assets/images/NTS_Logo.png";
 
-const ForgotPassword = () => {
+const ForgotForm = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -65,4 +65,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ForgotForm;

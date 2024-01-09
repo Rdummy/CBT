@@ -1,22 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import "../assets/styles/dashboard.css";
-import ExamPage from "../pages/exams.page";
 import { Outlet } from "react-router-dom";
-import { useAuth } from "../contexts/auth-context";
 import Sidebar from "../components/Sidebar";
 
 function Dashboard() {
-  const { isAdmin } = useAuth();
+  const [userType, setUserType] = useState("");
+
+  useEffect(() => {
+    // Retrieve user_type from local storage
+    const storedUserType = localStorage.getItem("user_type");
+    setUserType(storedUserType);
+  }, []);
+
+  const shouldRenderSidebar = () => {
+    return userType === "admin"; // Render Sidebar if user_type is "admin"
+  };
+
   return (
     <>
       <div className="dashboard-content">
         <Navbar />
 
-        <div className={isAdmin ? "dashboard__admin" : "dashboard__user"}>
-          {isAdmin ? <Sidebar /> : ""}
+        <div
+          className={
+            shouldRenderSidebar() ? "dashboard__admin" : "dashboard__user"
+          }
+        >
+          {shouldRenderSidebar() && <Sidebar />}
           <Outlet
-            className={isAdmin ? "outlet--with-sidebar" : "outlet--full-width"}
+            className={
+              shouldRenderSidebar()
+                ? "outlet--with-sidebar"
+                : "outlet--full-width"
+            }
           />
         </div>
       </div>

@@ -41,8 +41,8 @@ export default function Sidebar() {
   };
 
   const handleSettingsClick = () => {
-    navigate("/dashboard/settings")
-  }
+    navigate("/dashboard/settings");
+  };
   return (
     <Box sx={{ display: "flex", width: "100%" }}>
       <Drawer
@@ -94,7 +94,7 @@ export default function Sidebar() {
           <List>
             {["Settings"].map((text, index) => (
               <ListItem key={text} disablePadding>
-                <ListItemButton  onClick={() => handleSettingsClick()}>
+                <ListItemButton onClick={() => handleSettingsClick()}>
                   <ListItemIcon>
                     {index === 0 && <CiSettings size={"1.5rem"} />}
                   </ListItemIcon>

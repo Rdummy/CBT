@@ -1,9 +1,9 @@
 import React from "react";
 import HeroTypewriter from "../components/HeroTypewriter";
 import "../assets/styles/authentication.css";
-import ForgotForm from "../components/Forms/LoginForm";
+import ForgotForm from "../components/Forms/ForgotForm";
 
-function Login() {
+function Forgot() {
   return (
     <div className="login-page-wrapper">
       <div className="login-page--hero brand-red-bg">
@@ -16,4 +16,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Forgot;

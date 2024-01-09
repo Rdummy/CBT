@@ -34,6 +34,7 @@ export default function Navbar() {
     // Clear authentication data when logging out
     window.localStorage.removeItem("userID");
     window.localStorage.removeItem("userName");
+    // window.localStorage.removeItem("user_type");
     // Clear cookies or any other stored authentication data if present
 
     // Perform any additional logout-related actions (e.g., redirect to login page)

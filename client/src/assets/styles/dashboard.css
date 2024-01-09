@@ -53,6 +53,6 @@
   }
    */
   /* User layout without sidebar */
-  /* .dashboard__user .outlet--full-width {
+   .dashboard__user .outlet--full-width {
     width: 100%; 
-  } */
+  } 

@@ -119,7 +119,7 @@ const LoginForm = () => {
             </DialogContentText>
           ) : (
             <DialogContentText>
-              Username or Password is not correct.
+              Username or Password is correct.
             </DialogContentText>
           )}
         </DialogContent>
