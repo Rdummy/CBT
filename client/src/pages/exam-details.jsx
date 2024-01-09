@@ -10,22 +10,25 @@ import axios from "axios";
 function ExamDetailsPage() {
   const { examId } = useParams();
   const navigate = useNavigate();
-  const [exams, setExams] = useState([]); 
+  const [exams, setExams] = useState([]);
+  const [examList, setExamList] = useState(exams);
+
   useEffect(() => {
-    getExams().then((response) => {
-      setExams(response.data);
-    });
+    getExams().then((response) => {});
   }, []);
-  
+
   const getExams = async () => {
     axios.get("http://localhost:3001/exam/exam-title").then((response) => {
-      setExams(response.data);
-      console.log(response.data);
+      if (response.data !== undefined) {
+        setExams(response.data);
+        setExamList(response.data);
+        console.log(response.data);
+      }
     });
   };
-  const [examList, setExamList] = useState(exams);
-  console.log("exam list: ", examList)
-  const selectedExam = examList.find((exam) => exam.id === examId);
+
+  console.log("exam list: ", examList);
+  const selectedExam = examList.find((exam) => exam._id === examId);
 
   const handleReviewClick = () => {
     navigate(`/dashboard/exams/${examId}/review`, {
@@ -41,7 +44,7 @@ function ExamDetailsPage() {
 
   const handleDeleteExam = () => {
     ``;
-    const updatedExams = examList.filter((exams) => exams.id !== examId);
+    const updatedExams = examList.filter((exams) => exams._id !== examId);
     setExamList(updatedExams);
     navigate("/dashboard");
     // You might add a confirmation message or notification for successful deletion
@@ -59,7 +62,11 @@ function ExamDetailsPage() {
   };
 
   if (!selectedExam) {
-    return <p>Exam not found {examId} and {exams.id}</p>;
+    return (
+      <p>
+        Exam not found {examId} and {exams._id}
+      </p>
+    );
   }
 
   return (
