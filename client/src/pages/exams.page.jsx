@@ -13,7 +13,7 @@ import {
   Typography,
   Pagination,
 } from "@mui/material";
-
+import { v4 as uuidv4 } from "uuid";
 // import examsData from "../models/exam-data";
 import ExamCard from "../components/ExamCard";
 import "../assets/styles/dashboard.css";
@@ -22,6 +22,7 @@ function ExamPage() {
   const [page, setPage] = useState(1);
   const examsPerPage = 4;
   const [openModal, setOpenModal] = useState(false);
+  const [exams, setExams] = useState([]); // Initial exams data
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -29,10 +30,10 @@ function ExamPage() {
   });
 
   // State to manage exams
-  const [exams, setExams] = useState([]); // Initial exams data
+
   useEffect(() => {
     getExams().then((response) => {
-      setExams(response.data);
+      setExams(response);
     });
   }, []);
 
@@ -61,15 +62,13 @@ function ExamPage() {
     });
   };
   const getExams = async () => {
-    axios.get("http://localhost:3001/exam/exam-title").then((response) => {
-      setExams(response.data);
-      console.log(response);
-    });
+    let response = await axios.get("http://localhost:3001/exam/exam-title");
+    return response.data;
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted with data:", formData);
+    // console.log("Form submitted with data:", formData);
     setOpenModal(false);
 
     try {
@@ -78,6 +77,7 @@ function ExamPage() {
         {
           title: formData.title,
           description: formData.description,
+          id: uuidv4(),
         }
       );
 
@@ -101,6 +101,7 @@ function ExamPage() {
       setFormData({
         title: "",
         description: "",
+
       });
     } catch (error) {
       console.error("Error adding new exam:", error);
@@ -127,10 +128,10 @@ function ExamPage() {
         style={{ gridAutoFlow: "column", backgroundColor: "#d4d4d4" }}
         sx={{ py: 2, px: 1 }}
       >
-        {displayedExams.map((exam) => (
-          <Grid item xs={3} key={exam.id}>
+        {displayedExams.map((exam, index) => (
+          <Grid item xs={3} key={`${exam.id}-${index}`}>
             <div className="grid-item--wrapper" style={{ minHeight: "100%" }}>
-              <ExamCard key={exam.id} exam={exam} /> {/* Unique key prop */}
+              <ExamCard key={`${exam.id}-${index}`} exam={exam} />
             </div>
           </Grid>
         ))}

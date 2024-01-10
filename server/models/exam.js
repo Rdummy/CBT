@@ -15,7 +15,7 @@ const questionSchema = new mongoose.Schema({
 });
 
 const examSchema = new mongoose.Schema({
-  id: mongoose.Schema.Types.ObjectId,
+  id: String,
   title: String,
   logo: String,
   description: String,
@@ -29,4 +29,3 @@ const examSchema = new mongoose.Schema({
 });
 
 export const ExamModel = mongoose.model("exams", examSchema);
-

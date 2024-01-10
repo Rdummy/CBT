@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CarouselItem from "./CarouselItem";
 import ReturnDashboard from "../components/ReturnDashboard";
 import "../assets/styles/review-exam-page.css";
+import Navbar from "../components/Navbar";
 
 const ReviewExamPage = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -45,11 +46,10 @@ const ReviewExamPage = () => {
           boxShadow: "0 0 10px black;",
           border: "0.1rem solid #a4a4a4",
         }}
-      >
-        <ReturnDashboard />
-      </div>
+      ></div>
       <div className="review-page--wrapper">
         <div className="carousel">
+          <ReturnDashboard />
           <div
             className="inner"
             style={{ transform: `translate(-${activeIndex * 100}%)` }}

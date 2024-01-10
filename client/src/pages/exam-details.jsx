@@ -22,12 +22,10 @@ function ExamDetailsPage() {
       if (response.data !== undefined) {
         setExams(response.data);
         setExamList(response.data);
-        console.log(response.data);
       }
     });
   };
 
-  console.log("exam list: ", examList);
   const selectedExam = examList.find((exam) => exam._id === examId);
 
   const handleReviewClick = () => {
@@ -64,7 +62,7 @@ function ExamDetailsPage() {
   if (!selectedExam) {
     return (
       <p>
-        Exam not found {examId} and {exams._id}
+        Loading exam {examId} and {exams._id}
       </p>
     );
   }
