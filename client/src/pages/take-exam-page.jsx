@@ -81,7 +81,11 @@ const TakeExamPage = () => {
   };
 
   return (
-    <Box className="take-exam-content--wrapper" boxShadow={2}>
+    <Box
+      className="take-exam-content--wrapper"
+      boxShadow={2}
+      sx={{ width: "100%" }}
+    >
       <div className="exam-question--header">
         <ReturnDashboard />
         <h2 style={{ marginTop: "1rem" }}> {examData?.title} </h2>

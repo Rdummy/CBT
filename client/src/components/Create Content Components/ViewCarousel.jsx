@@ -40,11 +40,11 @@ const ViewCarousel = ({ notes }) => {
         className="inner"
         style={{ transform: `translate(-${activeIndex * 100}%)` }}
       >
-        {items.map((item) => {
-          return <CarouselItem item={item} width={"100%"} />;
+        {items.map((item, index) => {
+          // Add a unique key prop to CarouselItem component
+          return <CarouselItem key={index} item={item} width={"100%"} />;
         })}
       </div>
-
       <div className="carousel-buttons">
         <button
           className="button-arrow"
@@ -52,7 +52,7 @@ const ViewCarousel = ({ notes }) => {
             updateIndex(activeIndex - 1);
           }}
         >
-          <span class="material-symbols-outlined">arrow_back_ios</span>{" "}
+          <span className="material-symbols-outlined">arrow_back_ios</span>{" "}
         </button>
         <div className="indicators">
           {items.map((_, index) => (

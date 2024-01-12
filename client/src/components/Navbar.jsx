@@ -50,7 +50,7 @@ export default function Navbar() {
   const storedUserName = localStorage.getItem("userName");
 
   return (
-    <Box sx={{ width: "30rem", marginBottom: "3rem" }}>
+    <Box sx={{ width: "4rem", marginBottom: "3rem" }}>
       <AppBar
         className="navbar--wrapper"
         position="fixed"

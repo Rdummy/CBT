@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 
 const slideSchema = new mongoose.Schema({
-  header: String,
-  bodyText: mongoose.Schema.Types.Mixed,
-  image: String,
+  id: mongoose.Schema.Types.ObjectId,
+  title: String,
+  description: String,
+  imageUrl: String,
 });
 
 const questionSchema = new mongoose.Schema({

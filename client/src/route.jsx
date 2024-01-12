@@ -76,10 +76,6 @@ function CBTRoute() {
           path: "/dashboard/exams/:examId/take-exam",
           element: <TakeExamPage />,
         },
-        // {
-        //   path: "exams/:examId/take-exam",
-        //   element: <TakeExamPage examId />,
-        // },
         {
           path: "exams/:examId/review",
           element: <ReviewExamPage examId />,

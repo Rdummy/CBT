@@ -3,6 +3,11 @@ import CarouselItem from "./CarouselItem";
 import ReturnDashboard from "../components/ReturnDashboard";
 import "../assets/styles/review-exam-page.css";
 import Navbar from "../components/Navbar";
+import computerTraining from "../assets/Media/computer_training.png";
+import cyberlock from "../assets/Media/cyberlock.jpg";
+import phishing from "../assets/Media/Phishing-Awareness.jpg";
+import SoftwareUpdates from "../assets/Media/SoftwareUpdates.png";
+import Button from "@mui/material/Button";
 
 const ReviewExamPage = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -11,23 +16,22 @@ const ReviewExamPage = () => {
     {
       header: "Strong Passwords",
       body: " Ensure your online accounts are protected with strong, unique passwords. Use upper- and lower-case letters, numbers, and symbols. Avoid using easily guessable information like birthdays or common words.",
-      visual: "src/assets/Media/cyberlock.jpg",
+      visual: computerTraining,
     },
-
     {
       header: "Two-Factor Authentication (2FA)",
       body: "Whenever possible, enable 2FA for your accounts. It provides an extra layer of security by requiring you to enter a code sent to your mobile device or email when logging in.",
-      visual: "src/assets/Media/computer_training.png",
+      visual: cyberlock,
     },
     {
       header: "Phishing Awareness",
       body: " Be cautious of unsolicited emails, texts, or messages. Phishing attacks often use deceptive tactics to trick you into revealing personal information or clicking malicious links. If something looks suspicious, verify its legitimacy with the sender.",
-      visual: "src/assets/Media/Phishing-Awareness.jpg",
+      visual: phishing,
     },
     {
       header: "Update Your Software",
       body: "Keep your operating system, antivirus software, and applications up to date. Developers release updates to patch security vulnerabilities that cybercriminals could exploit.",
-      visual: "src/assets/Media/SoftwareUpdates.png",
+      visual: SoftwareUpdates,
     },
     {
       header: "Secure Wifi",
@@ -35,6 +39,8 @@ const ReviewExamPage = () => {
       visual: "/src/assets/Media/secure-wi-fi.jpg",
     },
   ];
+
+  const isLastSlide = activeIndex === items.length - 1;
 
   const updateIndex = (newIndex) => {
     if (newIndex < 0) {
@@ -45,7 +51,6 @@ const ReviewExamPage = () => {
 
     setActiveIndex(newIndex);
   };
-
   return (
     <>
       <Navbar />
@@ -54,21 +59,26 @@ const ReviewExamPage = () => {
         style={{
           backgroundColor: "#ddd",
           boxShadow: "0 0 10px black;",
-          border: "0.1rem solid #a4a4a4",
         }}
       ></div>
+
       <div className="review-page--wrapper">
-        <div className="carousel">
-          <ReturnDashboard />
+        <div
+          className="carousel"
+          style={{ width: "100%", display: "flex", height: "100%" }}
+        >
+          <div className="div">
+            <ReturnDashboard />
+          </div>{" "}
           <div
             className="inner"
             style={{ transform: `translate(-${activeIndex * 100}%)` }}
           >
-            {items.map((item) => {
-              return <CarouselItem item={item} width={"100%"} />;
+            {items.map((item, index) => {
+              // Add a unique key prop to each rendered CarouselItem
+              return <CarouselItem key={index} item={item} width={"100%"} />;
             })}
           </div>
-
           <div className="carousel-buttons">
             <button
               className="button-arrow"
@@ -76,15 +86,20 @@ const ReviewExamPage = () => {
                 updateIndex(activeIndex - 1);
               }}
             >
-              <span class="material-symbols-outlined">arrow_back_ios</span>{" "}
+              <span className="material-symbols-outlined">arrow_back_ios</span>{" "}
             </button>
+
             <div className="indicators">
               {items.map((item, index) => {
                 return (
                   <button
+                    key={index}
                     className="indicator-buttons"
                     onClick={() => {
-                      updateIndex(index);
+                      // Add a condition to prevent moving the radio buttons
+                      if (index !== activeIndex) {
+                        updateIndex(index);
+                      }
                     }}
                   >
                     <span
@@ -106,11 +121,27 @@ const ReviewExamPage = () => {
                 updateIndex(activeIndex + 1);
               }}
             >
-              <span class="material-symbols-outlined">arrow_forward_ios</span>
+              <span className="material-symbols-outlined">
+                arrow_forward_ios
+              </span>
+              <Button
+                href={isLastSlide ? "/dashboard/exams/:examId/take-exam" : "#"}
+                className={`brand-red-bg ${!isLastSlide && "disabled"}`}
+                sx={{
+                  textTransform: "capitalize",
+                  px: 3,
+                  py: 2,
+                  mx: 0.5,
+                  opacity: isLastSlide ? 1 : 0.5, // Set opacity when disabled
+                  cursor: isLastSlide ? "pointer" : "not-allowed", // Set cursor when disabled
+                }}
+                disabled={!isLastSlide}
+              >
+                Take Exam
+              </Button>
             </button>
           </div>
         </div>
-        {/* 2nd Item */}
       </div>
     </>
   );

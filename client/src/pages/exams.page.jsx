@@ -101,7 +101,6 @@ function ExamPage() {
       setFormData({
         title: "",
         description: "",
-
       });
     } catch (error) {
       console.error("Error adding new exam:", error);

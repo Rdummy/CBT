@@ -12,6 +12,7 @@ const NoteList = ({
     <div className="notes-list">
       {noted.map((note) => (
         <Note
+          key={note.id}
           id={note.id}
           title={note.title}
           description={note.description}

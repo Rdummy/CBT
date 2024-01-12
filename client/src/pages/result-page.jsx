@@ -1,34 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import {
-  Card,
-  CardContent,
-  Typography,
-  Container,
-  Toolbar,
-  Button,
-} from "@mui/material";
+import { Card, CardContent, Typography, Toolbar, Button } from "@mui/material";
+import axios from "axios";
 import ReturnDashboard from "../components/ReturnDashboard.jsx";
-import exams from "../models/exam-data";
-import "../assets/styles/ExamResultPage.css"; // Import your CSS file here
+import "../assets/styles/ExamResultPage.css";
 
 const itemsPerPage = 1;
 
 const ExamResultPage = () => {
   const [currentPage, setCurrentPage] = useState(0);
-  const [showResults, setShowResults] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [questions, setQuestions] = useState([]);
+  const [storedAnswers, setStoredAnswers] = useState([]); // Add this line
 
   const { score, examId } = useParams();
-  const selectedExam = exams.find((exam) => exam.id === examId);
-  const { questions } = selectedExam;
-
-  const storedAnswers = JSON.parse(
-    localStorage.getItem(`chosenAnswers_${examId}`)
-  );
 
   const totalPages = Math.ceil(questions.length / itemsPerPage);
   const offset = currentPage * itemsPerPage;
   const currentQuestions = questions.slice(offset, offset + itemsPerPage);
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/result/${examId}/questions`
+        );
+        setQuestions(response.data.questions); // Set questions state
+      } catch (error) {
+        console.error("Error fetching questions:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuestions();
+  }, [examId]);
 
   const getResultLabel = () => {
     if (score !== null) {
@@ -48,10 +54,6 @@ const ExamResultPage = () => {
     if (newPage >= 0 && newPage < totalPages) {
       setCurrentPage(newPage);
     }
-  };
-
-  const toggleResults = () => {
-    setShowResults(!showResults);
   };
 
   const renderPagination = () => {
@@ -115,7 +117,7 @@ const ExamResultPage = () => {
               : "Not answered",
           correctAnswer: question.choices[question.correctAnswer],
           explanation: question.explanation,
-          knowledge: question.knowledge, // added knowledge property
+          knowledge: question.knowledge,
         });
       }
     });
@@ -141,7 +143,7 @@ const ExamResultPage = () => {
               : "Not answered",
           correctAnswer: question.choices[question.correctAnswer],
           explanation: question.explanation,
-          knowledge: question.knowledge, // added knowledge property
+          knowledge: question.knowledge,
         });
       }
     });
@@ -178,7 +180,7 @@ const ExamResultPage = () => {
               {getResultLabel()}
             </Typography>
 
-            <div className={`results-container ${showResults ? "show" : ""}`}>
+            <div className="results-container">
               <Typography variant="h5">Questions:</Typography>
               {currentQuestions.map((question, index) => (
                 <div key={index}>
@@ -222,28 +224,18 @@ const ExamResultPage = () => {
                 </div>
               ))}
             </div>
-            <div
-              className={`renderPagination-container ${
-                showResults ? "show" : ""
-              }`}
-            >
-              {showResults && renderPagination()}
+            <div className="renderPagination-container">
+              {renderPagination()}
             </div>
             <div className="pagination-container">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={toggleResults}
-              >
-                {showResults ? "Hide Results" : "View Results"}
+              <Button variant="contained" color="primary">
+                View Results
               </Button>
             </div>
-            <div className={`results-container ${showResults ? "show" : ""}`}>
-              {showResults && getKnowQuestions().length > 0 && (
+            <div className="results-container">
+              {getKnowQuestions().length > 0 && (
                 <div>
-                  <Typography variant="h5">
-                    {getIconForAnswer(true)}What You Know:
-                  </Typography>
+                  <Typography variant="h5">What You Know:</Typography>
                   {getKnowQuestions().map((question) => (
                     <div key={question.index}>
                       <Typography variant="subtitle1">
@@ -257,11 +249,9 @@ const ExamResultPage = () => {
                   ))}
                 </div>
               )}
-              {showResults && getReviewQuestions().length > 0 && (
+              {getReviewQuestions().length > 0 && (
                 <div>
-                  <Typography variant="h5">
-                    {getIconForAnswer(false)} What You Should Review:
-                  </Typography>
+                  <Typography variant="h5">What You Should Review:</Typography>
                   {getReviewQuestions().map((question) => (
                     <div key={question.index}>
                       <Typography variant="subtitle1">
