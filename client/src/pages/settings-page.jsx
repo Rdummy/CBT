@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function SettingsAdmin() {
-  return (
-    <div>Settings</div>
-  )
+  return <div>Settingssds</div>;
 }
 
-export default SettingsAdmin
+export default SettingsAdmin;

@@ -5,11 +5,13 @@ import NotesList from "../components/Create Content Components/NotesList";
 import ViewCarousel from "../components/Create Content Components/ViewCarousel";
 import Search from "../components/Create Content Components/Search";
 import "../assets/styles/create-content.css";
+import { useNavigate } from "react-router-dom";
 
 function CreateContent() {
   const [notes, setNotes] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [displayMode, setDisplayMode] = useState("notes");
+  const navigate = useNavigate();
 
   const addAnote = (title, description, imageUrl) => {
     const newNote = {
@@ -79,14 +81,16 @@ function CreateContent() {
 
       // Optionally, you can reset the notes state after saving
       setNotes([]);
+      navigate("/dashboard");
     } catch (error) {
-      console.error("Error saving content:", error);
+      console.error("Error saving content:", error.message);
+      // Handle the error gracefully, show a user-friendly message, etc.
     }
   };
 
   return (
     <div className="container">
-      <h1>CONTENT CREATOR</h1>
+      <h1>Create Content</h1>
       <div className="toggle-button">
         <button onClick={() => setDisplayMode("notes")}>Show Notes</button>
         <button onClick={() => setDisplayMode("carousel")}>Show Slides</button>

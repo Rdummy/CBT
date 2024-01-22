@@ -1,5 +1,6 @@
 .exam-result-container {
   height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -71,6 +72,7 @@
 .pagination-container {
   margin-top: 20px;
   margin-bottom: 20px;
+  
 }
 
 .results-container {
@@ -95,3 +97,7 @@
   transition: 2s ease-in-out;
   opacity: 1;
 }
+/* .buttonRetake {
+  width: "100px",
+  
+} */

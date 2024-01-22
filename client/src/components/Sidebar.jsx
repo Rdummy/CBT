@@ -18,7 +18,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import { MdDashboard } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { IoIosPeople } from "react-icons/io";
-import { SlGraph } from "react-icons/sl";
+import { SlFolderAlt, SlGraph } from "react-icons/sl";
 import { CiSettings } from "react-icons/ci";
 
 export default function Sidebar() {
@@ -28,6 +28,9 @@ export default function Sidebar() {
     switch (text) {
       case "Overview":
         navigate("/dashboard/overview");
+        break;
+      case "Create Content":
+        navigate("/dashboard/create-content");
         break;
       case "Examinations":
         navigate("/dashboard");
@@ -73,22 +76,25 @@ export default function Sidebar() {
           </Typography>
           <Divider />
           <List>
-            {["Overview", "Examinations", "Employees"].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton onClick={() => handleSidebarClick(text)}>
-                  <ListItemIcon className="sidebar--icons">
-                    {index === 0 && <SlGraph size={"1.5rem"} />}
-                    {index === 1 && <MdDashboard size={"1.5rem"} />}
-                    {index === 2 && <IoIosPeople size={"1.5rem"} />}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={text}
-                    style={{ fontWeight: "700" }}
-                    className="sidebar--text"
-                  />
-                </ListItemButton>
-              </ListItem>
-            ))}
+            {["Overview", "Create Content", "Examinations", "Employees"].map(
+              (text, index) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton onClick={() => handleSidebarClick(text)}>
+                    <ListItemIcon className="sidebar--icons">
+                      {index === 0 && <SlGraph size={"1.5rem"} />}
+                      {index === 1 && <SlFolderAlt size={"1.5rem"} />}
+                      {index === 2 && <MdDashboard size={"1.5rem"} />}
+                      {index === 3 && <IoIosPeople size={"1.5rem"} />}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={text}
+                      style={{ fontWeight: "700" }}
+                      className="sidebar--text"
+                    />
+                  </ListItemButton>
+                </ListItem>
+              )
+            )}
           </List>
           <Divider />
           <List>

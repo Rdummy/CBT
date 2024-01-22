@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card, CardContent, Box, Typography, Button } from "@mui/material";
 import QuestionChoice from "../components/ExamComponents/QuestionChoice.jsx";
-import ReturnDashboard from "../components/ReturnDashboard.jsx";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import axios from "axios";
 
@@ -15,7 +14,7 @@ const TakeExamPage = () => {
   const [score, setScore] = useState(null);
   const [shouldNavigate, setShouldNavigate] = useState(false);
   const [examData, setExamData] = useState(null);
-  const [showAnswer, setShowAnswer] = useState(false); // Added state to control answer display
+  const [showAnswer, setShowAnswer] = useState(false);
   const [hasMovedForward, setHasMovedForward] = useState(false);
   const [answerConfirmed, setAnswerConfirmed] = useState(false);
 
@@ -36,9 +35,27 @@ const TakeExamPage = () => {
     }
   }, [shouldNavigate, score, navigate, examId]);
 
+  // Disable browser's back button
+  useEffect(() => {
+    const disableBackButton = () => {
+      window.history.pushState(null, "", window.location.href);
+      window.onpopstate = function (event) {
+        window.history.pushState(null, "", window.location.href);
+      };
+    };
+
+    disableBackButton();
+
+    return () => {
+      // Cleanup function to re-enable back button when leaving the component
+      window.onpopstate = null;
+    };
+  }, []);
   const handleSelectChoice = (index) => {
-    setChosenAnswers({ ...chosenAnswers, [currentQuestionIndex]: index });
-    setShowAnswer(false); // Hide the answer when a choice is selected
+    if (!answerConfirmed) {
+      setChosenAnswers({ ...chosenAnswers, [currentQuestionIndex]: index });
+      setShowAnswer(false);
+    }
   };
 
   const prevQuestion = () => {
@@ -52,8 +69,8 @@ const TakeExamPage = () => {
 
     if (currentQuestionIndex < examData?.questions.length - 1) {
       setCurrentQuestionIndex(nextQuestionIndex);
-      setHasMovedForward(true); // Update the state when moving forward
-      setAnswerConfirmed(false); // Reset answer confirmation state
+      setHasMovedForward(true);
+      setAnswerConfirmed(false);
     } else {
       computeScore();
       setShouldNavigate(true);
@@ -62,8 +79,8 @@ const TakeExamPage = () => {
 
   const handleConfirmAnswer = () => {
     storeUserAnswers();
-    setShowAnswer(true); // Set showAnswer to true when confirming the answer
-    setAnswerConfirmed(true); // Set answer confirmation state
+    setShowAnswer(true);
+    setAnswerConfirmed(true);
   };
 
   const storeUserAnswers = () => {
@@ -106,7 +123,14 @@ const TakeExamPage = () => {
       chosenAnswers[currentQuestionIndex] !== null
     ) {
       return (
-        <div className={isCorrect ? "correct-answer" : "wrong-answer"}>
+        <div
+          style={{
+            fontSize: "1.5rem",
+            marginTop: "1rem",
+            marginBottom: "1rem",
+          }}
+          className={isCorrect ? "correct-answer" : "wrong-answer"}
+        >
           {isCorrect ? "Correct!" : "Wrong! The correct answer is: "}
           {currentQuestion.choices[currentQuestion.correctAnswer]}
         </div>
@@ -123,16 +147,27 @@ const TakeExamPage = () => {
       sx={{ width: "100%" }}
     >
       <div className="exam-question--header">
-        <ReturnDashboard />
         <h2 style={{ marginTop: "1rem" }}> {examData?.title} </h2>
         <span> Instructions: {examData?.instructions}</span>
       </div>
       <Card className="exam-card">
-        <CardContent>
+        <CardContent
+          style={{
+            fontSize: "1.5rem",
+          }}
+        >
           <div className="question--header">
             Question # {currentQuestionIndex + 1}
           </div>
-          <span>{examData?.questions[currentQuestionIndex]?.question}</span>
+          <span
+            style={{
+              fontSize: "1.5rem",
+              marginTop: "1rem",
+              marginBottom: "1rem",
+            }}
+          >
+            {examData?.questions[currentQuestionIndex]?.question}{" "}
+          </span>
           {examData?.questions[currentQuestionIndex]?.choices.map(
             (choice, index) => (
               <QuestionChoice
@@ -147,7 +182,11 @@ const TakeExamPage = () => {
           {displayAnswer()}
           <div
             className="question--footnote"
-            style={{ display: "flex", justifyContent: "space-between" }}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              fontSize: "1.5rem",
+            }}
           >
             {currentQuestionIndex > 0 ? (
               <Button
@@ -155,7 +194,7 @@ const TakeExamPage = () => {
                 variant="contained"
                 style={{
                   textTransform: "capitalize",
-                  opacity: hasMovedForward ? 0.5 : 1, // Set opacity when disabled
+                  opacity: hasMovedForward ? 0.5 : 1,
                 }}
                 onClick={prevQuestion}
                 disabled={hasMovedForward}
@@ -170,6 +209,7 @@ const TakeExamPage = () => {
               variant="contained"
               style={{ textTransform: "capitalize" }}
               onClick={handleConfirmAnswer}
+              disabled={answerConfirmed}
             >
               Confirm Answer
             </Button>
@@ -180,10 +220,10 @@ const TakeExamPage = () => {
                 variant="contained"
                 style={{
                   textTransform: "capitalize",
-                  opacity: !answerConfirmed ? 0.5 : 1, // Set opacity when disabled
+                  opacity: !answerConfirmed ? 0.5 : 1,
                 }}
                 onClick={handleSubmitAnswer}
-                disabled={!answerConfirmed} // Disable the button if answer is not confirmed
+                disabled={!answerConfirmed}
               >
                 Next &nbsp; <SlArrowRight size={"0.5rem"} />
               </Button>
@@ -195,6 +235,7 @@ const TakeExamPage = () => {
                 variant="contained"
                 style={{ textTransform: "capitalize" }}
                 onClick={handleSubmitAnswer}
+                disabled={!answerConfirmed}
               >
                 Submit
               </Button>

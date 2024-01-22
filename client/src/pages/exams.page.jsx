@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import axios from "axios";
 import {
   Container,
@@ -14,7 +15,7 @@ import {
   Pagination,
 } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
-// import examsData from "../models/exam-data";
+
 import ExamCard from "../components/ExamCard";
 import "../assets/styles/dashboard.css";
 
@@ -129,8 +130,12 @@ function ExamPage() {
       >
         {displayedExams.map((exam, index) => (
           <Grid item xs={3} key={`${exam.id}-${index}`}>
-            <div className="grid-item--wrapper" style={{ minHeight: "100%" }}>
-              <ExamCard key={`${exam.id}-${index}`} exam={exam} />
+            <div className="grid-item--wrapper">
+              <ExamCard
+                key={`${exam.id}-${index}`}
+                exam={exam}
+                style={{ minHeight: "300px" }}
+              />
             </div>
           </Grid>
         ))}

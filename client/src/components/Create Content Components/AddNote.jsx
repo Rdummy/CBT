@@ -4,7 +4,7 @@ import { useState } from "react";
 const AddNote = ({ handleAddnote }) => {
   const [noteTitle, setNoteTitle] = useState("");
   const [noteDesc, setNoteDesc] = useState("");
-  const [imagePreview, setImagePreview] = useState(""); // New state for image preview
+  const [imagePreview, setImagePreview] = useState("");
 
   const characterLimit = 200;
 
@@ -20,16 +20,27 @@ const AddNote = ({ handleAddnote }) => {
 
   const handleImgClick = (e) => {
     const file = e.target.files[0];
-    const url = URL.createObjectURL(file);
-    setImagePreview(url);
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setImagePreview(reader.result);
+      // Save the image data to localStorage
+      localStorage.setItem("imagePreview", reader.result);
+    };
+
+    reader.readAsDataURL(file);
   };
 
   const handleSaveClick = () => {
     if (noteTitle && noteDesc.trim().length > 0) {
-      handleAddnote(noteTitle, noteDesc, imagePreview);
+      // Retrieve the image data from localStorage
+      const storedImagePreview = localStorage.getItem("imagePreview");
+      handleAddnote(noteTitle, noteDesc, storedImagePreview);
       setNoteTitle("");
       setNoteDesc("");
       setImagePreview(""); // Clear the image preview
+      // Optionally, you may choose to keep the image data in localStorage
+      localStorage.removeItem("imagePreview");
     }
   };
 

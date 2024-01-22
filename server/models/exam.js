@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const slideSchema = new mongoose.Schema({
-  id: mongoose.Schema.Types.ObjectId,
   title: String,
   description: String,
   imageUrl: String,
@@ -16,7 +15,7 @@ const questionSchema = new mongoose.Schema({
 });
 
 const examSchema = new mongoose.Schema({
-  id: String,
+  id: { type: String, unique: true },
   title: String,
   logo: String,
   description: String,

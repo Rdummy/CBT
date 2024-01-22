@@ -12,14 +12,21 @@ import {
   Box,
   TextField,
   Grid,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import { Pagination } from "@mui/material";
 
-const SimpleTable = () => {
+const EmployeesAdmin = () => {
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
-  const rowsPerPage = 7;
+  const [deleteUserId, setDeleteUserId] = useState(null);
+  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const rowsPerPage = 5;
 
   useEffect(() => {
     // Fetch data from the database using Axios
@@ -33,14 +40,34 @@ const SimpleTable = () => {
       });
   }, []);
 
-  const handleEdit = (id) => {
-    // Implement edit functionality here
-    console.log(`Editing item with id ${id}`);
+  const handleDelete = (_id) => {
+    setDeleteUserId(_id);
+    setDeleteDialogOpen(true);
   };
 
-  const handleDelete = (id) => {
-    // Implement delete functionality here
-    setData(data.filter((item) => item.id !== id));
+  const handleDeleteConfirm = () => {
+    // Use Axios to send a DELETE request to the backend
+    axios
+      .delete(`http://localhost:3001/table/users/${deleteUserId}`)
+      .then((response) => {
+        // Update state only if the deletion is successful
+        if (response.status === 200) {
+          setData(data.filter((item) => item._id !== deleteUserId));
+        }
+        // Close the dialog
+        setDeleteDialogOpen(false);
+      })
+      .catch((error) => {
+        console.error("Error deleting user:", error);
+        // Close the dialog even if there's an error
+        setDeleteDialogOpen(false);
+      });
+  };
+
+  const handleDeleteCancel = () => {
+    // Close the dialog without deleting
+    setDeleteUserId(null);
+    setDeleteDialogOpen(false);
   };
 
   const filteredData = data.filter((row) =>
@@ -56,7 +83,12 @@ const SimpleTable = () => {
   };
 
   return (
-    <Grid container direction="column" spacing={2}>
+    <Grid
+      container
+      direction="column"
+      spacing={2}
+      style={{ marginTop: "10px" }}
+    >
       <Grid item>
         <TextField
           label="Search by name"
@@ -87,32 +119,22 @@ const SimpleTable = () => {
             </TableHead>
             <TableBody>
               {currentRows.map((row) => (
-                <TableRow key={row.id}>
+                <TableRow key={row._id}>
                   <TableCell component="th" scope="row">
-                    {row.id}
+                    {row._id}
                   </TableCell>
                   <TableCell>{row.username}</TableCell>
                   <TableCell align="left">{row.email}</TableCell>
                   <TableCell>{row.user_role}</TableCell>
                   <TableCell>{row.user_type}</TableCell>
                   <TableCell align="right">
-                    <Box display="flex" justifyContent="flex-end" gap={1}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => handleEdit(row.id)}
-                      >
-                        Edit
-                      </Button>
-
-                      <Button
-                        variant="contained"
-                        color="error"
-                        onClick={() => handleDelete(row.id)}
-                      >
-                        Delete
-                      </Button>
-                    </Box>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={() => handleDelete(row._id)}
+                    >
+                      Delete
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -128,8 +150,30 @@ const SimpleTable = () => {
           />
         </Box>
       </Grid>
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={isDeleteDialogOpen}
+        onClose={handleDeleteCancel}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Delete User</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this user?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="error" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Grid>
   );
 };
 
-export default SimpleTable;
+export default EmployeesAdmin;
