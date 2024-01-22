@@ -271,6 +271,7 @@ textarea:focus {
   top: 3rem;
   font-size: 2.5rem;
   font-weight: 600;
+  word-wrap: break-word;
 }
 
 .carousel-item-body {
@@ -282,7 +283,7 @@ textarea:focus {
   white-space: normal;
   color: #000000;
   word-wrap: break-word;
-  background-color: #a5a5a57e;
+  /* background-color: #a5a5a57e; */
   border-radius: 15px;
 }
 

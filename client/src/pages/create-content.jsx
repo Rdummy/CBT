@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import axios from "axios"; // Import Axios library
 import NotesList from "../components/Create Content Components/NotesList";
 import ViewCarousel from "../components/Create Content Components/ViewCarousel";
@@ -12,6 +13,7 @@ function CreateContent() {
 
   const addAnote = (title, description, imageUrl) => {
     const newNote = {
+      id: uuidv4(),
       title: title,
       description: description,
       imageUrl: imageUrl,
@@ -31,7 +33,8 @@ function CreateContent() {
           }
         : note
     );
-    setNotes(updatedNotes);
+
+    setNotes([...updatedNotes]); // Use spread operator to create a new array
   };
 
   const deleteNote = (id) => {
