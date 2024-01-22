@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, TextField } from "@mui/material";
+import { Button, Select, MenuItem, TextField, InputLabel } from "@mui/material";
 import axios from "axios";
 import NTS_Logo from "../../assets/images/NTS_Logo.png";
 
@@ -9,7 +9,7 @@ const RegistrationForm = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    confirmPassword: "", // Added confirmPassword field
+    confirmPassword: "",
     username: "",
     user_role: "",
     user_type: "",
@@ -24,7 +24,6 @@ const RegistrationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match");
       return;
@@ -36,7 +35,6 @@ const RegistrationForm = () => {
       await axios.post("http://localhost:3001/auth/signup", formData);
       alert("Registration Completed");
 
-      // Save user_type to local storage
       localStorage.setItem("user_type", formData.user_type);
       localStorage.setItem("username", formData.username);
 
@@ -51,9 +49,8 @@ const RegistrationForm = () => {
       setIsSubmitting(false);
       navigate("/");
     } catch (error) {
-      // Error handling remains the same as in your original code
-      // ...
       setIsSubmitting(false);
+      // Handle error
     }
   };
 
@@ -69,7 +66,6 @@ const RegistrationForm = () => {
             Sign Up
           </div>
           <div className="fields-wrapper" style={{ gap: "0.5rem" }}>
-            {/* TextField component is used for consistent styling */}
             <TextField
               fullWidth
               size="small"
@@ -106,24 +102,50 @@ const RegistrationForm = () => {
               value={formData.username}
               onChange={handleChange}
             />
-            <TextField
-              fullWidth
-              size="small"
-              label="Role"
-              name="user_role"
-              type="text"
-              value={formData.user_role}
-              onChange={handleChange}
-            />
-            <TextField
-              fullWidth
-              size="small"
-              label="User Type"
-              name="user_type"
-              type="text"
-              value={formData.user_type}
-              onChange={handleChange}
-            />
+            <div>
+              <InputLabel
+                htmlFor="user-role"
+                style={{ justifyContent: "left", display: "flex" }}
+              >
+                Role
+              </InputLabel>
+              <Select
+                fullWidth
+                size="small"
+                label="Role"
+                id="user-role"
+                name="user_role"
+                value={formData.user_role}
+                onChange={handleChange}
+              >
+                <MenuItem value="Manager">Manager</MenuItem>
+                <MenuItem value="Software Developer">
+                  Software Developer
+                </MenuItem>
+                <MenuItem value="Copy Editor">Copy Editor</MenuItem>
+                <MenuItem value="Pre Editor">Pre Editor</MenuItem>
+              </Select>
+            </div>
+            <div>
+              <InputLabel
+                htmlFor="user-type"
+                style={{ justifyContent: "left", display: "flex" }}
+              >
+                User Type
+              </InputLabel>
+              <Select
+                fullWidth
+                size="small"
+                label="User Type"
+                id="user-type"
+                name="user_type"
+                value={formData.user_type}
+                onChange={handleChange}
+              >
+                <MenuItem value="admin">Admin</MenuItem>
+                <MenuItem value="user">User</MenuItem>
+              </Select>
+            </div>
           </div>
           <Button type="submit" className="auth-button" disabled={isSubmitting}>
             Register

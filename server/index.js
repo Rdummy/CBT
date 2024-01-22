@@ -8,6 +8,7 @@ import { examTitleRouter } from "./routes/exam_title.js";
 import { takeExamRouter } from "./routes/take_exam.js";
 import { slideRouter } from "./routes/slides.js";
 import { resultRouter } from "./routes/result.js";
+import { examDetailsRouter } from "./routes/exam-details.js";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use("/exam", examTitleRouter);
 app.use("/exam/:examId", takeExamRouter);
 app.use("/create-content", slideRouter);
 app.use("/result", resultRouter);
+app.use("/exam-details", examDetailsRouter);
 
 mongoose.connect(
   "mongodb+srv://raineheartcajes:cbtexam@novatechset.pmauabk.mongodb.net/cbtdb?retryWrites=true&w=majority"

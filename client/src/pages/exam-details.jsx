@@ -30,7 +30,7 @@ function ExamDetailsPage() {
 
   const handleReviewClick = () => {
     navigate(`/dashboard/exams/${examId}/review`, {
-      state: { examId: examId },
+      state: { details: selectedExam },
     });
   };
 

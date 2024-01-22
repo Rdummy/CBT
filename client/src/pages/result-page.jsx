@@ -11,7 +11,7 @@ const ExamResultPage = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [questions, setQuestions] = useState([]);
-  const [storedAnswers, setStoredAnswers] = useState([]); // Add this line
+  const [storedAnswers, setStoredAnswers] = useState([]);
 
   const { score, examId } = useParams();
 
@@ -25,7 +25,7 @@ const ExamResultPage = () => {
         const response = await axios.get(
           `http://localhost:3001/result/${examId}/questions`
         );
-        setQuestions(response.data.questions); // Set questions state
+        setQuestions(response.data.questions);
       } catch (error) {
         console.error("Error fetching questions:", error);
       } finally {
@@ -36,18 +36,29 @@ const ExamResultPage = () => {
     fetchQuestions();
   }, [examId]);
 
+  // Disable browser's back button
+  useEffect(() => {
+    const disableBackButton = () => {
+      window.history.pushState(null, "", window.location.href);
+      window.onpopstate = function (event) {
+        window.history.pushState(null, "", window.location.href);
+      };
+    };
+
+    disableBackButton();
+
+    return () => {
+      // Cleanup function to re-enable back button when leaving the component
+      window.onpopstate = null;
+    };
+  }, []);
+
   const getResultLabel = () => {
     if (score !== null) {
       return parseFloat(score) >= 50 ? "PASSED" : "FAIL";
     } else {
       return "";
     }
-  };
-
-  const getIconForAnswer = (isCorrect, isKnowSection) => {
-    const icon = isCorrect ? "✓" : "✗";
-    const className = isCorrect ? "check-mark" : "cross-mark";
-    return <span className={className}>{icon}</span>;
   };
 
   const handlePageChange = (newPage) => {
@@ -155,19 +166,40 @@ const ExamResultPage = () => {
       <Toolbar
         className="exams-category--header"
         sx={{ justifyContent: "space-between" }}
-      ></Toolbar>
+      >
+        {/* <ReturnDashboard /> */}
+      </Toolbar>
       <div className="exam-result-content">
         <Card>
-          <ReturnDashboard />
+          {/* <ReturnDashboard /> */}
           <CardContent>
-            <Typography variant="h4" gutterBottom>
+            <Typography
+              variant="h4"
+              gutterBottom
+              style={{
+                textAlign: "center",
+                fontSize: "3.5rem",
+              }}
+            >
               Exam Result
             </Typography>
 
-            <Typography variant="h6">
+            <Typography
+              variant="h6"
+              style={{
+                textAlign: "center",
+                fontSize: "3.5rem",
+                fontWeight: "bold",
+              }}
+            >
               Your Score: {score !== undefined ? `${score}%` : "Calculating..."}
             </Typography>
             <Typography
+              style={{
+                textAlign: "center",
+                fontSize: "3.5rem",
+                fontWeight: "bold",
+              }}
               variant="h6"
               className={`result-label ${
                 score !== undefined
@@ -183,59 +215,36 @@ const ExamResultPage = () => {
             <div className="results-container">
               <Typography variant="h5">Questions:</Typography>
               {currentQuestions.map((question, index) => (
-                <div key={index}>
-                  <Typography variant="subtitle1">
-                    Question {offset + index + 1}: {question.question}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    className={`your-answer ${
-                      storedAnswers &&
-                      storedAnswers[offset + index] !== undefined &&
-                      question.choices
-                        ? storedAnswers[offset + index] ===
-                          question.correctAnswer
-                          ? "correct"
-                          : "incorrect"
-                        : ""
-                    }`}
-                  >
-                    Your Answer:{" "}
-                    {storedAnswers &&
-                    storedAnswers[offset + index] !== undefined &&
-                    question.choices
-                      ? question.choices[storedAnswers[offset + index]]
-                      : "Not answered"}
-                    {getIconForAnswer(
-                      storedAnswers &&
-                        storedAnswers[offset + index] !== undefined
-                        ? storedAnswers[offset + index] ===
-                            question.correctAnswer
-                        : false
-                    )}
-                  </Typography>
-                  <Typography variant="body1">
-                    Correct Answer: {question.choices[question.correctAnswer]}
-                  </Typography>
-                  <Typography variant="body1">
-                    Explanation: {question.explanation}
-                  </Typography>
-                  <br />
-                </div>
+                <div key={index}>{/* ... (existing code) */}</div>
               ))}
             </div>
             <div className="renderPagination-container">
               {renderPagination()}
             </div>
             <div className="pagination-container">
-              <Button variant="contained" color="primary">
-                View Results
-              </Button>
+              {getResultLabel() === "FAIL" && (
+                <Button
+                  className="buttonRetake"
+                  href="/dashboard/exams/659cc4846c0a7bfdfb291c7a/"
+                  variant="contained"
+                  color="primary"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    size: "large",
+                  }}
+                >
+                  Retake Exam
+                </Button>
+              )}
             </div>
             <div className="results-container">
               {getKnowQuestions().length > 0 && (
                 <div>
-                  <Typography variant="h5">What You Know:</Typography>
+                  <Typography var iant="h5">
+                    What You Know:
+                  </Typography>
                   {getKnowQuestions().map((question) => (
                     <div key={question.index}>
                       <Typography variant="subtitle1">
@@ -264,6 +273,25 @@ const ExamResultPage = () => {
                     </div>
                   ))}
                 </div>
+              )}
+            </div>
+            <div className="pagination-container">
+              {getResultLabel() === "PASSED" && (
+                <Button
+                  className="buttonReturnDashboard"
+                  href="/dashboard"
+                  variant="contained"
+                  color="primary"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    size: "large",
+                    marginTop: "20px", // Add margin to move the button to the bottom
+                  }}
+                >
+                  Return Dashboard
+                </Button>
               )}
             </div>
           </CardContent>

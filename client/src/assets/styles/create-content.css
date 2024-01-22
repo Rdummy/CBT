@@ -53,9 +53,9 @@ h1 {
   cursor: pointer;
   border-radius: 5px;
   border: 1px;
-  background-color: #e67569;
+  background-color: #e71e4a;
   font-family: "Poppins", sans-serif;
-  color: #000;
+  color: #f2eaea;
 }
 
 .search {
@@ -139,7 +139,7 @@ textarea:focus {
 }
 
 .save {
-  background-color: #4caf50;
+  background-color: #e71e4a;
   color: #fff;
   padding: 8px 16px;
   border: none;
