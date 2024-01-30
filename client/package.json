@@ -11,11 +11,13 @@
   },
   "dependencies": {
     "@coreui/react": "^4.11.1",
+    "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@fontsource/inter": "^5.0.16",
     "@fontsource/lato": "^5.0.18",
     "@hookform/resolvers": "^3.3.2",
     "@mui/icons-material": "^5.14.19",
+    "@mui/joy": "^5.0.0-beta.24",
     "@mui/material": "^5.14.20",
     "@mui/styled-engine-sc": "^6.0.0-alpha.7",
     "@mui/x-charts": "^6.18.7",

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Navbar from "../components/Navbar";
 import "../assets/styles/dashboard.css";
 import { Outlet } from "react-router-dom";
@@ -8,13 +9,30 @@ function Dashboard() {
   const [userType, setUserType] = useState("");
 
   useEffect(() => {
-    // Retrieve user_type from local storage
-    const storedUserType = localStorage.getItem("user_type");
-    setUserType(storedUserType);
+    const fetchUserType = async () => {
+      try {
+        const token = localStorage.getItem("token"); // Assuming you store the token in localStorage
+        const response = await axios.get(
+          "http://localhost:3001/auth/user_type",
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+
+        setUserType(response.data.user_type);
+      } catch (error) {
+        console.error("Error fetching user type:", error);
+        // Handle error, e.g., redirect to login page
+      }
+    };
+
+    fetchUserType();
   }, []);
 
   const shouldRenderSidebar = () => {
-    return userType === "admin"; // Render Sidebar if user_type is "admin"
+    return userType === "admin";
   };
 
   return (

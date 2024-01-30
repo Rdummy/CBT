@@ -13,6 +13,7 @@ const RegistrationForm = () => {
     username: "",
     user_role: "",
     user_type: "",
+    department: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -35,8 +36,8 @@ const RegistrationForm = () => {
       await axios.post("http://localhost:3001/auth/signup", formData);
       alert("Registration Completed");
 
-      localStorage.setItem("user_type", formData.user_type);
-      localStorage.setItem("username", formData.username);
+      // localStorage.setItem("user_type", formData.user_type);
+      // localStorage.setItem("username", formData.username);
 
       setFormData({
         email: "",
@@ -45,6 +46,7 @@ const RegistrationForm = () => {
         username: "",
         user_role: "",
         user_type: "",
+        department: "",
       });
       setIsSubmitting(false);
       navigate("/");
@@ -144,6 +146,28 @@ const RegistrationForm = () => {
               >
                 <MenuItem value="admin">Admin</MenuItem>
                 <MenuItem value="user">User</MenuItem>
+              </Select>
+            </div>
+            <div>
+              <InputLabel
+                htmlFor="user-type"
+                style={{ justifyContent: "left", display: "flex" }}
+              >
+                Department
+              </InputLabel>
+              <Select
+                fullWidth
+                size="small"
+                label="Department"
+                id="department"
+                name="department"
+                value={formData.department}
+                onChange={handleChange}
+              >
+                <MenuItem value="Technology">Technology</MenuItem>
+                <MenuItem value="Production">Production</MenuItem>
+                <MenuItem value="HR">HR</MenuItem>
+                <MenuItem value="Quality">Quality</MenuItem>
               </Select>
             </div>
           </div>

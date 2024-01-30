@@ -27,7 +27,7 @@ import CreateContent from "./pages/create-content.jsx";
 import OverviewAdmin from "./pages/overview-page.jsx";
 import SettingsAdmin from "./pages/settings-page.jsx";
 import EmployeesAdmin from "./pages/employees-admin.jsx";
-import ForgotPassword from "./components/Forms/ForgotForm.jsx";
+import Forgot from "./pages/forgot.page.jsx";
 import CreateContentPage from "./pages/content.page.jsx";
 // import ReviewExamPage1 from "./pages/review-exam1.jsx";
 
@@ -44,7 +44,7 @@ function CBTRoute() {
     },
     {
       path: "/forgot",
-      element: <ForgotPassword />,
+      element: <Forgot />,
     },
     {
       path: "/dashboard",
@@ -62,8 +62,8 @@ function CBTRoute() {
           element: <OverviewAdmin />,
         },
         {
-          path: "/dashboard/settings",
-          element: <SettingsAdmin />,
+          path: "/dashboard/settings/:username",
+          element: <SettingsAdmin username />,
         },
         {
           path: "/dashboard/create-content",

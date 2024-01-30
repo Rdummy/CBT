@@ -13,12 +13,32 @@
     justify-content: center;
     box-shadow: 2px 0px 3px 3px rgba(0, 0, 0, 0.2);
 }
+.forgot-page--hero{
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    box-shadow: 2px 0px 3px 3px rgba(0, 0, 0, 0.2);
+}
 
 .login-form-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     text-shadow: 2px 0px 3px 3px rgba(0, 0, 0, 0.5);
+}
+.forgot-form-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 2px 0px 3px 3px rgba(0, 0, 0, 0.5);
+}
+.forgot-page-wrapper {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    background-color: #fff;
+
+    width: 100vw;
+    height: 100vh;
 }
 
 /* Login Form css */

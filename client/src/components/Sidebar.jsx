@@ -14,7 +14,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-
+import { useParams } from "react-router-dom";
 import { MdDashboard } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { IoIosPeople } from "react-icons/io";
@@ -23,7 +23,7 @@ import { CiSettings } from "react-icons/ci";
 
 export default function Sidebar() {
   const navigate = useNavigate();
-
+  const { username } = useParams();
   const handleSidebarClick = (text) => {
     switch (text) {
       case "Overview":
@@ -44,8 +44,9 @@ export default function Sidebar() {
   };
 
   const handleSettingsClick = () => {
-    navigate("/dashboard/settings");
+    navigate(`/dashboard/settings/${username}`);
   };
+
   return (
     <Box sx={{ display: "flex", width: "100%" }}>
       <Drawer

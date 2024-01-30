@@ -59,8 +59,10 @@ const LoginForm = () => {
 
       console.log("Login successful:", response.data);
 
-      localStorage.setItem("userName", data.Username);
+      // Save the token to localStorage
+      localStorage.setItem("token", response.data.token);
 
+      // Redirect to the dashboard
       navigate("/dashboard");
     } catch (error) {
       console.error("Login error:", error.message);
