@@ -1,0 +1,234 @@
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+h1 {
+  text-align: center;
+}
+h2 {
+  margin-top: -20px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.add-questions {
+  margin-bottom: 10px;
+}
+
+.add-questions div {
+  cursor: pointer;
+}
+
+.add-questions div:hover {
+  background-color: #e20000;
+}
+
+.add-questions label {
+  margin-left: 5px;
+}
+
+.display-questions {
+  margin-top: 20px;
+}
+
+.display-questions div {
+  margin-bottom: 10px;
+}
+
+.display-questions label {
+  margin-left: 5px;
+}
+
+.error-message {
+  margin-top: 10px;
+  font-weight: bolder;
+  font-size: medium;
+  -webkit-text-fill-color: rgb(214, 4, 4);
+  -webkit-text-stroke: 0.3px rgb(73, 0, 0);
+}
+.create-exam-container {
+  border-radius: 20px;
+  min-width: 300px;
+  margin: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-left: 100px;
+  padding-right: 100px;
+  background-color: #b37c4a;
+}
+
+.question-input {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  transition: ease-in-out, width 0.35s ease-in-out;
+}
+
+.choices-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.choice-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: rgb(168, 168, 168);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.choice-item.selected {
+  background-color: #e71e4abe;
+}
+.editingText {
+  margin: 5px 5px 0;
+}
+.edit-questionbtn {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px;
+  margin: 5px;
+}
+
+.assignment-section {
+  font-family: Helvetica;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* ///////////////////////////////////////////////////// */
+/* Button CSS */
+/* ///////////////////////////////////////////////////// */
+
+button {
+  appearance: none;
+  background-color: transparent;
+  border: 2px solid #1a1a1a;
+  border-radius: 15px;
+  box-sizing: border-box;
+  color: #3b3b3b;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Roobert, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 16px;
+  font-weight: 600;
+  line-height: normal;
+  margin-top: 0px;
+  margin-bottom: 30px;
+  margin-left: 10px;
+  margin-right: 10px;
+  min-height: 60px;
+  min-width: 0;
+  outline: none;
+  padding: 16px 24px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 300ms cubic-bezier(0.23, 1, 0.32, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: auto;
+  will-change: transform;
+}
+
+button:disabled {
+  pointer-events: none;
+  color: #dddddd;
+  background-color: #dddddd81;
+  opacity: 1;
+}
+
+button:hover {
+  color: #fff;
+  background-color: #1a1a1a;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
+}
+
+button:active {
+  box-shadow: none;
+  transform: translateY(0);
+}
+
+/*/////////////////////////////////////////////////
+input CSS
+////////////////////////////////////////////////*/
+:focus {
+  outline: none;
+}
+
+/* necessary to give position: relative to parent. */
+input[type="text"] {
+  font: 15px/24px "Muli", sans-serif;
+  color: #333;
+  width: 50%;
+  box-sizing: border-box;
+  letter-spacing: 1px;
+}
+
+.input-div {
+  margin-top: 10px;
+  margin-bottom: 20px;
+
+  position: relative;
+}
+/* necessary to give position: relative to parent. */
+input[type="text"] {
+  font: 15px/24px "Lato", Arial, sans-serif;
+  color: #333;
+  width: 100%;
+  box-sizing: border-box;
+  letter-spacing: 1px;
+}
+
+.input-effect {
+  border: 0;
+  padding: 5px 0 7px;
+  border: 1px solid transparent;
+  border-bottom-color: #ccc;
+  transition: 0.4s;
+}
+
+.input-effect:focus {
+  padding: 5px 14px 7px;
+  transition: 0.4s;
+}
+
+.input-effect ~ .focus-border {
+  position: absolute;
+  height: 36px;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  transition: 0.4s;
+}
+.input-effect:focus ~ .focus-border {
+  width: 100%;
+  transition: 0.4s;
+  border: 5px solid #398d3b;
+}
+select {
+  padding: 10px;
+  background: #2d2f31;
+  color: white;
+  font-size: 1.2em;
+  font-variant: small-caps;
+  cursor: pointer;
+  transition: height 2s ease-in-out;
+  margin-left: 10px;
+  /* display: block; */
+}
+.assign-options {
+  clear: both;
+  width: 100%;
+  height: 0px;
+  overflow: hidden;
+  text-align: center;
+  transition: height 2s ease;
+}
