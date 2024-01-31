@@ -23,7 +23,7 @@ import { CiSettings } from "react-icons/ci";
 
 export default function Sidebar() {
   const navigate = useNavigate();
-  const { username } = useParams();
+  const { userId } = useParams();
   const handleSidebarClick = (text) => {
     switch (text) {
       case "Overview":
@@ -44,7 +44,10 @@ export default function Sidebar() {
   };
 
   const handleSettingsClick = () => {
-    navigate(`/dashboard/settings/${username}`);
+    navigate(`/dashboard/settings`),
+      {
+        state: { userId: userId },
+      };
   };
 
   return (
