@@ -208,7 +208,6 @@ export default function Settings() {
                   />
                 </FormControl>
               </div>
-
               <div>
                 <FormControl sx={{ display: { sm: "contents" } }}>
                   <FormLabel>Department</FormLabel>
