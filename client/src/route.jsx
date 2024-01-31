@@ -22,7 +22,7 @@ import ResultExamPage from "./pages/result-page.jsx";
 import Navbar from "./components/Navbar.jsx";
 import PrivateRoute from "./components/Auth/PrivateRoute.jsx";
 import { AuthProvider, useAuth } from "./contexts/auth-context.jsx";
-import CreateExam from "./pages/create-content.jsx";
+import CreateExam from "./pages/CreateExam.jsx";
 import CreateContent from "./pages/create-content.jsx";
 import OverviewAdmin from "./pages/overview-page.jsx";
 import SettingsAdmin from "./pages/settings-page.jsx";
