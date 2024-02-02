@@ -1,5 +1,5 @@
-// Unchanged imports
-import * as React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
@@ -13,44 +13,86 @@ import Typography from "@mui/joy/Typography";
 import Card from "@mui/joy/Card";
 import CardActions from "@mui/joy/CardActions";
 import CardOverflow from "@mui/joy/CardOverflow";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+
 import "../assets/styles/settings.css";
 
-// Modified component
 export default function Settings() {
-  const { username } = useParams();
-  const [userData, setUserData] = React.useState({
+  const [userData, setUserData] = useState({
     username: "",
-    user_role: "",
     user_type: "",
+    user_role: "",
     email: "",
     department: "",
   });
 
-  React.useEffect(() => {
-    if (username) {
-      const fetchUserProfile = async () => {
-        try {
-          const response = await axios.get(
-            `http://localhost:3001/settings/user-profile/${username}`
-          );
-          setUserData(response.data);
-        } catch (error) {
-          console.error("Error fetching user profile:", error);
-        }
-      };
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
-      fetchUserProfile();
+  useEffect(() => {
+    // Fetch user data using axios
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          throw new Error("Token not found");
+        }
+
+        const response = await axios.get(
+          "http://localhost:3001/settings/profile",
+          {
+            headers: { Authorization: token },
+          }
+        );
+
+        const { username, user_type, user_role, email, department } =
+          response.data;
+
+        setUserData({ username, user_type, user_role, email, department });
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchUserData();
+  }, []); // Empty dependency array means this effect runs only once on mount
+
+  const handleSubmit = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("Token not found");
+      }
+
+      const response = await axios.put(
+        "http://localhost:3001/settings/updateUserData",
+        userData,
+        {
+          headers: { Authorization: token },
+        }
+      );
+
+      console.log("User data updated successfully:", response.data);
+
+      // Open the snackbar on successful submission
+      setOpenSnackbar(true);
+    } catch (error) {
+      console.error("Error updating user data:", error);
     }
-  }, [username]);
+  };
+
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  };
 
   return (
     <Box
       className="settings-container"
-      sx={{ width: "100%", height: "50vh", marginTop: "4rem" }}
+      sx={{ width: "100%", height: "50vh", marginTop: "6rem" }}
     >
       <Stack
         className="settings-stack"
@@ -64,7 +106,13 @@ export default function Settings() {
           my: 4,
         }}
       >
-        <Card sx={{ width: "60vw", height: "60vh" }}>
+        <Card
+          sx={{
+            width: "60vw",
+            height: "100vh",
+            display: "flex",
+          }}
+        >
           <Box sx={{ mb: 1 }}>
             <Typography
               level="title-md"
@@ -118,7 +166,9 @@ export default function Settings() {
                     size="lg"
                     type="text"
                     value={userData.username}
-                    readOnly
+                    onChange={(e) =>
+                      setUserData({ ...userData, username: e.target.value })
+                    }
                   />
                 </FormControl>
               </Stack>
@@ -129,7 +179,9 @@ export default function Settings() {
                     size="lg"
                     type="text"
                     value={userData.user_role}
-                    readOnly
+                    onChange={(e) =>
+                      setUserData({ ...userData, user_role: e.target.value })
+                    }
                   />
                 </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
@@ -139,7 +191,9 @@ export default function Settings() {
                     type="email"
                     startDecorator={<EmailRoundedIcon />}
                     value={userData.email}
-                    readOnly
+                    onChange={(e) =>
+                      setUserData({ ...userData, email: e.target.value })
+                    }
                   />
                 </FormControl>
               </Stack>
@@ -149,8 +203,8 @@ export default function Settings() {
                   <Input
                     size="lg"
                     type="text"
-                    value={userData.user_type}
                     readOnly
+                    value={userData.user_type}
                   />
                 </FormControl>
               </div>
@@ -160,8 +214,8 @@ export default function Settings() {
                   <Input
                     size="lg"
                     type="text"
-                    value={userData.department}
                     readOnly
+                    value={userData.department}
                   />
                 </FormControl>
               </div>
@@ -177,13 +231,28 @@ export default function Settings() {
               <Button size="sm" variant="outlined" color="neutral">
                 Cancel
               </Button>
-              <Button size="sm" variant="solid">
-                Save
+              <Button size="sm" variant="solid" onClick={handleSubmit}>
+                Submit
               </Button>
             </CardActions>
           </CardOverflow>
         </Card>
       </Stack>
+
+      {/* Snackbar for showing success message */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          User data updated successfully!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

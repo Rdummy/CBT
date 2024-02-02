@@ -62,8 +62,8 @@ function CBTRoute() {
           element: <OverviewAdmin />,
         },
         {
-          path: "/dashboard/settings/:username",
-          element: <SettingsAdmin username />,
+          path: "/dashboard/settings",
+          element: <SettingsAdmin />,
         },
         {
           path: "/dashboard/create-content",
