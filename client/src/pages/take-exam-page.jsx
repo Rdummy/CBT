@@ -4,7 +4,8 @@ import { Card, CardContent, Box, Typography, Button } from "@mui/material";
 import QuestionChoice from "../components/ExamComponents/QuestionChoice.jsx";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import axios from "axios";
-
+import CountdownTimer from "../components/CountDownTimer";
+import "../assets/styles/take-exam.css";
 const TakeExamPage = () => {
   const navigate = useNavigate();
   const { examId } = useParams();
@@ -242,6 +243,9 @@ const TakeExamPage = () => {
             )}
           </div>
         </CardContent>
+        <div>
+          <CountdownTimer initialTime={30} />
+        </div>
       </Card>
     </Box>
   );
