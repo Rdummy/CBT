@@ -117,11 +117,11 @@ function ExamPage() {
         <Typography className="exams-category--header--text">
           Examinations
         </Typography>
-        <div>
+        {/* <div>
           <Button variant="contained" color="primary" onClick={handleOpenModal}>
             Add Exam
           </Button>
-        </div>
+        </div> */}
       </Toolbar>
       <Grid
         container
