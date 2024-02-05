@@ -96,7 +96,7 @@ function ContentDetailsPage() {
   return (
     <>
       <div className="exam-details--wrapper">
-        <Card sx={{ m: 5, height: "80vh" }}>
+        <Card sx={{ m: 3, height: "80vh" }}>
           <CardContent>
             <Box style={{ display: "flex", justifyContent: "space-between" }}>
               <ReturnDashboard />

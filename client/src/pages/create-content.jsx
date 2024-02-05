@@ -92,7 +92,14 @@ function CreateContent() {
   return (
     // <div className="exam-details--wrapper">
     <Card sx={{ height: "100%", width: "70vw", m: 2 }}>
-      <h2 style={{ textAlign: "center", fontWeight: "bold", fontSize: "30px" }}>
+      <h2
+        style={{
+          textAlign: "center",
+          fontWeight: "bold",
+          fontSize: "50px",
+          marginTop: "10px",
+        }}
+      >
         Create Content
       </h2>
       <div className="toggle-button">
