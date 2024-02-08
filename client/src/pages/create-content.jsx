@@ -6,6 +6,7 @@ import ViewCarousel from "../components/Create Content Components/ViewCarousel";
 import Search from "../components/Create Content Components/Search";
 import "../assets/styles/create-content.css";
 import { useNavigate } from "react-router-dom";
+import Card from "@mui/material/Card";
 
 function CreateContent() {
   const [notes, setNotes] = useState([]);
@@ -89,18 +90,44 @@ function CreateContent() {
   };
 
   return (
-    <div className="container">
-      <h1>Create Content</h1>
+    // <div className="exam-details--wrapper">
+    <Card sx={{ height: "100%", width: "70vw", m: 2 }}>
+      <h2
+        style={{
+          textAlign: "center",
+          fontWeight: "bold",
+          fontSize: "50px",
+          marginTop: "10px",
+        }}
+      >
+        Create Content
+      </h2>
       <div className="toggle-button">
-        <button onClick={() => setDisplayMode("notes")}>Show Notes</button>
-        <button onClick={() => setDisplayMode("carousel")}>Show Slides</button>
-        <button onClick={saveContent}>Save Content</button>
+        <button
+          style={{ height: "60px", width: "150px" }}
+          onClick={() => setDisplayMode("notes")}
+        >
+          Show Notes
+        </button>
+        <button
+          style={{ height: "60px", width: "150px" }}
+          onClick={() => setDisplayMode("carousel")}
+        >
+          Show Slides
+        </button>
+        <button
+          style={{ height: "60px", width: "150px" }}
+          onClick={saveContent}
+        >
+          Save Content
+        </button>
       </div>
 
       <Search handleSearchNote={setSearchText} />
 
       {displayMode === "notes" ? (
         <NotesList
+          sx={{ marginBottom: "20px" }}
           noted={notes.filter(
             (note) =>
               note.title.toLowerCase().includes(searchText) ||
@@ -113,7 +140,8 @@ function CreateContent() {
       ) : (
         <ViewCarousel notes={notes} />
       )}
-    </div>
+    </Card>
+    // </div>
   );
 }
 

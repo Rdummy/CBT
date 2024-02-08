@@ -85,7 +85,7 @@ const LoginForm = () => {
             <div className="form-label">Username</div>
             <input
               {...register("Username")}
-              placeholder="Username"
+              placeholder="Please enter Username"
               className={`form-field ${errors.Username && "error"}`}
             />
             <div className="error-message">{errors.Username?.message}</div>
@@ -93,7 +93,7 @@ const LoginForm = () => {
             <input
               {...register("password")}
               type="password"
-              placeholder="Password"
+              placeholder="Please enter Password"
               className={`form-field ${errors.password && "error"}`}
             />
             <div className="error-message">{errors.password?.message}</div>

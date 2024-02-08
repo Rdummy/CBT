@@ -26,7 +26,7 @@ const EmployeesAdmin = () => {
   const [page, setPage] = useState(1);
   const [deleteUserId, setDeleteUserId] = useState(null);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const rowsPerPage = 5;
+  const rowsPerPage = 4;
 
   useEffect(() => {
     // Fetch data from the database using Axios

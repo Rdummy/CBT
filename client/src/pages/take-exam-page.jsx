@@ -145,7 +145,7 @@ const TakeExamPage = () => {
     <Box
       className="take-exam-content--wrapper"
       boxShadow={2}
-      sx={{ width: "700px" }}
+      sx={{ width: "100%" }}
     >
       <div className="exam-question--header">
         <h2 style={{ marginTop: "1rem" }}> {examData?.title} </h2>
@@ -243,9 +243,6 @@ const TakeExamPage = () => {
             )}
           </div>
         </CardContent>
-        <div>
-          <CountdownTimer initialTime={30} />
-        </div>
       </Card>
     </Box>
   );

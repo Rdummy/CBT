@@ -29,6 +29,8 @@ import SettingsAdmin from "./pages/settings-page.jsx";
 import EmployeesAdmin from "./pages/employees-admin.jsx";
 import Forgot from "./pages/forgot.page.jsx";
 import CreateContentPage from "./pages/content.page.jsx";
+import ContentDetailsPage from "./pages/content-details.jsx";
+import Assign from "./pages/Assign.jsx";
 // import ReviewExamPage1 from "./pages/review-exam1.jsx";
 
 function CBTRoute() {
@@ -74,10 +76,22 @@ function CBTRoute() {
           element: <EmployeesAdmin />,
         },
         {
-          path: "/dashboard/exams/:examId/create-content",
+          path: "/dashboard/create-content/:examId/create-review",
           element: <CreateContent />,
         },
+        {
+          path: "/dashboard/create-content/:examId/create-exam",
+          element: <CreateExam />,
+        },
+        {
+          path: "/dashboard/create-content/:examId/assign",
+          element: <Assign />,
+        },
         { path: "/dashboard/exams/:examId", element: <ExamDetailsPage /> },
+        {
+          path: "/dashboard/create-content/:examId",
+          element: <ContentDetailsPage />,
+        },
         {
           path: "/dashboard/exams/:examId/take-exam",
           element: <TakeExamPage />,

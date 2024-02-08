@@ -53,12 +53,12 @@ h2 {
 .create-exam-container {
   border-radius: 20px;
   min-width: 300px;
-  margin: 30px;
+  margin: 10px;
   padding-top: 30px;
   padding-bottom: 30px;
   padding-left: 100px;
   padding-right: 100px;
-  background-color: #e71e4a;
+  background-color: #b37c4a;
 }
 
 .question-input {
@@ -146,7 +146,7 @@ button:disabled {
 
 button:hover {
   color: #fff;
-  background-color: #1a1a1a;
+  background-color: #e71e4a;
   box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
   transform: translateY(-2px);
 }
@@ -166,7 +166,7 @@ input CSS
 /* necessary to give position: relative to parent. */
 input[type="text"] {
   font: 15px/24px "Muli", sans-serif;
-  color: #333;
+  color: #0f0b0b;
   width: 50%;
   box-sizing: border-box;
   letter-spacing: 1px;
@@ -175,13 +175,13 @@ input[type="text"] {
 .input-div {
   margin-top: 10px;
   margin-bottom: 20px;
-
+  /* background-color: #ccc; */
   position: relative;
 }
 /* necessary to give position: relative to parent. */
 input[type="text"] {
   font: 15px/24px "Lato", Arial, sans-serif;
-  color: #333;
+  color: #0c0b0b;
   width: 100%;
   box-sizing: border-box;
   letter-spacing: 1px;
@@ -209,9 +209,9 @@ input[type="text"] {
   transition: 0.4s;
 }
 .input-effect:focus ~ .focus-border {
-  width: 100%;
+  width: 100%;  
   transition: 0.4s;
-  border: 5px solid #398d3b;
+  border: 5px solid #e71e4a;
 }
 select {
   padding: 10px;

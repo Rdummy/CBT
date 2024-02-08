@@ -169,6 +169,9 @@ export default function Settings() {
                     onChange={(e) =>
                       setUserData({ ...userData, username: e.target.value })
                     }
+                    sx={{
+                      color: "black",
+                    }}
                   />
                 </FormControl>
               </Stack>
@@ -182,6 +185,9 @@ export default function Settings() {
                     onChange={(e) =>
                       setUserData({ ...userData, user_role: e.target.value })
                     }
+                    sx={{
+                      color: "black",
+                    }}
                   />
                 </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
@@ -205,6 +211,9 @@ export default function Settings() {
                     type="text"
                     readOnly
                     value={userData.user_type}
+                    sx={{
+                      color: "black",
+                    }}
                   />
                 </FormControl>
               </div>
@@ -216,6 +225,9 @@ export default function Settings() {
                     type="text"
                     readOnly
                     value={userData.department}
+                    sx={{
+                      color: "black",
+                    }}
                   />
                 </FormControl>
               </div>

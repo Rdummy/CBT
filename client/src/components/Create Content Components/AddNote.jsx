@@ -6,7 +6,10 @@ const AddNote = ({ handleAddnote }) => {
   const [noteDesc, setNoteDesc] = useState("");
   const [imagePreview, setImagePreview] = useState("");
 
-  const characterLimit = 200;
+  const characterLimit = 1000;
+  const maxImageSizeMB = 5; // Adjust the maximum image size as needed
+  const maxImageWidth = 400; // Adjust the maximum displayed image width as needed
+  const maxImageHeight = 200; // Adjust the maximum displayed image height as needed
 
   const handleChangetitle = (event) => {
     setNoteTitle(event.target.value);
@@ -23,9 +26,14 @@ const AddNote = ({ handleAddnote }) => {
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      setImagePreview(reader.result);
-      // Save the image data to localStorage
-      localStorage.setItem("imagePreview", reader.result);
+      const imageSizeInMB = file.size / (1024 * 1024); // Convert to MB
+      if (imageSizeInMB <= maxImageSizeMB) {
+        setImagePreview(reader.result);
+        // Save the image data to localStorage
+        localStorage.setItem("imagePreview", reader.result);
+      } else {
+        alert(`Image size exceeds the maximum limit of ${maxImageSizeMB} MB.`);
+      }
     };
 
     reader.readAsDataURL(file);
@@ -48,6 +56,11 @@ const AddNote = ({ handleAddnote }) => {
     <div className="new">
       {/* title text area */}
       <textarea
+        style={{
+          width: "100%",
+
+          display: "flex",
+        }}
         className="add-title"
         rows="8"
         cols="10"
@@ -63,7 +76,17 @@ const AddNote = ({ handleAddnote }) => {
         accept="image/*"
         onChange={handleImgClick}
       />
-      {imagePreview && <img src={imagePreview} alt="Preview" />}
+      {imagePreview && (
+        <img
+          src={imagePreview}
+          alt="Preview"
+          style={{
+            marginLeft: "10px",
+            maxWidth: `${maxImageWidth}px`,
+            maxHeight: `${maxImageHeight}px`,
+          }}
+        />
+      )}
 
       {/* description text area */}
       <textarea
@@ -73,6 +96,7 @@ const AddNote = ({ handleAddnote }) => {
         placeholder="Type to add a note..."
         value={noteDesc}
         onChange={handleChangeDesc}
+        style={{ height: "120px" }}
       ></textarea>
 
       <div className="note-footer footer">

@@ -80,11 +80,11 @@ export default function Navbar() {
         <Toolbar>
           <img src={NTS_Logo} className="logo" alt="NTS Logo" />
           <Typography
-            variant="h6"
+            variant="h5"
             component="div"
             sx={{ flexGrow: 1, ml: "1rem" }}
           >
-            CBT Examination
+            nLearning
           </Typography>
           {auth && (
             <div>

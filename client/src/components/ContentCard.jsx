@@ -12,11 +12,11 @@ import {
 import { CiClock1 } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 
-function ExamCard({ exam, displayedExams }) {
+function ContentCard({ exam, displayedExams }) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate(`/dashboard/exams/${exam._id}/`);
+    navigate(`/dashboard/create-content/${exam._id}/`);
   };
 
   return (
@@ -38,7 +38,7 @@ function ExamCard({ exam, displayedExams }) {
               pb: 3,
             }}
           ></Box>
-          <Divider sx={{ height: "130px" }} />
+
           <Typography align="center" gutterBottom variant="h5">
             {exam.title}
           </Typography>
@@ -79,4 +79,4 @@ function ExamCard({ exam, displayedExams }) {
   );
 }
 
-export default ExamCard;
+export default ContentCard;
