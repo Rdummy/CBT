@@ -141,109 +141,113 @@ const TakeExamPage = () => {
   };
 
   return (
-    <Box
-      className="take-exam-content--wrapper"
-      boxShadow={2}
-      sx={{ width: "100%" }}
-    >
-      <div className="exam-question--header">
-        <h2 style={{ marginTop: "1rem" }}> {examData?.title} </h2>
-        <span> Instructions: {examData?.instructions}</span>
-      </div>
-      <Card className="exam-card">
-        <CardContent
-          style={{
-            fontSize: "1.5rem",
-          }}
+    <Card sx={{ width: "100%" }}>
+      <CardContent>
+        <Box
+          className="take-exam-content--wrapper"
+          boxShadow={2}
+          sx={{ width: "100%" }}
         >
-          <div className="question--header">
-            Question # {currentQuestionIndex + 1}
+          <div className="exam-question--header">
+            <h2 style={{ marginTop: "1rem" }}> {examData?.title} </h2>
+            <span> Instructions: {examData?.instructions}</span>
           </div>
-          <span
-            style={{
-              fontSize: "1.5rem",
-              marginTop: "1rem",
-              marginBottom: "1rem",
-            }}
-          >
-            {examData?.questions[currentQuestionIndex]?.question}{" "}
-          </span>
-          {examData?.questions[currentQuestionIndex]?.choices.map(
-            (choice, index) => (
-              <QuestionChoice
-                key={index}
-                choice={choice}
-                index={index}
-                selectedAnswer={chosenAnswers[currentQuestionIndex]}
-                onSelect={handleSelectChoice}
-              />
-            )
-          )}
-          {displayAnswer()}
-          <div
-            className="question--footnote"
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              fontSize: "1.5rem",
-            }}
-          >
-            {currentQuestionIndex > 0 ? (
-              <Button
-                className="brand-red-bg"
-                variant="contained"
-                style={{
-                  textTransform: "capitalize",
-                  opacity: hasMovedForward ? 0.5 : 1,
-                }}
-                onClick={prevQuestion}
-                disabled={hasMovedForward}
-              >
-                <SlArrowLeft size={"0.5rem"} /> &nbsp; Back
-              </Button>
-            ) : (
-              <Button disabled>Back</Button>
-            )}
-
-            <Button
-              variant="contained"
-              style={{ textTransform: "capitalize" }}
-              onClick={handleConfirmAnswer}
-              disabled={answerConfirmed}
+          <Card className="exam-card">
+            <CardContent
+              style={{
+                fontSize: "1.5rem",
+              }}
             >
-              Confirm Answer
-            </Button>
-
-            {currentQuestionIndex < examData?.questions.length - 1 && (
-              <Button
-                className="brand-red-bg"
-                variant="contained"
+              <div className="question--header">
+                Question # {currentQuestionIndex + 1}
+              </div>
+              <span
                 style={{
-                  textTransform: "capitalize",
-                  opacity: !answerConfirmed ? 0.5 : 1,
+                  fontSize: "1.5rem",
+                  marginTop: "1rem",
+                  marginBottom: "1rem",
                 }}
-                onClick={handleSubmitAnswer}
-                disabled={!answerConfirmed}
               >
-                Next &nbsp; <SlArrowRight size={"0.5rem"} />
-              </Button>
-            )}
+                {examData?.questions[currentQuestionIndex]?.question}{" "}
+              </span>
+              {examData?.questions[currentQuestionIndex]?.choices.map(
+                (choice, index) => (
+                  <QuestionChoice
+                    key={index}
+                    choice={choice}
+                    index={index}
+                    selectedAnswer={chosenAnswers[currentQuestionIndex]}
+                    onSelect={handleSelectChoice}
+                  />
+                )
+              )}
+              {displayAnswer()}
+              <div
+                className="question--footnote"
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  fontSize: "1.5rem",
+                }}
+              >
+                {currentQuestionIndex > 0 ? (
+                  <Button
+                    className="brand-red-bg"
+                    variant="contained"
+                    style={{
+                      textTransform: "capitalize",
+                      opacity: hasMovedForward ? 0.5 : 1,
+                    }}
+                    onClick={prevQuestion}
+                    disabled={hasMovedForward}
+                  >
+                    <SlArrowLeft size={"0.5rem"} /> &nbsp; Back
+                  </Button>
+                ) : (
+                  <Button disabled>Back</Button>
+                )}
 
-            {currentQuestionIndex === examData?.questions.length - 1 && (
-              <Button
-                className="brand-blue-bg"
-                variant="contained"
-                style={{ textTransform: "capitalize" }}
-                onClick={handleSubmitAnswer}
-                disabled={!answerConfirmed}
-              >
-                Submit
-              </Button>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-    </Box>
+                <Button
+                  variant="contained"
+                  style={{ textTransform: "capitalize" }}
+                  onClick={handleConfirmAnswer}
+                  disabled={answerConfirmed}
+                >
+                  Confirm Answer
+                </Button>
+
+                {currentQuestionIndex < examData?.questions.length - 1 && (
+                  <Button
+                    className="brand-red-bg"
+                    variant="contained"
+                    style={{
+                      textTransform: "capitalize",
+                      opacity: !answerConfirmed ? 0.5 : 1,
+                    }}
+                    onClick={handleSubmitAnswer}
+                    disabled={!answerConfirmed}
+                  >
+                    Next &nbsp; <SlArrowRight size={"0.5rem"} />
+                  </Button>
+                )}
+
+                {currentQuestionIndex === examData?.questions.length - 1 && (
+                  <Button
+                    className="brand-blue-bg"
+                    variant="contained"
+                    style={{ textTransform: "capitalize" }}
+                    onClick={handleSubmitAnswer}
+                    disabled={!answerConfirmed}
+                  >
+                    Submit
+                  </Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </Box>
+      </CardContent>
+    </Card>
   );
 };
 
