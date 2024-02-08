@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { FiTrash2, FiEdit } from "react-icons/fi";
+import { Card, CardContent } from "@mui/material";
+import "../assets/styles/create-exam.css";
 
 const CreateExam = () => {
   const [questions, setQuestions] = useState([]);
