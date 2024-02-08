@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FiTrash2, FiEdit } from "react-icons/fi";
 import "../assets/styles/create-exam.css";
+import { Card, CardContent } from "@mui/material";
 
 const CreateExam = () => {
   const [questions, setQuestions] = useState([]);
@@ -148,165 +149,184 @@ const CreateExam = () => {
   };
 
   return (
-    <div className="create-exam-container">
-      <h1>Create Exam</h1>
-      <h2>_________________</h2>
-      <button onClick={handleAddQuestion}>Add Question</button>
-      {showInput && (
-        <div className="question-input">
-          <div class="input-div">
-            <input
-              className="input-effect"
-              type="text"
-              value={newQuestion}
-              onChange={handleQuestionChange}
-              placeholder="Type your question..."
-            />
-            <span class="focus-border"></span>
-          </div>
+    <Card sx={{ m: 5 }}>
+      <CardContent>
+        <div className="create-exam-container">
+          <h1 className="create-exam-title">Create Exam</h1>
 
-          <div className="choices-container">
-            {choices.map((choice, index) => (
-              <div
-                key={index}
-                onClick={() => handleSelectChoice(index)}
-                className={`choice-item ${
-                  selectedChoice === index ? "selected" : ""
-                }`}
-              >
-                {editingChoiceIndex === index ? (
-                  <div>
-                    <p className="editingText">editing...</p>
-                    <div class="input-div">
-                      <input
-                        className="input-effect"
-                        type="text"
-                        value={editingChoiceText}
-                        onChange={handleChoiceChange}
-                        placeholder="Type a choice..."
-                      />
-                      <span class="focus-border"></span>
-                    </div>
-
-                    <button className="edit-trashbtn">
-                      <FiTrash2 onClick={() => handleDeleteChoice(index)} />
-                    </button>
-
-                    {/* <FiEdit onClick={() => handleEditChoice(index)} /> */}
-                    <button onClick={handleAddChoice} className="edit-editbtn">
-                      {editingChoiceIndex !== null ? <FiEdit /> : "Add"}
-                    </button>
-                    <button onClick={handleCancelEditChoice}>Cancel</button>
-                  </div>
-                ) : (
-                  <div>
-                    <input
-                      type="checkbox"
-                      checked={choice.isCorrect}
-                      onChange={() => handleMarkAsCorrect(index)}
-                    />
-                    <label htmlFor={`choice-${index}`}>{choice.text}</label>
-                    <FiEdit onClick={() => handleEditChoice(index)} />
-                    <FiTrash2 onClick={() => handleDeleteChoice(index)} />
-                  </div>
-                )}
+          <button onClick={handleAddQuestion}>Add Question</button>
+          {showInput && (
+            <div className="question-input">
+              <div class="input-div">
+                <input
+                  className="input-effect"
+                  type="text"
+                  value={newQuestion}
+                  onChange={handleQuestionChange}
+                  placeholder="Type your question..."
+                />
+                <span class="focus-border"></span>
               </div>
-            ))}
-          </div>
-          <div class="input-div">
-            <input
-              className="input-effect"
-              type="text"
-              value={newChoice}
-              onChange={(e) => setNewChoice(e.target.value)}
-              placeholder="Type a choice..."
-            />
-            <span class="focus-border"></span>
-          </div>
 
-          <button onClick={handleAddChoice} disabled={newChoice.trim() === ""}>
-            Add Choice
-          </button>
-          {errorMessage && (
-            <p className="error-message" style={{ color: "red" }}>
-              {errorMessage}
-            </p>
-          )}
-          {editingIndex !== null ? (
-            <div className="edit-questionbtn">
-              <button onClick={handleUpdateQuestion}>Update Question</button>
-              <button onClick={() => handleDeleteQuestion(editingIndex)}>
-                Delete Question
+              <div className="choices-container">
+                {choices.map((choice, index) => (
+                  <div
+                    key={index}
+                    onClick={() => handleSelectChoice(index)}
+                    className={`choice-item ${
+                      selectedChoice === index ? "selected" : ""
+                    }`}
+                  >
+                    {editingChoiceIndex === index ? (
+                      <div>
+                        <p className="editingText">editing...</p>
+                        <div class="input-div">
+                          <input
+                            className="input-effect"
+                            type="text"
+                            value={editingChoiceText}
+                            onChange={handleChoiceChange}
+                            placeholder="Type a choice..."
+                          />
+                          <span class="focus-border"></span>
+                        </div>
+
+                        <button className="edit-trashbtn">
+                          <FiTrash2 onClick={() => handleDeleteChoice(index)} />
+                        </button>
+
+                        {/* <FiEdit onClick={() => handleEditChoice(index)} /> */}
+                        <button
+                          onClick={handleAddChoice}
+                          className="edit-editbtn"
+                        >
+                          {editingChoiceIndex !== null ? <FiEdit /> : "Add"}
+                        </button>
+                        <button onClick={handleCancelEditChoice}>Cancel</button>
+                      </div>
+                    ) : (
+                      <div>
+                        <input
+                          type="checkbox"
+                          checked={choice.isCorrect}
+                          onChange={() => handleMarkAsCorrect(index)}
+                        />
+                        <label htmlFor={`choice-${index}`}>{choice.text}</label>
+                        <FiEdit
+                          onClick={() => handleEditChoice(index)}
+                          style={{ m: 2 }}
+                        />
+                        <FiTrash2 onClick={() => handleDeleteChoice(index)} />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <div class="input-div">
+                <input
+                  className="input-effect"
+                  type="text"
+                  value={newChoice}
+                  onChange={(e) => setNewChoice(e.target.value)}
+                  placeholder="Type a choice..."
+                />
+                <span class="focus-border"></span>
+              </div>
+
+              <button
+                onClick={handleAddChoice}
+                disabled={newChoice.trim() === ""}
+              >
+                Add Choice
               </button>
-              <button onClick={handleCancelEdit}>Cancel</button>
-            </div>
-          ) : (
-            <button
-              onClick={handleSaveQuestion}
-              disabled={newQuestion.trim() === "" && choices.length === 0}
-            >
-              Save Question
-            </button>
-          )}
-        </div>
-      )}
-      <div className="display-questions">
-        <h3>Questions:</h3>
-        {questions.map((q, index) => (
-          <div key={index}>
-            <strong>{q.question}</strong>
-            {editingIndex === null && (
-              <div>
-                <button onClick={() => handleEditQuestion(index)}>Edit</button>
-                <button onClick={() => handleDeleteQuestion(index)}>
-                  Delete
+              {errorMessage && (
+                <p className="error-message" style={{ color: "red" }}>
+                  {errorMessage}
+                </p>
+              )}
+              {editingIndex !== null ? (
+                <div className="edit-questionbtn">
+                  <button onClick={handleUpdateQuestion}>
+                    Update Question
+                  </button>
+                  <button onClick={() => handleDeleteQuestion(editingIndex)}>
+                    Delete Question
+                  </button>
+                  <button onClick={handleCancelEdit}>Cancel</button>
+                </div>
+              ) : (
+                <button
+                  onClick={handleSaveQuestion}
+                  disabled={newQuestion.trim() === "" && choices.length === 0}
+                >
+                  Save Question
                 </button>
-              </div>
-            )}
-            {q.choices.map((choice, i) => (
-              <div
-                key={i}
-                onClick={() => handleSelectChoice(i)}
-                style={{
-                  border: "1px solid #ccc",
-                  padding: "10px",
-                  marginBottom: "5px",
-                  backgroundColor: selectedChoice === i ? "#e0e0e0" : "white",
-                }}
-              >
-                {choice.isCorrect && (
-                  <span style={{ color: "green", marginRight: "5px" }}>
-                    Correct
-                  </span>
-                )}
-                {editingIndex !== null && editingChoiceIndex === i ? (
+              )}
+            </div>
+          )}
+          <div className="display-questions">
+            <h3>Questions:</h3>
+            {questions.map((q, index) => (
+              <div key={index}>
+                <strong>{q.question}</strong>
+                {editingIndex === null && (
                   <div>
-                    <div class="input-div">
-                      <input
-                        className="input-effect"
-                        type="text"
-                        value={editingChoiceText}
-                        onChange={handleChoiceChange}
-                        placeholder="Type a choice..."
-                      />
-                      <span class="focus-border"></span>
-                    </div>
-
-                    <button onClick={handleAddChoice}>
-                      {editingChoiceIndex !== null ? "Update" : "Add"} Choice
+                    <button onClick={() => handleEditQuestion(index)}>
+                      Edit
                     </button>
-                    <button onClick={handleDeleteChoice}>Delete</button>
-                    <button onClick={handleCancelEditChoice}>Ca ncel</button>
+                    <button onClick={() => handleDeleteQuestion(index)}>
+                      Delete
+                    </button>
                   </div>
-                ) : (
-                  <label htmlFor={`choice-${i}`}>{choice.text}</label>
                 )}
+                {q.choices.map((choice, i) => (
+                  <div
+                    key={i}
+                    onClick={() => handleSelectChoice(i)}
+                    style={{
+                      border: "1px solid #ccc",
+                      padding: "10px",
+                      marginBottom: "5px",
+                      backgroundColor:
+                        selectedChoice === i ? "#e0e0e0" : "white",
+                    }}
+                  >
+                    {choice.isCorrect && (
+                      <span style={{ color: "green", marginRight: "5px" }}>
+                        Correct
+                      </span>
+                    )}
+                    {editingIndex !== null && editingChoiceIndex === i ? (
+                      <div>
+                        <div class="input-div">
+                          <input
+                            className="input-effect"
+                            type="text"
+                            value={editingChoiceText}
+                            onChange={handleChoiceChange}
+                            placeholder="Type a choice..."
+                          />
+                          <span class="focus-border"></span>
+                        </div>
+
+                        <button onClick={handleAddChoice}>
+                          {editingChoiceIndex !== null ? "Update" : "Add"}{" "}
+                          Choice
+                        </button>
+                        <button onClick={handleDeleteChoice}>Delete</button>
+                        <button onClick={handleCancelEditChoice}>Cancel</button>
+                      </div>
+                    ) : (
+                      <label htmlFor={`choice-${i}`}>{choice.text}</label>
+                    )}
+                  </div>
+                ))}
               </div>
             ))}
           </div>
-        ))}
-      </div>
-    </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
