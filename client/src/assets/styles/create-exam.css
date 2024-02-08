@@ -58,15 +58,7 @@ h2 {
   padding-bottom: 30px;
   padding-left: 100px;
   padding-right: 100px;
-  background-color: #d4d4d4;
-  width: 900px;
-}
-
-.create-exam-title{
-   margin-top: -20px;
-  color: #120a0b;
-  font-size: 40px;
-  font-weight: bold;
+  background-color: #b37c4a;
 }
 
 .question-input {

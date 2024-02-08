@@ -4,7 +4,8 @@ import { Card, CardContent, Box, Typography, Button } from "@mui/material";
 import QuestionChoice from "../components/ExamComponents/QuestionChoice.jsx";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import axios from "axios";
-
+import CountdownTimer from "../components/CountDownTimer";
+import "../assets/styles/take-exam.css";
 const TakeExamPage = () => {
   const navigate = useNavigate();
   const { examId } = useParams();
@@ -141,113 +142,109 @@ const TakeExamPage = () => {
   };
 
   return (
-    <Card sx={{ width: "100%" }}>
-      <CardContent>
-        <Box
-          className="take-exam-content--wrapper"
-          boxShadow={2}
-          sx={{ width: "100%" }}
+    <Box
+      className="take-exam-content--wrapper"
+      boxShadow={2}
+      sx={{ width: "100%" }}
+    >
+      <div className="exam-question--header">
+        <h2 style={{ marginTop: "1rem" }}> {examData?.title} </h2>
+        <span> Instructions: {examData?.instructions}</span>
+      </div>
+      <Card className="exam-card">
+        <CardContent
+          style={{
+            fontSize: "1.5rem",
+          }}
         >
-          <div className="exam-question--header">
-            <h2 style={{ marginTop: "1rem" }}> {examData?.title} </h2>
-            <span> Instructions: {examData?.instructions}</span>
+          <div className="question--header">
+            Question # {currentQuestionIndex + 1}
           </div>
-          <Card className="exam-card">
-            <CardContent
-              style={{
-                fontSize: "1.5rem",
-              }}
+          <span
+            style={{
+              fontSize: "1.5rem",
+              marginTop: "1rem",
+              marginBottom: "1rem",
+            }}
+          >
+            {examData?.questions[currentQuestionIndex]?.question}{" "}
+          </span>
+          {examData?.questions[currentQuestionIndex]?.choices.map(
+            (choice, index) => (
+              <QuestionChoice
+                key={index}
+                choice={choice}
+                index={index}
+                selectedAnswer={chosenAnswers[currentQuestionIndex]}
+                onSelect={handleSelectChoice}
+              />
+            )
+          )}
+          {displayAnswer()}
+          <div
+            className="question--footnote"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              fontSize: "1.5rem",
+            }}
+          >
+            {currentQuestionIndex > 0 ? (
+              <Button
+                className="brand-red-bg"
+                variant="contained"
+                style={{
+                  textTransform: "capitalize",
+                  opacity: hasMovedForward ? 0.5 : 1,
+                }}
+                onClick={prevQuestion}
+                disabled={hasMovedForward}
+              >
+                <SlArrowLeft size={"0.5rem"} /> &nbsp; Back
+              </Button>
+            ) : (
+              <Button disabled>Back</Button>
+            )}
+
+            <Button
+              variant="contained"
+              style={{ textTransform: "capitalize" }}
+              onClick={handleConfirmAnswer}
+              disabled={answerConfirmed}
             >
-              <div className="question--header">
-                Question # {currentQuestionIndex + 1}
-              </div>
-              <span
+              Confirm Answer
+            </Button>
+
+            {currentQuestionIndex < examData?.questions.length - 1 && (
+              <Button
+                className="brand-red-bg"
+                variant="contained"
                 style={{
-                  fontSize: "1.5rem",
-                  marginTop: "1rem",
-                  marginBottom: "1rem",
+                  textTransform: "capitalize",
+                  opacity: !answerConfirmed ? 0.5 : 1,
                 }}
+                onClick={handleSubmitAnswer}
+                disabled={!answerConfirmed}
               >
-                {examData?.questions[currentQuestionIndex]?.question}{" "}
-              </span>
-              {examData?.questions[currentQuestionIndex]?.choices.map(
-                (choice, index) => (
-                  <QuestionChoice
-                    key={index}
-                    choice={choice}
-                    index={index}
-                    selectedAnswer={chosenAnswers[currentQuestionIndex]}
-                    onSelect={handleSelectChoice}
-                  />
-                )
-              )}
-              {displayAnswer()}
-              <div
-                className="question--footnote"
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  fontSize: "1.5rem",
-                }}
+                Next &nbsp; <SlArrowRight size={"0.5rem"} />
+              </Button>
+            )}
+
+            {currentQuestionIndex === examData?.questions.length - 1 && (
+              <Button
+                className="brand-blue-bg"
+                variant="contained"
+                style={{ textTransform: "capitalize" }}
+                onClick={handleSubmitAnswer}
+                disabled={!answerConfirmed}
               >
-                {currentQuestionIndex > 0 ? (
-                  <Button
-                    className="brand-red-bg"
-                    variant="contained"
-                    style={{
-                      textTransform: "capitalize",
-                      opacity: hasMovedForward ? 0.5 : 1,
-                    }}
-                    onClick={prevQuestion}
-                    disabled={hasMovedForward}
-                  >
-                    <SlArrowLeft size={"0.5rem"} /> &nbsp; Back
-                  </Button>
-                ) : (
-                  <Button disabled>Back</Button>
-                )}
-
-                <Button
-                  variant="contained"
-                  style={{ textTransform: "capitalize" }}
-                  onClick={handleConfirmAnswer}
-                  disabled={answerConfirmed}
-                >
-                  Confirm Answer
-                </Button>
-
-                {currentQuestionIndex < examData?.questions.length - 1 && (
-                  <Button
-                    className="brand-red-bg"
-                    variant="contained"
-                    style={{
-                      textTransform: "capitalize",
-                      opacity: !answerConfirmed ? 0.5 : 1,
-                    }}
-                    onClick={handleSubmitAnswer}
-                    disabled={!answerConfirmed}
-                  >
-                    Next &nbsp; <SlArrowRight size={"0.5rem"} />
-                  </Button>
-                )}
-
-                {currentQuestionIndex === examData?.questions.length - 1 && (
-                  <Button
-                    className="brand-blue-bg"
-                    variant="contained"
-                    style={{ textTransform: "capitalize" }}
-                    onClick={handleSubmitAnswer}
-                    disabled={!answerConfirmed}
-                  >
-                    Submit
-                  </Button>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </Box>
-      </CardContent>
-    </Card>
+                Submit
+              </Button>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
 
