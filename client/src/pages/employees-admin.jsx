@@ -108,13 +108,17 @@ const EmployeesAdmin = () => {
         >
           <Table aria-label="simple table">
             <TableHead>
-              <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Username</TableCell>
-                <TableCell align="left">Email</TableCell>
-                <TableCell>User Role</TableCell>
-                <TableCell>User Type</TableCell>
-                <TableCell align="center">Actions</TableCell>
+              <TableRow style={{ backgroundColor: "#e71e4a" }}>
+                <TableCell style={{ color: "white" }}>ID</TableCell>
+                <TableCell style={{ color: "white" }}>Username</TableCell>
+                <TableCell align="left" style={{ color: "white" }}>
+                  Email
+                </TableCell>
+                <TableCell style={{ color: "white" }}>User Role</TableCell>
+                <TableCell style={{ color: "white" }}>User Type</TableCell>
+                <TableCell align="center" style={{ color: "white" }}>
+                  Actions
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

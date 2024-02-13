@@ -142,11 +142,7 @@ const TakeExamPage = () => {
   };
 
   return (
-    <Box
-      className="take-exam-content--wrapper"
-      boxShadow={2}
-      sx={{ width: "100%" }}
-    >
+    <Box className="take-exam-content--wrapper" boxShadow={2}>
       <div className="exam-question--header">
         <h2 style={{ marginTop: "1rem" }}> {examData?.title} </h2>
         <span> Instructions: {examData?.instructions}</span>

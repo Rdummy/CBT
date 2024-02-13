@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FiTrash2, FiEdit } from "react-icons/fi";
-import { Card, CardContent } from "@mui/material";
+import { Card, Button, CardContent } from "@mui/material";
 import "../assets/styles/create-exam.css";
 
 const CreateExam = () => {
@@ -149,12 +149,14 @@ const CreateExam = () => {
   };
 
   return (
-    <Card sx={{ m: 5 }}>
+    <Card sx={{ m: 5, width: "800px" }}>
       <CardContent>
         <div className="create-exam-container">
           <h1 className="create-exam-title">Create Exam</h1>
 
-          <button onClick={handleAddQuestion}>Add Question</button>
+          <button onClick={handleAddQuestion} className="exam-button">
+            Add Question
+          </button>
           {showInput && (
             <div className="question-input">
               <div class="input-div">
@@ -191,14 +193,14 @@ const CreateExam = () => {
                           <span class="focus-border"></span>
                         </div>
 
-                        <button className="edit-trashbtn">
+                        <button className="exam-button">
                           <FiTrash2 onClick={() => handleDeleteChoice(index)} />
                         </button>
 
                         {/* <FiEdit onClick={() => handleEditChoice(index)} /> */}
                         <button
                           onClick={handleAddChoice}
-                          className="edit-editbtn"
+                          className="exam-button"
                         >
                           {editingChoiceIndex !== null ? <FiEdit /> : "Add"}
                         </button>
@@ -234,6 +236,7 @@ const CreateExam = () => {
               </div>
 
               <button
+                className="exam-button"
                 onClick={handleAddChoice}
                 disabled={newChoice.trim() === ""}
               >
@@ -246,16 +249,23 @@ const CreateExam = () => {
               )}
               {editingIndex !== null ? (
                 <div className="edit-questionbtn">
-                  <button onClick={handleUpdateQuestion}>
+                  <button
+                    className="exam-button"
+                    onClick={handleUpdateQuestion}
+                  >
                     Update Question
                   </button>
-                  <button onClick={() => handleDeleteQuestion(editingIndex)}>
+                  <button
+                    className="exam-button"
+                    onClick={() => handleDeleteQuestion(editingIndex)}
+                  >
                     Delete Question
                   </button>
                   <button onClick={handleCancelEdit}>Cancel</button>
                 </div>
               ) : (
                 <button
+                  className="exam-button"
                   onClick={handleSaveQuestion}
                   disabled={newQuestion.trim() === "" && choices.length === 0}
                 >
@@ -313,8 +323,18 @@ const CreateExam = () => {
                           {editingChoiceIndex !== null ? "Update" : "Add"}{" "}
                           Choice
                         </button>
-                        <button onClick={handleDeleteChoice}>Delete</button>
-                        <button onClick={handleCancelEditChoice}>Cancel</button>
+                        <button
+                          className="exam-button"
+                          onClick={handleDeleteChoice}
+                        >
+                          Delete
+                        </button>
+                        <button
+                          className="exam-button"
+                          onClick={handleCancelEditChoice}
+                        >
+                          Cancel
+                        </button>
                       </div>
                     ) : (
                       <label htmlFor={`choice-${i}`}>{choice.text}</label>
@@ -323,6 +343,19 @@ const CreateExam = () => {
                 ))}
               </div>
             ))}
+          </div>
+          <div className="exam-save-button">
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: "#e71e4a",
+                color: "white",
+              }}
+              onClick={handleSaveQuestion}
+              disabled={newQuestion.trim() === "" && choices.length === 0}
+            >
+              Save Exam
+            </Button>
           </div>
         </div>
       </CardContent>

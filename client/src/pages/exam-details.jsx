@@ -134,14 +134,6 @@ function ExamDetailsPage() {
                 {" "}
                 Take Exam
               </Button>
-              <Button
-                className="brand-red-bg"
-                sx={{ textTransform: "capitalize", px: 3, py: 2, mx: 0.5 }}
-                onClick={handleCreateContentClick}
-              >
-                {" "}
-                Create Content
-              </Button>
             </Box>
           </CardContent>
         </Card>
