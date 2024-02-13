@@ -29,7 +29,10 @@ function ExamPage() {
   // State to manage exams (using actual data only)
   const [exams, setExams] = useState([]);
 
-  const displayedExams = exams.slice((page - 1) * examsPerPage, page * examsPerPage);
+  const displayedExams = exams.slice(
+    (page - 1) * examsPerPage,
+    page * examsPerPage
+  );
 
   useEffect(() => {
     getExams();
@@ -127,7 +130,11 @@ function ExamPage() {
         {displayedExams.map((exam) => (
           <Grid item xs={3} key={exam.id}>
             <div className="grid-item--wrapper" style={{ minHeight: "100%" }}>
-            <ExamCard key={exam.id} exam={exam} displayedExams={displayedExams} />
+              <ExamCard
+                key={exam.id}
+                exam={exam}
+                displayedExams={displayedExams}
+              />
             </div>
           </Grid>
         ))}

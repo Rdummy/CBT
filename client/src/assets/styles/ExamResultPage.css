@@ -1,16 +1,17 @@
 .exam-result-container {
-  height: 100vh;
-  width: 100%;
+  min-height: 30px;
+  width: 800px;
   display: flex;
   flex-direction: column;
 }
 
 .exam-result-content {
-  width: 100%;
-  flex-grow: 1;
+  min-height: 30px;
+  width: 800px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  
+  margin-top: 2rem;
 }
 
 .result-label {

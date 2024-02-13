@@ -70,7 +70,7 @@ function ExamDetailsPage() {
   return (
     <>
       <div className="exam-details--wrapper">
-        <Card sx={{ m: 5 }}>
+        <Card sx={{ m: 2 }}>
           <CardContent>
             <Box style={{ display: "flex", justifyContent: "space-between" }}>
               <ReturnDashboard />

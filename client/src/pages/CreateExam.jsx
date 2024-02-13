@@ -344,19 +344,18 @@ const CreateExam = () => {
               </div>
             ))}
           </div>
-          <div className="exam-save-button">
-            <Button
-              variant="contained"
-              style={{
-                backgroundColor: "#e71e4a",
-                color: "white",
-              }}
-              onClick={handleSaveQuestion}
-              disabled={newQuestion.trim() === "" && choices.length === 0}
-            >
-              Save Exam
-            </Button>
-          </div>
+
+          <Button
+            variant="contained"
+            style={{
+              backgroundColor: "#e71e4a",
+              color: "white",
+            }}
+            onClick={handleSaveQuestion}
+            disabled={newQuestion.trim() === "" && choices.length === 0}
+          >
+            Save Exam
+          </Button>
         </div>
       </CardContent>
     </Card>

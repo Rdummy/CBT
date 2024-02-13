@@ -163,12 +163,6 @@ const ExamResultPage = () => {
 
   return (
     <div className="exam-result-container">
-      <Toolbar
-        className="exams-category--header"
-        sx={{ justifyContent: "space-between" }}
-      >
-        {/* <ReturnDashboard /> */}
-      </Toolbar>
       <div className="exam-result-content">
         <Card>
           {/* <ReturnDashboard /> */}

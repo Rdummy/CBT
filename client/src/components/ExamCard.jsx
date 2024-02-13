@@ -25,7 +25,7 @@ function ExamCard({ exam, displayedExams }) {
         sx={{
           display: "flex",
           flexDirection: "column",
-          minHeight: "20rem !important",
+          height: "350px", // Set a fixed height for the Card
           maxHeight: "100% !important",
           mx: 1,
         }}
@@ -38,7 +38,7 @@ function ExamCard({ exam, displayedExams }) {
               pb: 3,
             }}
           ></Box>
-          <Divider sx={{ height: "130px" }} />
+
           <Typography align="center" gutterBottom variant="h5">
             {exam.title}
           </Typography>

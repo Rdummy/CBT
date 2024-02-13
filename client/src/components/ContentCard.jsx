@@ -25,7 +25,7 @@ function ContentCard({ exam, displayedExams }) {
         sx={{
           display: "flex",
           flexDirection: "column",
-          minHeight: "20rem !important",
+          height: "350px", // Set a fixed height for the Card
           maxHeight: "100% !important",
           mx: 1,
         }}
