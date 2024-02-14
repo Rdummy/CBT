@@ -81,7 +81,7 @@ const ViewCarousel = ({ notes }) => {
             updateIndex(activeIndex + 1);
           }}
         >
-          <span class="material-symbols-outlined">arrow_forward_ios</span>
+          <span className="material-symbols-outlined">arrow_forward_ios</span>
         </button>
       </div>
     </div>

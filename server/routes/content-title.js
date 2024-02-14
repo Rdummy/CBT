@@ -1,17 +1,17 @@
 import express from "express";
+
 import { ExamModel } from "../models/exam.js";
 
 const router = express.Router();
 
-router.get("/take-exam/:examId", async (req, res) => {
+router.get("/content-title/:examId", async (req, res) => {
   try {
     const { examId } = req.params;
-
-    // Assuming examId is the _id field of the exam
+    console.log(examId);
     const data = await ExamModel.findById(examId);
-
+    console.log(data);
     if (!data) {
-      return res.status(404).json({ message: "Exam not found" });
+      return res.status(404).json({ message: "Content not found" });
     }
 
     res.json(data);
@@ -20,4 +20,4 @@ router.get("/take-exam/:examId", async (req, res) => {
   }
 });
 
-export { router as takeExamRouter };
+export { router as assignExamRouter };

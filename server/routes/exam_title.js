@@ -35,14 +35,23 @@ router.post("/exam-title", async (req, res) => {
   }
 });
 
-router.get("/exam-title/:examId", async (req, res) => {
+router.get("/exam-title", async (req, res) => {
+  try {
+    const data = await ExamModel.find();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.get("/content-title/:examId", async (req, res) => {
   try {
     const { examId } = req.params;
+    console.log(examId);
     const data = await ExamModel.findById(examId);
-
+    console.log(data);
     if (!data) {
-      // If no exam is found with the given ID, return a 404 status
-      return res.status(404).json({ message: "Exam not found" });
+      return res.status(404).json({ message: "Content not found" });
     }
 
     res.json(data);

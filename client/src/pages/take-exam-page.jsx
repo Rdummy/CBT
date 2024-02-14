@@ -18,6 +18,7 @@ const TakeExamPage = () => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [hasMovedForward, setHasMovedForward] = useState(false);
   const [answerConfirmed, setAnswerConfirmed] = useState(false);
+  const [clearSelectedAnswer, setClearSelectedAnswer] = useState(false);
 
   useEffect(() => {
     axios
@@ -54,7 +55,7 @@ const TakeExamPage = () => {
   }, []);
   const handleSelectChoice = (index) => {
     if (!answerConfirmed) {
-      setChosenAnswers({ ...chosenAnswers, [currentQuestionIndex]: index });
+      setChosenAnswers(index);
       setShowAnswer(false);
     }
   };
@@ -65,6 +66,12 @@ const TakeExamPage = () => {
     }
   };
 
+  const clearAnswer = () => {
+    setChosenAnswers({});
+    setShowAnswer(false);
+    setAnswerConfirmed(false);
+  };
+
   const handleSubmitAnswer = () => {
     const nextQuestionIndex = currentQuestionIndex + 1;
 
@@ -72,10 +79,12 @@ const TakeExamPage = () => {
       setCurrentQuestionIndex(nextQuestionIndex);
       setHasMovedForward(true);
       setAnswerConfirmed(false);
+      setClearSelectedAnswer(true); // Clear selected answer when moving to the next question
     } else {
       computeScore();
       setShouldNavigate(true);
     }
+    clearAnswer();
   };
 
   const handleConfirmAnswer = () => {
@@ -166,14 +175,17 @@ const TakeExamPage = () => {
             {examData?.questions[currentQuestionIndex]?.question}{" "}
           </span>
           {examData?.questions[currentQuestionIndex]?.choices.map(
-            (choice, index) => (
-              <QuestionChoice
-                key={index}
-                choice={choice}
-                index={index}
-                selectedAnswer={chosenAnswers[currentQuestionIndex]}
-                onSelect={handleSelectChoice}
-              />
+            (choice, choiceIndex) => (
+              <div key={choiceIndex}>
+                <QuestionChoice
+                  key={choiceIndex}
+                  choice={choice}
+                  index={choiceIndex}
+                  selectedAnswer={chosenAnswers[currentQuestionIndex]}
+                  onSelect={handleSelectChoice}
+                  clearSelectedAnswer={clearSelectedAnswer} // Pass the prop to clear selected answer
+                />
+              </div>
             )
           )}
           {displayAnswer()}

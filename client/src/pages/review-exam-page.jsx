@@ -8,7 +8,7 @@ import cyberlock from "../assets/Media/cyberlock.jpg";
 import phishing from "../assets/Media/Phishing-Awareness.jpg";
 import SoftwareUpdates from "../assets/Media/SoftwareUpdates.png";
 import Button from "@mui/material/Button";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 // const fileToDataUri = (file) =>
 //   new Promise((resolve, reject) => {
@@ -20,6 +20,7 @@ import { useLocation } from "react-router-dom";
 //   });
 
 const ReviewExamPage = () => {
+  const { examId } = useParams();
   const location = useLocation();
   const [activeIndex, setActiveIndex] = useState(0);
   const [items, setItems] = useState([]);

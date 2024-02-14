@@ -35,9 +35,7 @@ function ContentDetailsPage() {
 
   const getExams = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:3001/exam/exam-title/${examId}`
-      );
+      const response = await axios.get(`http://localhost:3001/exam/exam-title`);
       if (response.data !== undefined) {
         setExams(response.data);
         setExamList(response.data);
@@ -48,7 +46,6 @@ function ContentDetailsPage() {
         "Error getting exams:",
         error.response ? error.response.data.error : error.message
       );
-      // Optionally, set state or show a user-friendly error message
     }
   };
   const handleAssignExam = async (event) => {

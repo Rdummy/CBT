@@ -16,6 +16,7 @@ const questionSchema = new mongoose.Schema({
     },
   ],
   // correctAnswer: Number, // Remove this line
+
   // explanation: String,
 });
 

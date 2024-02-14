@@ -113,18 +113,19 @@ const ExamResultPage = () => {
     const reviewQuestions = [];
     currentQuestions.forEach((question, index) => {
       const globalIndex = offset + index;
+      const userAnswerIndex = storedAnswers[globalIndex];
+
       if (
-        storedAnswers &&
-        storedAnswers[globalIndex] !== undefined &&
+        userAnswerIndex !== undefined &&
         question.choices &&
-        storedAnswers[globalIndex] !== question.correctAnswer
+        userAnswerIndex !== question.correctAnswer
       ) {
         reviewQuestions.push({
           index: globalIndex + 1,
           question: question.question,
           yourAnswer:
-            storedAnswers[globalIndex] !== undefined
-              ? question.choices[storedAnswers[globalIndex]]
+            userAnswerIndex !== undefined
+              ? question.choices[userAnswerIndex]
               : "Not answered",
           correctAnswer: question.choices[question.correctAnswer],
           explanation: question.explanation,
@@ -139,18 +140,19 @@ const ExamResultPage = () => {
     const knowQuestions = [];
     currentQuestions.forEach((question, index) => {
       const globalIndex = offset + index;
+      const userAnswerIndex = storedAnswers[globalIndex];
+
       if (
-        storedAnswers &&
-        storedAnswers[globalIndex] !== undefined &&
+        userAnswerIndex !== undefined &&
         question.choices &&
-        storedAnswers[globalIndex] === question.correctAnswer
+        userAnswerIndex === question.correctAnswer
       ) {
         knowQuestions.push({
           index: globalIndex + 1,
           question: question.question,
           yourAnswer:
-            storedAnswers[globalIndex] !== undefined
-              ? question.choices[storedAnswers[globalIndex]]
+            userAnswerIndex !== undefined
+              ? question.choices[userAnswerIndex]
               : "Not answered",
           correctAnswer: question.choices[question.correctAnswer],
           explanation: question.explanation,
