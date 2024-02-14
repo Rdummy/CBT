@@ -27,18 +27,54 @@ function ContentDetailsPage() {
   const [openModal, setOpenModal] = useState(false);
   const [exams, setExams] = useState([]);
   const [examList, setExamList] = useState(exams);
+  const [selectedDepartment, setSelectedDepartment] = useState(""); // Initialize the state
 
   useEffect(() => {
     getExams().then((response) => {});
   }, []);
 
   const getExams = async () => {
-    axios.get("http://localhost:3001/exam/exam-title").then((response) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/exam/exam-title/${examId}`
+      );
       if (response.data !== undefined) {
         setExams(response.data);
         setExamList(response.data);
       }
-    });
+    } catch (error) {
+      // Handle error
+      console.error(
+        "Error getting exams:",
+        error.response ? error.response.data.error : error.message
+      );
+      // Optionally, set state or show a user-friendly error message
+    }
+  };
+  const handleAssignExam = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.post(
+        `http://localhost:3001/content/assign-exam/${examId}`,
+        {
+          assignedDepartment: selectedDepartment,
+        }
+      );
+
+      console.log(response.data.message);
+
+      handleCloseModal();
+
+      // Manually navigate to the desired route
+      navigate(`/dashboard/create-content/${examId}`); // Update the route accordingly
+    } catch (error) {
+      // Handle error
+      console.error(
+        "Error assigning exam:",
+        error.response ? error.response.data.error : error.message
+      );
+    }
   };
 
   const selectedExam = examList.find((exam) => exam._id === examId);
@@ -206,15 +242,17 @@ function ContentDetailsPage() {
         </Card>
 
         <Dialog open={openModal} onClose={handleCloseModal}>
-          <form>
+          <form onSubmit={handleAssignExam}>
             <DialogTitle>Assign Department</DialogTitle>
             <DialogContent>
               <Select
                 label="Department"
                 placeholder="Select Department"
                 name="department"
+                value={selectedDepartment} // Add this line to set the selected value
+                onChange={(e) => setSelectedDepartment(e.target.value)} // Add this line to handle selection changes
                 fullWidth
-                margin="normal"
+                margin="dense"
                 sx={{ width: "300px" }}
               >
                 <MenuItem value="Technology">Technology</MenuItem>

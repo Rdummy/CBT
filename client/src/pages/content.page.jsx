@@ -69,7 +69,6 @@ function CreateContentPage() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    // console.log("Form submitted with data:", formData);
     setOpenModal(false);
 
     try {
@@ -82,7 +81,6 @@ function CreateContentPage() {
         }
       );
 
-      // console.log(response);
       if (response.statusText === "Created") {
         console.log("Exam added successfully");
       }
@@ -90,13 +88,13 @@ function CreateContentPage() {
       // Assuming the response includes the newly created exam data
       const newExam = response.data;
 
-      setExams((prevExams) => [
-        ...prevExams,
-        {
-          id: newExam.id,
-          title: newExam.title,
-          description: newExam.description,
-        },
+      // Update displayedExams state to include the new exam
+      setExams((prevExams) => [...prevExams, newExam]);
+
+      // Update displayedExams directly without refreshing the page
+      setDisplayedExams((prevDisplayedExams) => [
+        ...prevDisplayedExams,
+        newExam,
       ]);
 
       setFormData({

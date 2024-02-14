@@ -11,6 +11,7 @@ import { resultRouter } from "./routes/result.js";
 import { examDetailsRouter } from "./routes/exam-details.js";
 import { profileRouter } from "./routes/settings.js";
 import { overviewRouter } from "./routes/overview-table.js";
+import { assignExamRouter } from "./routes/assign-exam.js";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use("/result", resultRouter);
 app.use("/exam-details", examDetailsRouter);
 app.use("/settings", profileRouter);
 app.use("/overview", overviewRouter);
+app.use("/content", assignExamRouter);
 
 mongoose.connect(
   "mongodb+srv://raineheartcajes:cbtexam@novatechset.pmauabk.mongodb.net/cbtdb?retryWrites=true&w=majority"

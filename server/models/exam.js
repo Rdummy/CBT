@@ -9,9 +9,14 @@ const slideSchema = new mongoose.Schema({
 const questionSchema = new mongoose.Schema({
   type: String,
   question: String,
-  choices: [String],
-  correctAnswer: Number,
-  explanation: String,
+  choices: [
+    {
+      text: String,
+      isCorrect: mongoose.Schema.Types.Mixed, // Allow different data types, including boolean
+    },
+  ],
+  // correctAnswer: Number, // Remove this line
+  // explanation: String,
 });
 
 const examSchema = new mongoose.Schema({
@@ -25,6 +30,10 @@ const examSchema = new mongoose.Schema({
     slides: [slideSchema],
   },
   instructions: String,
+  assignedDepartment: {
+    type: String,
+    enum: ["Technology", "Production", "HR", "Quality", "General"],
+  },
   questions: [questionSchema],
 });
 

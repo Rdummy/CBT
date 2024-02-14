@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { FiTrash2, FiEdit } from "react-icons/fi";
 import { Card, Button, CardContent } from "@mui/material";
 import "../assets/styles/create-exam.css";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const CreateExam = () => {
+  const { examId } = useParams();
   const [questions, setQuestions] = useState([]);
   const [newQuestion, setNewQuestion] = useState("");
   const [newChoice, setNewChoice] = useState("");
@@ -19,6 +22,30 @@ const CreateExam = () => {
     setShowInput(true);
   };
 
+  const handleSaveExamToDatabase = async () => {
+    try {
+      const backendApiUrl = `http://localhost:3001/content/create-exam/${examId}/questions`;
+
+      // Convert choices to an array of objects before sending to the backend
+      const formattedQuestions = questions.map((q) => ({
+        ...q,
+        choices: q.choices.map((choice) => ({
+          text: choice.text,
+          isCorrect: choice.isCorrect,
+        })),
+      }));
+
+      const response = await axios.post(backendApiUrl, {
+        questions: formattedQuestions,
+      });
+
+      console.log("Exam saved successfully:", response.data);
+      // You can add any further actions upon successful save here
+    } catch (error) {
+      console.error("Error saving exam:", error);
+      // Handle error here (e.g., show an error message to the user)
+    }
+  };
   const handleQuestionChange = (e) => {
     setNewQuestion(e.target.value);
   };
@@ -52,7 +79,14 @@ const CreateExam = () => {
       const hasCorrectChoice = choices.some((choice) => choice.isCorrect);
 
       if (hasCorrectChoice) {
-        setQuestions([...questions, { question: newQuestion, choices }]);
+        setQuestions([
+          ...questions,
+          {
+            question: newQuestion,
+            choices,
+            correctAnswer: getCorrectAnswerIndex(choices),
+          },
+        ]);
         setNewQuestion("");
         setChoices([]);
         setShowInput(false);
@@ -66,6 +100,16 @@ const CreateExam = () => {
     } else {
       setErrorMessage("Please enter a choice before saving.");
     }
+  };
+
+  // Helper function to get the index of the correct answer
+  const getCorrectAnswerIndex = (choices) => {
+    for (let i = 0; i < choices.length; i++) {
+      if (choices[i].isCorrect) {
+        return i;
+      }
+    }
+    return -1; // Return -1 or handle the case when no correct answer is found
   };
 
   const handleSelectChoice = (index) => {
@@ -159,7 +203,7 @@ const CreateExam = () => {
           </button>
           {showInput && (
             <div className="question-input">
-              <div class="input-div">
+              <div className="input-div">
                 <input
                   className="input-effect"
                   type="text"
@@ -167,7 +211,7 @@ const CreateExam = () => {
                   onChange={handleQuestionChange}
                   placeholder="Type your question..."
                 />
-                <span class="focus-border"></span>
+                <span className="focus-border"></span>
               </div>
 
               <div className="choices-container">
@@ -182,7 +226,7 @@ const CreateExam = () => {
                     {editingChoiceIndex === index ? (
                       <div>
                         <p className="editingText">editing...</p>
-                        <div class="input-div">
+                        <div className="input-div">
                           <input
                             className="input-effect"
                             type="text"
@@ -190,7 +234,7 @@ const CreateExam = () => {
                             onChange={handleChoiceChange}
                             placeholder="Type a choice..."
                           />
-                          <span class="focus-border"></span>
+                          <span className="focus-border"></span>
                         </div>
 
                         <button className="exam-button">
@@ -224,7 +268,7 @@ const CreateExam = () => {
                   </div>
                 ))}
               </div>
-              <div class="input-div">
+              <div className="input-div">
                 <input
                   className="input-effect"
                   type="text"
@@ -232,7 +276,7 @@ const CreateExam = () => {
                   onChange={(e) => setNewChoice(e.target.value)}
                   placeholder="Type a choice..."
                 />
-                <span class="focus-border"></span>
+                <span className="focus-border"></span>
               </div>
 
               <button
@@ -308,7 +352,7 @@ const CreateExam = () => {
                     )}
                     {editingIndex !== null && editingChoiceIndex === i ? (
                       <div>
-                        <div class="input-div">
+                        <div className="input-div">
                           <input
                             className="input-effect"
                             type="text"
@@ -316,7 +360,7 @@ const CreateExam = () => {
                             onChange={handleChoiceChange}
                             placeholder="Type a choice..."
                           />
-                          <span class="focus-border"></span>
+                          <span className="focus-border"></span>
                         </div>
 
                         <button onClick={handleAddChoice}>
@@ -351,8 +395,7 @@ const CreateExam = () => {
               backgroundColor: "#e71e4a",
               color: "white",
             }}
-            onClick={handleSaveQuestion}
-            disabled={newQuestion.trim() === "" && choices.length === 0}
+            onClick={() => handleSaveExamToDatabase()}
           >
             Save Exam
           </Button>
