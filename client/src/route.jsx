@@ -18,7 +18,6 @@ import ReviewExamPage from "./pages/review-exam-page.jsx";
 import EditExamPage from "./pages/edit-exam-page.jsx";
 import ExamDetailsPage from "./pages/exam-details.jsx";
 import ResultExamPage from "./pages/result-page.jsx";
-
 import Navbar from "./components/Navbar.jsx";
 import PrivateRoute from "./components/Auth/PrivateRoute.jsx";
 import { AuthProvider, useAuth } from "./contexts/auth-context.jsx";

@@ -166,7 +166,9 @@ const ReviewExamPage = () => {
                 arrow_forward_ios
               </span>
               <Button
-                href={isLastSlide ? "/dashboard/exams/:examId/take-exam" : "#"}
+                href={
+                  isLastSlide ? `/dashboard/exams/${examId}/take-exam` : "#"
+                }
                 className={`brand-red-bg ${!isLastSlide && "disabled"}`}
                 sx={{
                   textTransform: "capitalize",
