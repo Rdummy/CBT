@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { FiTrash2, FiEdit } from "react-icons/fi";
 import { Card, Button, CardContent } from "@mui/material";
 import "../assets/styles/create-exam.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 const CreateExam = () => {
+  const navigate = useNavigate();
   const { examId } = useParams();
   const [questions, setQuestions] = useState([]);
   const [newQuestion, setNewQuestion] = useState("");
@@ -22,106 +23,74 @@ const CreateExam = () => {
     setShowInput(true);
   };
 
-  const handleSaveExamToDatabase = async () => {
+  const saveExam = async (examId, questions) => {
+    const backendApiUrl = `http://localhost:3001/exam/create-exam/${examId}/questions`;
+
     try {
-      const backendApiUrl = `http://localhost:3001/content/create-exam/${examId}/questions`;
-
-      // Convert choices to an array of objects before sending to the backend
-      const formattedQuestions = questions.map((q) => ({
-        ...q,
-        choices: q.choices.map((choice) => ({
-          text: choice.text,
-          isCorrect: choice.isCorrect,
-        })),
-      }));
-
       const response = await axios.post(backendApiUrl, {
-        questions: formattedQuestions,
+        questions,
       });
 
       console.log("Exam saved successfully:", response.data);
-      // You can add any further actions upon successful save here
     } catch (error) {
       console.error("Error saving exam:", error);
-      // Handle error here (e.g., show an error message to the user)
     }
+
+    navigate(`/dashboard/create-content/${examId}`);
   };
+
   const handleQuestionChange = (e) => {
     setNewQuestion(e.target.value);
   };
 
   const handleChoiceChange = (e) => {
     setEditingChoiceText(e.target.value);
-    setErrorMessage(""); // Clear error message when typing
+    setErrorMessage("");
   };
 
   const handleAddChoice = () => {
     if (editingChoiceIndex !== null) {
-      // If editing, update the existing choice
       const updatedChoices = choices.map((choice, index) =>
-        index === editingChoiceIndex
-          ? { ...choice, text: editingChoiceText }
-          : choice
+        index === editingChoiceIndex ? { text: editingChoiceText } : choice
       );
 
       setChoices(updatedChoices);
       setEditingChoiceIndex(null);
       setEditingChoiceText("");
     } else if (newChoice.trim() !== "") {
-      // If not editing, add a new choice
-      setChoices([...choices, { text: newChoice, isCorrect: false }]);
+      setChoices([...choices, { text: newChoice }]);
       setNewChoice("");
     }
   };
 
   const handleSaveQuestion = () => {
-    if (newQuestion.trim() !== "" && choices.length > 0) {
-      const hasCorrectChoice = choices.some((choice) => choice.isCorrect);
-
-      if (hasCorrectChoice) {
-        setQuestions([
-          ...questions,
-          {
-            question: newQuestion,
-            choices,
-            correctAnswer: getCorrectAnswerIndex(choices),
-          },
-        ]);
-        setNewQuestion("");
-        setChoices([]);
-        setShowInput(false);
-        setSelectedChoice(null);
-        setErrorMessage(""); // Clear error message when saving
-      } else {
-        setErrorMessage(
-          "Please mark at least one choice as correct before saving."
-        );
-      }
+    if (
+      newQuestion.trim() !== "" &&
+      choices.length > 0 &&
+      selectedChoice !== null
+    ) {
+      setQuestions([
+        ...questions,
+        {
+          question: newQuestion,
+          choices,
+          correctAnswer: selectedChoice,
+        },
+      ]);
+      setNewQuestion("");
+      setChoices([]);
+      setShowInput(false);
+      setSelectedChoice(null);
+      setErrorMessage("");
     } else {
-      setErrorMessage("Please enter a choice before saving.");
+      setErrorMessage(
+        "Please enter a question, choices, and select a correct answer before saving."
+      );
     }
-  };
-
-  // Helper function to get the index of the correct answer
-  const getCorrectAnswerIndex = (choices) => {
-    for (let i = 0; i < choices.length; i++) {
-      if (choices[i].isCorrect) {
-        return i;
-      }
-    }
-    return -1; // Return -1 or handle the case when no correct answer is found
   };
 
   const handleSelectChoice = (index) => {
     setSelectedChoice(index);
-  };
-
-  const handleMarkAsCorrect = (index) => {
-    const updatedChoices = choices.map((choice, i) => ({
-      ...choice,
-      isCorrect: i === index,
-    }));
-    setChoices(updatedChoices);
   };
 
   const handleEditQuestion = (index) => {
@@ -129,30 +98,32 @@ const CreateExam = () => {
     setShowInput(true);
     setNewQuestion(questions[index].question);
     setChoices([...questions[index].choices]);
+    setSelectedChoice(questions[index].correctAnswer);
   };
 
   const handleUpdateQuestion = () => {
-    if (newQuestion.trim() !== "" && choices.length > 0) {
-      const hasCorrectChoice = choices.some((choice) => choice.isCorrect);
+    if (
+      newQuestion.trim() !== "" &&
+      choices.length > 0 &&
+      selectedChoice !== null
+    ) {
+      const updatedQuestions = questions.map((q, idx) =>
+        idx === editingIndex
+          ? { question: newQuestion, choices, correctAnswer: selectedChoice }
+          : q
+      );
 
-      if (hasCorrectChoice) {
-        const updatedQuestions = [...questions];
-        updatedQuestions[editingIndex] = { question: newQuestion, choices };
-        setQuestions(updatedQuestions);
-
-        setNewQuestion("");
-        setChoices([]);
-        setShowInput(false);
-        setSelectedChoice(null);
-        setEditingIndex(null);
-        setErrorMessage(""); // Clear error message when updating
-      } else {
-        setErrorMessage(
-          "Please mark at least one choice as correct before updating."
-        );
-      }
+      setQuestions(updatedQuestions);
+      setNewQuestion("");
+      setChoices([]);
+      setShowInput(false);
+      setSelectedChoice(null);
+      setEditingIndex(null);
+      setErrorMessage("");
     } else {
-      setErrorMessage("Please enter a choice before updating.");
+      setErrorMessage(
+        "Please enter a question, choices, and select a correct answer before updating."
+      );
     }
   };
 
@@ -161,19 +132,23 @@ const CreateExam = () => {
     setShowInput(false);
     setNewQuestion("");
     setChoices([]);
+    setSelectedChoice(null);
     setErrorMessage("");
   };
 
   const handleEditChoice = (index) => {
     setEditingChoiceIndex(index);
-    setEditingChoiceText(choices[index].text); // Set the current text for editing
+    setEditingChoiceText(choices[index].text);
   };
 
   const handleDeleteChoice = (index) => {
-    const updatedChoices = choices.filter((choice, i) => i !== index);
+    const updatedChoices = choices.filter((_, i) => i !== index);
+    if (selectedChoice === index) {
+      setSelectedChoice(null);
+    } else if (selectedChoice > index) {
+      setSelectedChoice(selectedChoice - 1);
+    }
     setChoices(updatedChoices);
-    setEditingChoiceIndex(null);
-    setEditingChoiceText("");
   };
 
   const handleCancelEditChoice = () => {
@@ -190,6 +165,9 @@ const CreateExam = () => {
     setChoices([]);
     setSelectedChoice(null);
     setErrorMessage("");
+  };
+  const indexToLetter = (index) => {
+    return String.fromCharCode(97 + index);
   };
 
   return (
@@ -322,7 +300,9 @@ const CreateExam = () => {
             <h3>Questions:</h3>
             {questions.map((q, index) => (
               <div key={index}>
-                <strong>{q.question}</strong>
+                <strong>
+                  Q{index + 1}. {q.question}
+                </strong>
                 {editingIndex === null && (
                   <div>
                     <button onClick={() => handleEditQuestion(index)}>
@@ -395,7 +375,7 @@ const CreateExam = () => {
               backgroundColor: "#e71e4a",
               color: "white",
             }}
-            onClick={() => handleSaveExamToDatabase()}
+            onClick={() => saveExam(examId, questions)} // Pass examId and questions here
           >
             Save Exam
           </Button>

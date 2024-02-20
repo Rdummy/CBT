@@ -1,9 +1,9 @@
 /* Resetting default margin for body */
 body {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: auto;
+  align-items: center; /* Vertically center the content */
+  justify-content: center; /* Horizontally center the content */
+  height: 100vh; /* Set to viewport height to fill the screen */
   margin: 0;
   font-family: Arial, sans-serif;
 }
@@ -20,13 +20,14 @@ h2 {
 .create-exam-container {
   border-radius: 20px;
   min-width: 300px;
-  margin: 30px;
+  
   padding: 30px;
   background-color: #f8f1f3;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center; /* Center children horizontally */
 }
+
 
 /* Styling input fields with consistent font and colors */
 .input-div {
@@ -37,6 +38,8 @@ h2 {
 
 /* Adjusted padding and height for consistent size */
 .input-effect {
+  min-width: 200px; /* Minimum width for input fields */
+  max-width: 100%; /* Maximum width to prevent overflow */
   width: 94%;
   height: 25px;
   border: 0;
@@ -60,11 +63,11 @@ h2 {
   transition: 0.4s;
 }
 
-.input-effect:focus ~ .focus-border {
+/* .input-effect:focus ~ .focus-border {
   width: 100%;
   transition: 0.4s;
   border: 5px solid #e71e4a;
-}
+} */
 
 /* Styling buttons with consistent appearance */
 .exam-button {
@@ -131,14 +134,22 @@ button:disabled {
 /* Styling choices container */
 .choices-container {
   display: flex;
-  flex-direction: column;
-  width: auto;
+  flex-direction: row; /* Adjust if necessary */
+  flex-wrap: wrap; /* This allows items to wrap to the next line */
+  width: 100%;
 }
 
 .choice-item {
+  word-wrap: break-word;
+  word-break: break-all; /* This will ensure break for even long unbroken strings of text */
+  overflow-wrap: break-word;
+  overflow: hidden; /* You can change it to 'auto' if you want to provide scrollbars instead */
+  max-width: 100%; /* Ensure the choice items do not exceed the container width */
+  flex: 0 1 auto; 
+  margin-right: 10px;
   border: 1px solid #ccc;
   padding: 10px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   background-color: rgb(255, 255, 255);
   display: flex;
   justify-content: space-between;
@@ -148,6 +159,7 @@ button:disabled {
   overflow: hidden;
   word-wrap: break-word;
   transition: background-color 0.3s ease; /* Added transition property */
+  overflow: hidden; /* Hides any content that overflows the box */
 }
 
 .choice-item.selected {

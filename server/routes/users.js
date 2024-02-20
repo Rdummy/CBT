@@ -9,6 +9,10 @@ router.post("/signup", async (req, res) => {
   const { username, password, email, user_role, user_type, department } =
     req.body;
 
+  // Define a default image URL
+  const defaultImageUrl =
+    "https://example.com/path/to/default/profile/image.png";
+
   try {
     const existingUser = await UserModel.findOne({ username });
 
@@ -25,6 +29,7 @@ router.post("/signup", async (req, res) => {
       user_role,
       user_type,
       department,
+      imageUrl: defaultImageUrl, // Set the default imageUrl for new users
     });
 
     await newUser.save();

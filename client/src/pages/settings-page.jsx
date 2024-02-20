@@ -17,7 +17,7 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-
+import ReturnDashboard from "../components/ReturnDashboard";
 import "../assets/styles/settings.css";
 
 export default function Settings() {
@@ -27,47 +27,48 @@ export default function Settings() {
     user_role: "",
     email: "",
     department: "",
+    imageUrl: "", // Add this line
   });
-
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     // Fetch user data using axios
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem("token");
-
         if (!token) {
           throw new Error("Token not found");
         }
-
         const response = await axios.get(
           "http://localhost:3001/settings/profile",
           {
             headers: { Authorization: token },
           }
         );
-
-        const { username, user_type, user_role, email, department } =
-          response.data;
-
-        setUserData({ username, user_type, user_role, email, department });
-        console.log(response.data);
+        const { username, user_type, user_role, email, department, imageUrl } =
+          response.data; // Include imageUrl
+        setUserData({
+          username,
+          user_type,
+          user_role,
+          email,
+          department,
+          imageUrl,
+        }); // Update state with imageUrl
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
     fetchUserData();
-  }, []); // Empty dependency array means this effect runs only once on mount
+  }, []);
 
   const handleSubmit = async () => {
     try {
       const token = localStorage.getItem("token");
-
       if (!token) {
         throw new Error("Token not found");
       }
-
       const response = await axios.put(
         "http://localhost:3001/settings/updateUserData",
         userData,
@@ -75,10 +76,6 @@ export default function Settings() {
           headers: { Authorization: token },
         }
       );
-
-      console.log("User data updated successfully:", response.data);
-
-      // Open the snackbar on successful submission
       setOpenSnackbar(true);
     } catch (error) {
       console.error("Error updating user data:", error);
@@ -89,10 +86,44 @@ export default function Settings() {
     setOpenSnackbar(false);
   };
 
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      const formData = new FormData();
+      formData.append("image", file); // Make sure this matches the backend expectation
+
+      // Retrieve the token just before you use it
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("Token not found");
+        return; // Exit the function if no token is found
+      }
+
+      try {
+        const response = await axios.post(
+          `http://localhost:3001/settings/uploadProfileImage`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: token, // Correctly include the token in the Authorization header
+            },
+          }
+        );
+        console.log("File uploaded successfully:", response.data);
+        // Optionally, refresh user data or update UI state here
+      } catch (error) {
+        console.error("Error uploading file:", error);
+        // Handle error appropriately
+      }
+    }
+  };
+
   return (
     <Box
       className="settings-container"
-      sx={{ width: "100%", height: "50vh", marginTop: "6rem" }}
+      sx={{ width: "100%", height: "50vh", marginTop: "8rem" }}
     >
       <Stack
         className="settings-stack"
@@ -113,6 +144,9 @@ export default function Settings() {
             display: "flex",
           }}
         >
+          <Box>
+            <ReturnDashboard />
+          </Box>
           <Box sx={{ mb: 1 }}>
             <Typography
               level="title-md"
@@ -138,7 +172,9 @@ export default function Settings() {
                 maxHeight={200}
                 sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
               >
-                <img src="" srcSet="" loading="lazy" alt="" />
+                {userData.imageUrl && (
+                  <img src={userData.imageUrl} loading="lazy" alt="Profile" />
+                )}
               </AspectRatio>
               <IconButton
                 aria-label="upload new picture"
@@ -154,9 +190,16 @@ export default function Settings() {
                   top: 170,
                   boxShadow: "sm",
                 }}
+                onClick={() => document.getElementById("file-upload").click()}
               >
                 <EditRoundedIcon />
               </IconButton>
+              <input
+                type="file"
+                id="file-upload"
+                style={{ display: "none" }}
+                onChange={handleFileChange}
+              />
             </Stack>
             <Stack spacing={2} sx={{ flexGrow: 1 }}>
               <Stack spacing={1}>

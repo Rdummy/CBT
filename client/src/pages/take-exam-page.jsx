@@ -1,24 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Card, CardContent, Box, Typography, Button } from "@mui/material";
+import { Box, Card, CardContent, Typography, Button } from "@mui/material";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import QuestionChoice from "../components/ExamComponents/QuestionChoice.jsx";
-import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import axios from "axios";
-import CountdownTimer from "../components/CountDownTimer";
-import "../assets/styles/take-exam.css";
+
 const TakeExamPage = () => {
   const navigate = useNavigate();
   const { examId } = useParams();
-
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [chosenAnswers, setChosenAnswers] = useState({});
-  const [score, setScore] = useState(null);
-  const [shouldNavigate, setShouldNavigate] = useState(false);
   const [examData, setExamData] = useState(null);
-  const [showAnswer, setShowAnswer] = useState(false);
-  const [hasMovedForward, setHasMovedForward] = useState(false);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [userAnswers, setUserAnswers] = useState([]);
   const [answerConfirmed, setAnswerConfirmed] = useState(false);
-  const [clearSelectedAnswer, setClearSelectedAnswer] = useState(false);
 
   useEffect(() => {
     axios
@@ -31,225 +25,133 @@ const TakeExamPage = () => {
       });
   }, [examId]);
 
-  useEffect(() => {
-    if (shouldNavigate && score !== null) {
-      navigate(`/dashboard/exams/${examId}/take-exam/result/${score}`);
-    }
-  }, [shouldNavigate, score, navigate, examId]);
-
-  // Disable browser's back button
-  useEffect(() => {
-    const disableBackButton = () => {
-      window.history.pushState(null, "", window.location.href);
-      window.onpopstate = function (event) {
-        window.history.pushState(null, "", window.location.href);
-      };
-    };
-
-    disableBackButton();
-
-    return () => {
-      // Cleanup function to re-enable back button when leaving the component
-      window.onpopstate = null;
-    };
-  }, []);
-  const handleSelectChoice = (index) => {
-    if (!answerConfirmed) {
-      setChosenAnswers(index);
-      setShowAnswer(false);
+  const handleNextQuestion = () => {
+    if (currentQuestionIndex < examData.questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setAnswerConfirmed(false); // Reset confirmation on navigating to next question
     }
   };
 
-  const prevQuestion = () => {
-    if (!hasMovedForward) {
+  const handlePrevQuestion = () => {
+    if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
+      setAnswerConfirmed(false); // Reset confirmation on navigating to previous question
     }
   };
 
-  const clearAnswer = () => {
-    setChosenAnswers({});
-    setShowAnswer(false);
-    setAnswerConfirmed(false);
-  };
-
-  const handleSubmitAnswer = () => {
-    const nextQuestionIndex = currentQuestionIndex + 1;
-
-    if (currentQuestionIndex < examData?.questions.length - 1) {
-      setCurrentQuestionIndex(nextQuestionIndex);
-      setHasMovedForward(true);
-      setAnswerConfirmed(false);
-      setClearSelectedAnswer(true); // Clear selected answer when moving to the next question
-    } else {
-      computeScore();
-      setShouldNavigate(true);
-    }
-    clearAnswer();
+  const handleAnswerSelect = (choiceIndex) => {
+    const newAnswers = [...userAnswers];
+    newAnswers[currentQuestionIndex] = choiceIndex;
+    setUserAnswers(newAnswers);
+    setAnswerConfirmed(false); // User might change their mind before confirming
   };
 
   const handleConfirmAnswer = () => {
-    storeUserAnswers();
-    setShowAnswer(true);
     setAnswerConfirmed(true);
   };
 
-  const storeUserAnswers = () => {
-    if (chosenAnswers[currentQuestionIndex] !== undefined) {
-      localStorage.setItem(
-        `chosenAnswers_${examId}`,
-        JSON.stringify(chosenAnswers)
-      );
-    }
+  const handleSubmitExam = () => {
+    // Assuming each question is worth the same and score is out of 100
+    const correctAnswersCount = userAnswers.reduce((acc, userAnswer, index) => {
+      const question = examData.questions[index];
+      return acc + (userAnswer === question.correctAnswer ? 1 : 0);
+    }, 0);
+    const score = (correctAnswersCount / examData.questions.length) * 100;
+
+    navigate(`/dashboard/exams/${examId}/take-exam/result/${score.toFixed(2)}`);
   };
 
-  const computeScore = () => {
-    const totalQuestions = examData?.questions.length || 1;
-    const correctAnswers = Object.keys(chosenAnswers).reduce(
-      (count, questionIndex) => {
-        const index = parseInt(questionIndex);
-        const correctAnswer = examData?.questions[index].correctAnswer;
-        const userAnswer = chosenAnswers[index];
-        return userAnswer !== undefined && userAnswer === correctAnswer
-          ? count + 1
-          : count;
-      },
-      0
-    );
+  if (!examData) return <div>Loading...</div>;
 
-    const calculatedScore = (correctAnswers / totalQuestions) * 100;
-    setScore(calculatedScore.toFixed(2));
-  };
-
-  const displayAnswer = () => {
-    const currentQuestion = examData?.questions[currentQuestionIndex];
-    const userAnswerIndex = chosenAnswers[currentQuestionIndex];
-    const isCorrect =
-      userAnswerIndex !== undefined &&
-      userAnswerIndex === currentQuestion.correctAnswer;
-
-    if (
-      showAnswer &&
-      chosenAnswers[currentQuestionIndex] !== undefined &&
-      chosenAnswers[currentQuestionIndex] !== null
-    ) {
-      return (
-        <div
-          style={{
-            fontSize: "1.5rem",
-            marginTop: "1rem",
-            marginBottom: "1rem",
-          }}
-          className={isCorrect ? "correct-answer" : "wrong-answer"}
-        >
-          {isCorrect ? "Correct!" : "Wrong! The correct answer is: "}
-          {currentQuestion.choices[currentQuestion.correctAnswer]}
-        </div>
-      );
-    }
-
-    return null;
-  };
+  const { title, instructions, questions } = examData;
+  const currentQuestion = questions[currentQuestionIndex];
 
   return (
-    <Box className="take-exam-content--wrapper" boxShadow={2}>
+    <Box
+      className="take-exam-content--wrapper"
+      boxShadow={2}
+      sx={{
+        width: 900,
+        height: "430px",
+        margin: "auto",
+        overflow: "auto",
+        marginTop: "50px",
+      }}
+    >
       <div className="exam-question--header">
-        <h2 style={{ marginTop: "1rem" }}> {examData?.title} </h2>
-        <span> Instructions: {examData?.instructions}</span>
+        <h3>{title}</h3>
+        <span>Instructions: {instructions}</span>
       </div>
-      <Card className="exam-card">
-        <CardContent
-          style={{
-            fontSize: "1.5rem",
-          }}
-        >
-          <div className="question--header">
-            Question # {currentQuestionIndex + 1}
+      <Card
+        className="exam-card"
+        style={{ height: "340px", padding: "1rem", margin: "1rem" }}
+      >
+        <CardContent>
+          <Typography className="question--header">
+            Question #{currentQuestionIndex + 1}
+          </Typography>
+          <div>
+            {currentQuestion.choices.map((choice, index) => (
+              <QuestionChoice
+                key={choice._id} // using the unique MongoDB _id field for the key
+                index={index}
+                choiceText={choice.text} // passing only the text to be rendered
+                isSelected={userAnswers[currentQuestionIndex] === index}
+                onSelect={() => handleAnswerSelect(index)}
+              />
+            ))}
           </div>
-          <span
-            style={{
-              fontSize: "1.5rem",
-              marginTop: "1rem",
-              marginBottom: "1rem",
-            }}
-          >
-            {examData?.questions[currentQuestionIndex]?.question}{" "}
-          </span>
-          {examData?.questions[currentQuestionIndex]?.choices.map(
-            (choice, choiceIndex) => (
-              <div key={choiceIndex}>
-                <QuestionChoice
-                  key={choiceIndex}
-                  choice={choice}
-                  index={choiceIndex}
-                  selectedAnswer={chosenAnswers[currentQuestionIndex]}
-                  onSelect={handleSelectChoice}
-                  clearSelectedAnswer={clearSelectedAnswer} // Pass the prop to clear selected answer
-                />
-              </div>
-            )
-          )}
-          {displayAnswer()}
-          <div
+          <Box
             className="question--footnote"
-            style={{
+            sx={{
               display: "flex",
-              justifyContent: "space-between",
+              justifyContent: "space-between", // This ensures that the space between all items is equal
+              "& > button": {
+                // This applies the styling to all direct button children
+                margin: "0 8px", // Adjusts spacing around each button equally
+              },
               fontSize: "1.5rem",
             }}
           >
-            {currentQuestionIndex > 0 ? (
-              <Button
-                className="brand-red-bg"
-                variant="contained"
-                style={{
-                  textTransform: "capitalize",
-                  opacity: hasMovedForward ? 0.5 : 1,
-                }}
-                onClick={prevQuestion}
-                disabled={hasMovedForward}
-              >
-                <SlArrowLeft size={"0.5rem"} /> &nbsp; Back
-              </Button>
-            ) : (
-              <Button disabled>Back</Button>
-            )}
-
+            <Button
+              variant="outlined"
+              onClick={handlePrevQuestion}
+              disabled={currentQuestionIndex === 0}
+              startIcon={<ArrowBackIosNewIcon />}
+              sx={{ textTransform: "capitalize" }}
+            >
+              Back
+            </Button>
             <Button
               variant="contained"
-              style={{ textTransform: "capitalize" }}
               onClick={handleConfirmAnswer}
               disabled={answerConfirmed}
+              sx={{ textTransform: "capitalize" }}
             >
               Confirm Answer
             </Button>
-
-            {currentQuestionIndex < examData?.questions.length - 1 && (
-              <Button
-                className="brand-red-bg"
-                variant="contained"
-                style={{
-                  textTransform: "capitalize",
-                  opacity: !answerConfirmed ? 0.5 : 1,
-                }}
-                onClick={handleSubmitAnswer}
-                disabled={!answerConfirmed}
-              >
-                Next &nbsp; <SlArrowRight size={"0.5rem"} />
-              </Button>
-            )}
-
-            {currentQuestionIndex === examData?.questions.length - 1 && (
-              <Button
-                className="brand-blue-bg"
-                variant="contained"
-                style={{ textTransform: "capitalize" }}
-                onClick={handleSubmitAnswer}
-                disabled={!answerConfirmed}
-              >
-                Submit
-              </Button>
-            )}
-          </div>
+            <Button
+              variant="contained"
+              onClick={handleNextQuestion}
+              endIcon={<ArrowForwardIosIcon />}
+              disabled={
+                currentQuestionIndex === questions.length - 1 ||
+                !answerConfirmed
+              }
+              sx={{ textTransform: "capitalize" }}
+            >
+              Next
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSubmitExam}
+              disabled={currentQuestionIndex !== questions.length - 1}
+              sx={{ textTransform: "capitalize" }}
+            >
+              Submit
+            </Button>
+          </Box>
         </CardContent>
       </Card>
     </Box>

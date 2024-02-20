@@ -10,20 +10,20 @@ import SoftwareUpdates from "../assets/Media/SoftwareUpdates.png";
 import Button from "@mui/material/Button";
 import { useLocation, useParams } from "react-router-dom";
 
-// const fileToDataUri = (file) =>
-//   new Promise((resolve, reject) => {
-//     const reader = new FileReader();
-//     reader.onload = (event) => {
-//       resolve(event.target.result);
-//     };
-//     reader.readAsDataURL(file);
-//   });
-
 const ReviewExamPage = () => {
-  const { examId } = useParams();
   const location = useLocation();
+  const { examId } = useParams();
+  const reviewState = location.state;
   const [activeIndex, setActiveIndex] = useState(0);
   const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    if (reviewState?.retake) {
+      // Logic to handle the page as a retake review
+      // This might include setting up the state to allow the user to review their answers before retaking
+    }
+    // Any additional setup based on passed state
+  }, [reviewState, examId]);
 
   useEffect(() => {
     try {
@@ -53,34 +53,6 @@ const ReviewExamPage = () => {
     }
   }, [location.state]);
 
-  // const items = [
-  //   {
-  //     header: "Strong Passwords",
-  //     body: " Ensure your online accounts are protected with strong, unique passwords. Use upper- and lower-case letters, numbers, and symbols. Avoid using easily guessable information like birthdays or common words.",
-  //     visual: computerTraining,
-  //   },
-  //   {
-  //     header: "Two-Factor Authentication (2FA)",
-  //     body: "Whenever possible, enable 2FA for your accounts. It provides an extra layer of security by requiring you to enter a code sent to your mobile device or email when logging in.",
-  //     visual: cyberlock,
-  //   },
-  //   {
-  //     header: "Phishing Awareness",
-  //     body: " Be cautious of unsolicited emails, texts, or messages. Phishing attacks often use deceptive tactics to trick you into revealing personal information or clicking malicious links. If something looks suspicious, verify its legitimacy with the sender.",
-  //     visual: phishing,
-  //   },
-  //   {
-  //     header: "Update Your Software",
-  //     body: "Keep your operating system, antivirus software, and applications up to date. Developers release updates to patch security vulnerabilities that cybercriminals could exploit.",
-  //     visual: SoftwareUpdates,
-  //   },
-  //   {
-  //     header: "Secure Wifi",
-  //     body: "Use a strong password for your Wi-Fi network and avoid using default router passwords. Additionally, consider setting up a separate network for guests to prevent them from accessing your devices.",
-  //     visual: "/src/assets/Media/secure-wi-fi.jpg",
-  //   },
-  // ];
-
   const isLastSlide = activeIndex === items.length - 1;
 
   const updateIndex = (newIndex) => {
@@ -108,9 +80,6 @@ const ReviewExamPage = () => {
           className="carousel"
           style={{ width: "100%", display: "flex", height: "100%" }}
         >
-          {/* <div className="div">
-            <ReturnDashboard />
-          </div>{" "} */}
           <div
             className="inner"
             style={{ transform: `translate(-${activeIndex * 100}%)` }}

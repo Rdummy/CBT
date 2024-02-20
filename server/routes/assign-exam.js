@@ -28,33 +28,4 @@ router.post("/assign-exam/:examId", async (req, res) => {
   }
 });
 
-router.post("/create-exam/:examId/questions", async (req, res) => {
-  const { examId } = req.params;
-  const { questions } = req.body;
-
-  try {
-    // Format the questions array to match your Exam model
-    const formattedQuestions = questions.map((q) => ({
-      type: "multiple-choice", // Assuming a default type for the question
-      question: q.question,
-      choices: q.choices.map((choice) => ({
-        text: choice.text,
-        isCorrect: choice.isCorrect,
-      })),
-      correctAnswer: q.correctAnswer,
-    }));
-
-    const exam = new ExamModel({
-      id: examId,
-      questions: formattedQuestions,
-    });
-
-    await exam.save();
-    res.status(201).json({ message: "Exam saved successfully" });
-  } catch (error) {
-    console.error("Error saving exam:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
 export { router as assignExamRouter };

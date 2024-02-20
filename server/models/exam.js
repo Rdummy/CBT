@@ -7,17 +7,9 @@ const slideSchema = new mongoose.Schema({
 });
 
 const questionSchema = new mongoose.Schema({
-  type: String,
   question: String,
-  choices: [
-    {
-      text: String,
-      isCorrect: mongoose.Schema.Types.Mixed, // Allow different data types, including boolean
-    },
-  ],
-  // correctAnswer: Number, // Remove this line
-
-  // explanation: String,
+  choices: [{ text: String }],
+  correctAnswer: Number, // Index of the correct answer in choices array
 });
 
 const examSchema = new mongoose.Schema({
