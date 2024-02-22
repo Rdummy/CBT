@@ -63,7 +63,9 @@ function CreateContentPage() {
     });
   };
   const getExams = async () => {
-    let response = await axios.get("http://localhost:3001/exam/exam-title");
+    let response = await axios.get(
+      "http://localhost:3001/exam/content/exam-title"
+    );
     return response.data;
   };
 

@@ -23,7 +23,7 @@ const PieChartCustom = ({ selectedBar, onClick }) => {
         nameKey="name"
         cx="50%"
         cy="50%"
-        outerRadius={100}
+        outerRadius={140}
         fill="#8884d8"
         label
         onClick={(entry, index) => onClick(data[index].name)}

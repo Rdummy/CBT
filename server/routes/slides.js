@@ -3,21 +3,12 @@ import { ExamModel } from "../models/exam.js";
 
 const router = express.Router();
 
-router.put("/slides", async (req, res) => {
+router.put("/slides/:examId", async (req, res) => {
   try {
+    const { examId } = req.params; // Use examId from the route
     const { reviewerContent } = req.body;
 
-    // Dynamically find the exam ID from the most recently created exam
-    const latestExam = await ExamModel.findOne().sort({ _id: -1 });
-
-    if (!latestExam) {
-      return res.status(404).json({ error: "No exams found" });
-    }
-
-    // Extract the _id from the latest exam
-    const examId = latestExam._id;
-
-    // Find the exam document by ID
+    // Find the exam document by the provided examId
     const exam = await ExamModel.findById(examId);
 
     if (!exam) {

@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/assign-exam/:examId", async (req, res) => {
   try {
-    const { assignedDepartment } = req.body;
+    const { assignedDepartment, numberOfParticipants } = req.body; // Include numberOfParticipants in the destructuring
     const { examId } = req.params;
 
     const existingExam = await ExamModel.findById(examId);
@@ -16,6 +16,7 @@ router.post("/assign-exam/:examId", async (req, res) => {
     }
 
     existingExam.assignedDepartment = assignedDepartment;
+    existingExam.numberOfParticipants = numberOfParticipants; // Set the numberOfParticipants field
 
     await existingExam.save();
 

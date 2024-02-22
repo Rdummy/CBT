@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import axios from "axios"; // Import Axios library
+import axios from "axios";
 import NotesList from "../components/Create Content Components/NotesList";
 import ViewCarousel from "../components/Create Content Components/ViewCarousel";
 import Search from "../components/Create Content Components/Search";
 import "../assets/styles/create-content.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom"; // Import useParams here
 import Card from "@mui/material/Card";
 
 function CreateContent() {
@@ -13,6 +13,7 @@ function CreateContent() {
   const [searchText, setSearchText] = useState("");
   const [displayMode, setDisplayMode] = useState("notes");
   const navigate = useNavigate();
+  const { examId } = useParams(); // Capture the examId from the route
 
   const addAnote = (title, description, imageUrl) => {
     const newNote = {
@@ -36,7 +37,6 @@ function CreateContent() {
           }
         : note
     );
-
     setNotes([...updatedNotes]); // Use spread operator to create a new array
   };
 
@@ -72,9 +72,9 @@ function CreateContent() {
         },
       };
 
-      // Make a PUT request to update the existing data in MongoDB
+      // Include the examId in the PUT request URL
       const response = await axios.put(
-        "http://localhost:3001/create-content/slides",
+        `http://localhost:3001/create-content/slides/${examId}`, // Adjusted URL to include examId
         slideData
       );
 

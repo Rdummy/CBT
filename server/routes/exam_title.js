@@ -1,18 +1,8 @@
 import express from "express";
-
+import jwt from "jsonwebtoken";
 import { ExamModel } from "../models/exam.js";
 
 const router = express.Router();
-
-const generateRandomId = () => {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let id = "";
-  for (let i = 0; i < 10; i++) {
-    id += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return id;
-};
 
 router.post("/exam-title", async (req, res) => {
   try {
@@ -35,12 +25,57 @@ router.post("/exam-title", async (req, res) => {
   }
 });
 
-router.get("/exam-title", async (req, res) => {
+router.get("/content/exam-title", async (req, res) => {
   try {
-    const data = await ExamModel.find();
-    res.json(data);
+    const { department } = req.query; // Get the department from query parameters
+
+    let query = {};
+    if (department) {
+      query.$or = [
+        { assignedDepartment: department },
+        { assignedDepartment: "General" },
+      ];
+    }
+
+    const exams = await ExamModel.find(query);
+    res.json(exams);
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+});
+
+router.get("/exam-title", async (req, res) => {
+  const authHeader = req.header("Authorization");
+  if (!authHeader) {
+    return res.status(401).json({ message: "Unauthorized - Missing token" });
+  }
+
+  const token = authHeader.split(" ")[1]; // Get the token part of the header
+  console.log("Token received:", token); // Check the token format
+
+  try {
+    // Verify the token to get the authenticated user's department
+    const decoded = jwt.verify(token, "secret"); // Replace with your actual secret key
+    const userDepartment = decoded.department; // Assuming the token includes the department
+
+    // Create a query to find exams either assigned to the user's department or 'General'
+    const query = {
+      $or: [
+        { assignedDepartment: userDepartment },
+        { assignedDepartment: "General" },
+      ],
+    };
+
+    const exams = await ExamModel.find(query);
+
+    res.json(exams);
+  } catch (error) {
+    console.error(error);
+    if (error.name === "JsonWebTokenError") {
+      res.status(401).json({ message: "Unauthorized - Invalid token" });
+    } else {
+      res.status(500).json({ message: "Internal server error" });
+    }
   }
 });
 

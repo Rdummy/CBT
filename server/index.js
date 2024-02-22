@@ -28,11 +28,6 @@ app.use(express.json());
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use((req, res, next) => {
-  console.log("Static file request:", req.path);
-  next();
-});
-
 app.use("/auth", userRouter);
 app.use("/table", tableRouter);
 app.use("/exam", examTitleRouter);

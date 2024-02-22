@@ -31,10 +31,11 @@ function ExamPage() {
   });
 
   // State to manage exams
-
   useEffect(() => {
-    getExams().then((response) => {
-      setExams(response);
+    getExams().then((exams) => {
+      if (exams) {
+        setExams(exams);
+      }
     });
   }, []);
 
@@ -63,8 +64,29 @@ function ExamPage() {
     });
   };
   const getExams = async () => {
-    let response = await axios.get("http://localhost:3001/exam/exam-title");
-    return response.data;
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error(
+          "No token found. User must be logged in to view exams."
+        );
+      }
+
+      // Use await to wait for the axios call to resolve
+      const response = await axios.get(
+        "http://localhost:3001/exam/exam-title",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // token should be a string
+          },
+        }
+      );
+
+      return response.data; // Now response is defined and data can be returned
+    } catch (error) {
+      console.error("Error fetching exams:", error);
+      // Handle errors, such as redirecting to login if the token isn't found
+    }
   };
 
   const handleFormSubmit = async (e) => {

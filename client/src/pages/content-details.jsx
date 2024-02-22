@@ -28,6 +28,7 @@ function ContentDetailsPage() {
   const [exams, setExams] = useState([]);
   const [examList, setExamList] = useState(exams);
   const [selectedDepartment, setSelectedDepartment] = useState(""); // Initialize the state
+  const [numberOfParticipants, setNumberOfParticipants] = useState(""); // New state for number of participants
 
   useEffect(() => {
     getExams().then((response) => {});
@@ -35,7 +36,9 @@ function ContentDetailsPage() {
 
   const getExams = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/exam/exam-title`);
+      const response = await axios.get(
+        `http://localhost:3001/exam/content/exam-title`
+      );
       if (response.data !== undefined) {
         setExams(response.data);
         setExamList(response.data);
@@ -56,17 +59,14 @@ function ContentDetailsPage() {
         `http://localhost:3001/content/assign-exam/${examId}`,
         {
           assignedDepartment: selectedDepartment,
+          numberOfParticipants: numberOfParticipants, // Include this in the POST request
         }
       );
 
       console.log(response.data.message);
-
       handleCloseModal();
-
-      // Manually navigate to the desired route
       navigate(`/dashboard/create-content/${examId}`); // Update the route accordingly
     } catch (error) {
-      // Handle error
       console.error(
         "Error assigning exam:",
         error.response ? error.response.data.error : error.message
@@ -134,7 +134,7 @@ function ContentDetailsPage() {
             <Box style={{ display: "flex", justifyContent: "space-between" }}>
               <ReturnDashboard />
               <div>
-                <Button
+                {/* <Button
                   variant="contained"
                   className="exam-details--button"
                   sx={{
@@ -153,7 +153,7 @@ function ContentDetailsPage() {
                   onClick={handleEditExam}
                 >
                   <FaEdit /> &nbsp; Edit
-                </Button>
+                </Button> */}
               </div>
             </Box>
 
@@ -238,7 +238,11 @@ function ContentDetailsPage() {
           </CardContent>
         </Card>
 
-        <Dialog open={openModal} onClose={handleCloseModal}>
+        <Dialog
+          open={openModal}
+          onClose={handleCloseModal}
+          sx={{ width: "auto", maxWidth: "none" }}
+        >
           <form onSubmit={handleAssignExam}>
             <DialogTitle>Assign Department</DialogTitle>
             <DialogContent>
@@ -257,6 +261,18 @@ function ContentDetailsPage() {
                 <MenuItem value="HR">HR</MenuItem>
                 <MenuItem value="General">General</MenuItem>
               </Select>
+            </DialogContent>
+            <DialogContent>
+              <TextField
+                label="Number of Participants"
+                name="numberOfParticipants"
+                type="number"
+                value={numberOfParticipants}
+                onChange={(e) => setNumberOfParticipants(e.target.value)}
+                fullWidth
+                margin="dense"
+                sx={{ width: "300px" }}
+              />
             </DialogContent>
             <DialogActions>
               <Button onClick={handleCloseModal}>Cancel</Button>

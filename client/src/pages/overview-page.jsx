@@ -68,7 +68,7 @@ function OverviewAdmin() {
               style={{
                 padding: "10px",
                 height: "100%",
-                marginTop: "30px",
+                marginTop: "10px",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -87,7 +87,7 @@ function OverviewAdmin() {
               style={{
                 padding: "10px",
                 height: "100%",
-                marginTop: "30px",
+                marginTop: "10px",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",

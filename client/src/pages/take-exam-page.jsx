@@ -13,6 +13,7 @@ const TakeExamPage = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
   const [answerConfirmed, setAnswerConfirmed] = useState(false);
+  const [feedback, setFeedback] = useState({ isCorrect: null, message: "" });
 
   useEffect(() => {
     axios
@@ -47,6 +48,18 @@ const TakeExamPage = () => {
   };
 
   const handleConfirmAnswer = () => {
+    const isCorrect =
+      userAnswers[currentQuestionIndex] === currentQuestion.correctAnswer;
+    const feedbackMessage = isCorrect
+      ? "Correct answer!"
+      : `Incorrect! The correct answer is: ${
+          currentQuestion.choices[currentQuestion.correctAnswer].text
+        }`;
+
+    setFeedback({
+      isCorrect,
+      message: feedbackMessage,
+    });
     setAnswerConfirmed(true);
   };
 
@@ -100,6 +113,17 @@ const TakeExamPage = () => {
                 onSelect={() => handleAnswerSelect(index)}
               />
             ))}
+            {answerConfirmed && (
+              <Typography
+                sx={{
+                  color: feedback.isCorrect ? "green" : "black",
+                  mt: 2, // Margin top for spacing
+                  fontWeight: "bold",
+                }}
+              >
+                {feedback.message}
+              </Typography>
+            )}
           </div>
           <Box
             className="question--footnote"

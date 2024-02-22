@@ -7,6 +7,11 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true },
   user_role: { type: String, required: true },
   user_type: { type: String, enum: ["admin", "user"], required: true },
+  status: {
+    type: String,
+    enum: ["Completed", "Incomplete"],
+    default: "Incomplete",
+  },
   department: {
     type: String,
     enum: ["Technology", "Production", "HR", "Quality"],

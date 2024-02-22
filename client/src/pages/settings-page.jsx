@@ -56,6 +56,7 @@ export default function Settings() {
           department,
           imageUrl,
         }); // Update state with imageUrl
+        localStorage.setItem("userData", JSON.stringify(response.data));
       } catch (error) {
         console.error("Error fetching user data:", error);
       }

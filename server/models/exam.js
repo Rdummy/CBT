@@ -23,6 +23,7 @@ const examSchema = new mongoose.Schema({
     slides: [slideSchema],
   },
   instructions: String,
+  numberOfParticipants: Number,
   assignedDepartment: {
     type: String,
     enum: ["Technology", "Production", "HR", "Quality", "General"],

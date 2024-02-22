@@ -18,12 +18,14 @@ function ExamDetailsPage() {
   }, []);
 
   const getExams = async () => {
-    axios.get("http://localhost:3001/exam/exam-title").then((response) => {
-      if (response.data !== undefined) {
-        setExams(response.data);
-        setExamList(response.data);
-      }
-    });
+    axios
+      .get("http://localhost:3001/exam/content/exam-title")
+      .then((response) => {
+        if (response.data !== undefined) {
+          setExams(response.data);
+          setExamList(response.data);
+        }
+      });
   };
 
   const selectedExam = examList.find((exam) => exam._id === examId);
@@ -87,14 +89,14 @@ function ExamDetailsPage() {
                 >
                   <RiDeleteBin6Line /> &nbsp; Delete
                 </Button>
-                <Button
+                {/* <Button
                   variant="contained"
                   className="exam-details--button"
                   sx={{ textTransform: "capitalize", borderRadius: "0rem" }}
                   onClick={handleEditExam}
                 >
                   <FaEdit /> &nbsp; Edit
-                </Button>
+                </Button> */}
               </div>
             </Box>
 

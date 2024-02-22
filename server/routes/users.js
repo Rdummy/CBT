@@ -56,11 +56,24 @@ router.post("/signin", async (req, res) => {
       return res.status(401).json({ message: "Invalid username or password" });
     }
 
+    // Include the department in the JWT token
     const token = jwt.sign(
-      { id: user._id, username: user.username, user_type: user.user_type },
-      "secret"
+      {
+        id: user._id,
+        username: user.username,
+        user_type: user.user_type,
+        department: user.department, // Add this line
+      },
+      "secret", // Replace "secret" with your actual secret, ideally from an environment variable
+      { expiresIn: "1h" } // Optional: Set an expiration for the token
     );
-    res.json({ token, userID: user._id, username: user.username });
+
+    res.json({
+      token,
+      userID: user._id,
+      username: user.username,
+      department: user.department,
+    });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
@@ -115,37 +128,5 @@ router.get("/username", async (req, res) => {
     res.status(401).json({ message: "Unauthorized - Invalid token" });
   }
 });
-
-// router.get("/profile", async (req, res) => {
-//   const token = req.header("Authorization");
-
-//   if (!token) {
-//     return res.status(401).json({ message: "Unauthorized - Missing token" });
-//   }
-
-//   try {
-//     // Verify the token to get the authenticated user ID
-//     const decoded = jwt.verify(token, "secret"); // Replace with your actual secret key
-//     const authenticatedUserId = decoded.id;
-
-//     const user = await UserModel.findById(authenticatedUserId);
-
-//     if (user) {
-//       // Return the user profile information
-//       res.json({
-//         username: user.username,
-//         user_type: user.user_type,
-//         user_role: user.user_role,
-//         email: user.email,
-//         department: user.department,
-//       });
-//     } else {
-//       res.status(404).json({ message: "User not found" });
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     res.status(401).json({ message: "Unauthorized - Invalid token" });
-//   }
-// });
 
 export { router as userRouter };
