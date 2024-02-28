@@ -13,4 +13,4 @@ router.get("/status", async (req, res) => {
   }
 });
 
-export { router as overviewRouter };
+export { router as overviewTableRouter };

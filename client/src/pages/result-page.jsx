@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, Typography, Button } from "@mui/material";
 import axios from "axios";
@@ -9,6 +9,8 @@ const ExamResultPage = () => {
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [resultPosted, setResultPosted] = useState(false); // State to track if the result has been posted
+  const postAttempted = useRef(false); // useRef to track the post attempt
 
   useEffect(() => {
     setLoading(true);
@@ -28,15 +30,71 @@ const ExamResultPage = () => {
     fetchQuestions();
   }, [examId]);
 
+  useEffect(() => {
+    const postResult = async () => {
+      // Function to post exam result
+      if (parseFloat(score) >= 80 && !postAttempted.current) {
+        postAttempted.current = true; // Set flag to true to block any further attempts
+        try {
+          const response = await axios.post(
+            "http://localhost:3001/user/examResult",
+            {
+              examId: examId,
+              status: "Completed",
+              score: score,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+          console.log("Result posted successfully:", response.data);
+          setResultPosted(true); // Update the state to reflect the result has been posted
+        } catch (error) {
+          console.error("Error posting exam result:", error);
+        }
+      }
+    };
+    postResult();
+  }, [score]); // Depend only on score to avoid re-posting when examId changes
+
   const getResultLabel = () => (parseFloat(score) >= 80 ? "PASSED" : "FAIL");
 
   const handleRetakeExam = () => {
-    // Include necessary state for ReviewExamPage, if any, similar to how it's received initially
     navigate(`/dashboard`);
   };
 
   const handleReturnDashboard = () => {
     navigate("/dashboard");
+  };
+
+  const postExamResult = async () => {
+    const examResult = {
+      examId: examId,
+      status: "Completed",
+      score: score,
+    };
+
+    const token = localStorage.getItem("token");
+
+    if (token && !resultPosted) {
+      try {
+        const response = await axios.post(
+          "http://localhost:3001/user/examResult",
+          examResult,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("Result posted successfully:", response.data);
+        setResultPosted(true); // Set resultPosted to true to avoid re-posting
+      } catch (error) {
+        console.error("Error posting exam result:", error);
+      }
+    }
   };
 
   return (

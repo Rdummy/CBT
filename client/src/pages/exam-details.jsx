@@ -77,7 +77,7 @@ function ExamDetailsPage() {
             <Box style={{ display: "flex", justifyContent: "space-between" }}>
               <ReturnDashboard />
               <div>
-                <Button
+                {/* <Button
                   variant="contained"
                   className="exam-details--button"
                   sx={{
@@ -88,7 +88,7 @@ function ExamDetailsPage() {
                   onClick={handleDeleteExam}
                 >
                   <RiDeleteBin6Line /> &nbsp; Delete
-                </Button>
+                </Button> */}
                 {/* <Button
                   variant="contained"
                   className="exam-details--button"
@@ -110,13 +110,13 @@ function ExamDetailsPage() {
 
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               {/* Status */}
-              <Typography variant="body2">
+              {/* <Typography variant="body2">
                 Status: {selectedExam.status}
-              </Typography>
+              </Typography> */}
               {/* Created Date */}
-              <Typography variant="body2">
+              {/* <Typography variant="body2">
                 Created: {selectedExam.createdAt}
-              </Typography>
+              </Typography> */}
             </Box>
 
             <Box sx={{ display: "flex", justifyContent: "flex-end", py: 2 }}>

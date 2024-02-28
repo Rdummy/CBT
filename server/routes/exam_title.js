@@ -51,7 +51,6 @@ router.get("/exam-title", async (req, res) => {
   }
 
   const token = authHeader.split(" ")[1]; // Get the token part of the header
-  console.log("Token received:", token); // Check the token format
 
   try {
     // Verify the token to get the authenticated user's department
@@ -92,6 +91,19 @@ router.get("/content-title/:examId", async (req, res) => {
     res.json(data);
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+});
+
+router.delete("/delete-exam/:examId", async (req, res) => {
+  try {
+    const { examId } = req.params;
+    const result = await ExamModel.deleteOne({ _id: examId });
+    if (result.deletedCount === 0) {
+      return res.status(404).send({ message: "Exam not found" });
+    }
+    res.send({ message: "Exam deleted successfully" });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
   }
 });
 

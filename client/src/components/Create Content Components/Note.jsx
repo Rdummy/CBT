@@ -14,7 +14,7 @@ const Note = ({
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedImage, setEditedImage] = useState(imageUrl);
-  const characterLimit = 200;
+  const characterLimit = 2000;
 
   const handleEditClick = () => {
     setIsEditing(true);

@@ -19,45 +19,69 @@ import BarChartCustom from "../components/Overview/Bar";
 import PieChartCustom from "../components/Overview/Pie";
 
 function OverviewAdmin() {
-  const [selectedBar, setSelectedBar] = useState(null);
-  const [selectedPieSegment, setSelectedPieSegment] = useState(null);
   const [userData, setUserData] = useState([]);
+  const [exams, setExams] = useState([]);
+  const [selectedExam, setSelectedExam] = useState(null);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
-
-  const handleBarHover = (data) => {
-    setSelectedBar(data);
-  };
-
-  const handlePieClick = (segment) => {
-    setSelectedPieSegment(segment);
-  };
+  const [selectedBar, setSelectedBar] = useState(null);
 
   useEffect(() => {
-    // Fetch data from your backend API using Axios
     axios
-      .get("http://localhost:3001/overview/status")
+      .get("http://localhost:3001/overview/barchart")
       .then((response) => {
-        // Update the state with the fetched data
-        setUserData(response.data);
+        setExams(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching exams data:", error);
       });
-  }, []); // Empty dependency array ensures the effect runs once on component mount
+  }, []);
 
-  // Filter users based on search term
-  const filteredUsers = userData.filter(
-    (user) =>
-      user.username.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (selectedPieSegment ? user.status === selectedPieSegment : true)
-  );
+  const fetchUsersByExam = async (examId, assignedDepartment) => {
+    try {
+      const url = `http://localhost:3001/overview/usersByExam/${examId}`;
+      const response = await axios.get(url);
+      const users = response.data;
 
-  // Determine the range of data to display based on the current page
+      const departmentFilteredUsers =
+        assignedDepartment === "General"
+          ? users
+          : users.filter((user) => user.department === assignedDepartment);
+
+      setFilteredUsers(departmentFilteredUsers);
+    } catch (error) {
+      console.error("Error fetching users for exam", error);
+    }
+  };
+
+  const onExamBarClick = async (data) => {
+    if (data && data.activeLabel) {
+      const clickedExam = exams.find(
+        (exam) => exam.examTitle === data.activeLabel
+      );
+      console.log("Clicked exam data:", clickedExam); // For debugging
+      setSelectedExam(clickedExam); // This is asynchronous
+      if (clickedExam && clickedExam._id) {
+        await fetchUsersByExam(clickedExam._id, clickedExam.assignedDepartment);
+      } else {
+        console.error("Clicked exam does not have a MongoDB _id:", clickedExam);
+      }
+    }
+  };
+
   const rowsPerPage = 6;
   const startIndex = (page - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
+  const displayedUsers = searchTerm
+    ? filteredUsers.filter((user) =>
+        user.username.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : filteredUsers;
+  const handleBarHover = (data) => {
+    setSelectedBar(data);
+  };
   return (
     <Card sx={{ m: 2, minWidth: "1000px" }}>
       <CardContent>
@@ -75,10 +99,7 @@ function OverviewAdmin() {
               }}
             >
               <Typography variant="h6"></Typography>
-              <PieChartCustom
-                selectedBar={selectedBar}
-                onClick={handlePieClick}
-              />
+              <PieChartCustom selectedBar={selectedBar} />
             </Paper>
           </Grid>
           <Grid item xs={6}>
@@ -94,12 +115,14 @@ function OverviewAdmin() {
               }}
             >
               <Typography variant="h6"></Typography>
-              <BarChartCustom onBarHover={handleBarHover} />
+              <BarChartCustom
+                onBarHover={handleBarHover}
+                onBarClick={onExamBarClick}
+              />
             </Paper>
           </Grid>
         </Grid>
 
-        {/* Search Bar */}
         <TextField
           label="Search Username"
           variant="outlined"
@@ -110,7 +133,6 @@ function OverviewAdmin() {
           style={{ marginTop: "40px", width: "466px" }}
         />
 
-        {/* Material-UI Table */}
         <TableContainer component={Paper} style={{ marginTop: "10px" }}>
           <Table>
             <TableHead>
@@ -122,19 +144,23 @@ function OverviewAdmin() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredUsers.slice(startIndex, endIndex).map((user) => (
-                <TableRow key={user.id}>
+              {displayedUsers.slice(startIndex, endIndex).map((user, index) => (
+                <TableRow key={user._id || index}>
+                  {" "}
                   <TableCell>{user.username}</TableCell>
                   <TableCell>{user.user_role}</TableCell>
                   <TableCell>{user.department}</TableCell>
-                  <TableCell>{user.status}</TableCell>
+                  <TableCell>
+                    {user.usersExams.find(
+                      (exam) => exam.examId === selectedExam?._id
+                    )?.status || "Incomplete"}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
 
-        {/* Pagination */}
         <Pagination
           count={Math.ceil(filteredUsers.length / rowsPerPage)}
           page={page}

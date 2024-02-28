@@ -91,12 +91,20 @@ function ContentDetailsPage() {
     });
   };
 
-  const handleDeleteExam = () => {
-    ``;
-    const updatedExams = examList.filter((exams) => exams._id !== examId);
-    setExamList(updatedExams);
-    navigate("/dashboard");
-    // You might add a confirmation message or notification for successful deletion
+  const handleDeleteExam = async () => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3001/exam/delete-exam/${examId}`
+      );
+      console.log(response.data); // Log or handle response data as needed
+      // After successful deletion, update the UI or redirect as needed
+      navigate("/dashboard/create-content");
+    } catch (error) {
+      console.error(
+        "Error deleting exam:",
+        error.response ? error.response.data.error : error.message
+      );
+    }
   };
 
   const handleEditExam = () => {
@@ -134,7 +142,7 @@ function ContentDetailsPage() {
             <Box style={{ display: "flex", justifyContent: "space-between" }}>
               <ReturnDashboard />
               <div>
-                {/* <Button
+                <Button
                   variant="contained"
                   className="exam-details--button"
                   sx={{
@@ -146,7 +154,7 @@ function ContentDetailsPage() {
                 >
                   <RiDeleteBin6Line /> &nbsp; Delete
                 </Button>
-                <Button
+                {/* <Button
                   variant="contained"
                   className="exam-details--button"
                   sx={{ textTransform: "capitalize", borderRadius: "0rem" }}

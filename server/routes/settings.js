@@ -12,7 +12,8 @@ const __dirname = path.dirname(__filename);
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../../client/public/uploads")); // Ensure this directory exists
+    // This path should navigate from the server directory up two levels and then to client/public/uploads
+    cb(null, path.join(__dirname, "../../client/public/uploads"));
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);

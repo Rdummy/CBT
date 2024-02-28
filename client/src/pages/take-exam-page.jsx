@@ -5,6 +5,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import QuestionChoice from "../components/ExamComponents/QuestionChoice.jsx";
 import axios from "axios";
+import { useCustomContext } from "../main.jsx";
 
 const TakeExamPage = () => {
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ const TakeExamPage = () => {
   const [userAnswers, setUserAnswers] = useState([]);
   const [answerConfirmed, setAnswerConfirmed] = useState(false);
   const [feedback, setFeedback] = useState({ isCorrect: null, message: "" });
+  const { setExamId } = useCustomContext();
+  const [farthestQuestionReached, setFarthestQuestionReached] = useState(0);
 
   useEffect(() => {
     axios
@@ -24,30 +27,47 @@ const TakeExamPage = () => {
       .catch((error) => {
         console.error("Error fetching exam data:", error);
       });
+
+    setExamId(examId);
   }, [examId]);
+
+  if (!examData) return <div>Loading...</div>;
 
   const handleNextQuestion = () => {
     if (currentQuestionIndex < examData.questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setAnswerConfirmed(false); // Reset confirmation on navigating to next question
+      // Update farthestQuestionReached to ensure user cannot navigate back beyond this point
+      setFarthestQuestionReached(
+        Math.max(farthestQuestionReached, currentQuestionIndex + 1)
+      );
     }
   };
 
   const handlePrevQuestion = () => {
-    if (currentQuestionIndex > 0) {
+    if (
+      currentQuestionIndex > 0 &&
+      currentQuestionIndex <= farthestQuestionReached
+    ) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
       setAnswerConfirmed(false); // Reset confirmation on navigating to previous question
     }
   };
 
   const handleAnswerSelect = (choiceIndex) => {
+    // Check if an answer has already been confirmed
+    if (answerConfirmed) {
+      // If an answer is confirmed, prevent further selections
+      return;
+    }
     const newAnswers = [...userAnswers];
     newAnswers[currentQuestionIndex] = choiceIndex;
     setUserAnswers(newAnswers);
-    setAnswerConfirmed(false); // User might change their mind before confirming
+    // No need to set answerConfirmed to false here since it's already handled
   };
 
   const handleConfirmAnswer = () => {
+    const currentQuestion = examData.questions[currentQuestionIndex];
     const isCorrect =
       userAnswers[currentQuestionIndex] === currentQuestion.correctAnswer;
     const feedbackMessage = isCorrect
@@ -64,17 +84,13 @@ const TakeExamPage = () => {
   };
 
   const handleSubmitExam = () => {
-    // Assuming each question is worth the same and score is out of 100
     const correctAnswersCount = userAnswers.reduce((acc, userAnswer, index) => {
       const question = examData.questions[index];
       return acc + (userAnswer === question.correctAnswer ? 1 : 0);
     }, 0);
     const score = (correctAnswersCount / examData.questions.length) * 100;
-
     navigate(`/dashboard/exams/${examId}/take-exam/result/${score.toFixed(2)}`);
   };
-
-  if (!examData) return <div>Loading...</div>;
 
   const { title, instructions, questions } = examData;
   const currentQuestion = questions[currentQuestionIndex];
@@ -93,15 +109,15 @@ const TakeExamPage = () => {
     >
       <div className="exam-question--header">
         <h3>{title}</h3>
-        <span>Instructions: {instructions}</span>
+        <span>Question: {instructions}</span>
       </div>
       <Card
         className="exam-card"
         style={{ height: "340px", padding: "1rem", margin: "1rem" }}
       >
         <CardContent>
-          <Typography className="question--header">
-            Question #{currentQuestionIndex + 1}
+          <Typography className="question--header" fontSize={"1.5rem"}>
+            Question #{currentQuestionIndex + 1} {currentQuestion.question}
           </Typography>
           <div>
             {currentQuestion.choices.map((choice, index) => (
@@ -140,7 +156,10 @@ const TakeExamPage = () => {
             <Button
               variant="outlined"
               onClick={handlePrevQuestion}
-              disabled={currentQuestionIndex === 0}
+              disabled={
+                currentQuestionIndex === 0 ||
+                currentQuestionIndex >= farthestQuestionReached
+              }
               startIcon={<ArrowBackIosNewIcon />}
               sx={{ textTransform: "capitalize" }}
             >

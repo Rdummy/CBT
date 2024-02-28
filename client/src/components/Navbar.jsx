@@ -11,12 +11,14 @@ import NTS_Logo from "../assets/images/NTS_Logo.png";
 import { useNavigate } from "react-router-dom";
 import { MdAccountCircle } from "react-icons/md";
 import axios from "axios";
+import { useCustomContext } from "../main";
 
 export default function Navbar() {
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [username, setUsername] = React.useState("");
   const navigate = useNavigate();
+  const { examId } = useCustomContext();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -34,6 +36,7 @@ export default function Navbar() {
     // Perform logout actions...
     try {
       localStorage.removeItem("token");
+      localStorage.removeItem("userData");
     } catch (error) {
       console.error("Error during logout:", error);
     }
@@ -69,6 +72,10 @@ export default function Navbar() {
 
     fetchUserData();
   }, []); // Empty dependency array means this effect runs only once on mount
+
+  React.useEffect(() => {
+    console.log(examId, "examId in navbar");
+  }, [examId]);
 
   return (
     <Box sx={{ width: "4rem", marginBottom: "3rem" }}>

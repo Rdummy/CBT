@@ -65,7 +65,7 @@ router.post("/signin", async (req, res) => {
         department: user.department, // Add this line
       },
       "secret", // Replace "secret" with your actual secret, ideally from an environment variable
-      { expiresIn: "1h" } // Optional: Set an expiration for the token
+      { expiresIn: "48h" } // Optional: Set an expiration for the token
     );
 
     res.json({

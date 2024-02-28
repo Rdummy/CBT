@@ -1,5 +1,6 @@
 // AddNote.jsx
 import { useState } from "react";
+import imageCompression from "browser-image-compression";
 
 const AddNote = ({ handleAddnote }) => {
   const [noteTitle, setNoteTitle] = useState("");
@@ -21,24 +22,35 @@ const AddNote = ({ handleAddnote }) => {
     }
   };
 
-  const handleImgClick = (e) => {
+  const handleImgClick = async (e) => {
     const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      const imageSizeInMB = file.size / (1024 * 1024); // Convert to MB
-      if (imageSizeInMB <= maxImageSizeMB) {
-        setImagePreview(reader.result);
-        // Save the image data to localStorage
-        localStorage.setItem("imagePreview", reader.result);
-      } else {
-        alert(`Image size exceeds the maximum limit of ${maxImageSizeMB} MB.`);
-      }
+    const options = {
+      maxSizeMB: 5, // Adjust the maximum size
+      maxWidthOrHeight: 1920, // Adjust according to your needs
+      useWebWorker: true,
     };
 
-    reader.readAsDataURL(file);
-  };
+    try {
+      console.log(
+        "Original File Size:",
+        (file.size / 1024 / 1024).toFixed(2) + "MB"
+      );
+      const compressedFile = await imageCompression(file, options);
+      console.log(
+        "Compressed File Size:",
+        (compressedFile.size / 1024 / 1024).toFixed(2) + "MB"
+      );
 
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+        localStorage.setItem("imagePreview", reader.result);
+      };
+      reader.readAsDataURL(compressedFile);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const handleSaveClick = () => {
     if (noteTitle && noteDesc.trim().length > 0) {
       // Retrieve the image data from localStorage
