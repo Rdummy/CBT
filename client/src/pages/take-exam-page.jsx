@@ -36,8 +36,8 @@ const TakeExamPage = () => {
   const handleNextQuestion = () => {
     if (currentQuestionIndex < examData.questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setAnswerConfirmed(false); // Reset confirmation on navigating to next question
-      // Update farthestQuestionReached to ensure user cannot navigate back beyond this point
+      setAnswerConfirmed(false);
+
       setFarthestQuestionReached(
         Math.max(farthestQuestionReached, currentQuestionIndex + 1)
       );
@@ -50,20 +50,17 @@ const TakeExamPage = () => {
       currentQuestionIndex <= farthestQuestionReached
     ) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
-      setAnswerConfirmed(false); // Reset confirmation on navigating to previous question
+      setAnswerConfirmed(false);
     }
   };
 
   const handleAnswerSelect = (choiceIndex) => {
-    // Check if an answer has already been confirmed
     if (answerConfirmed) {
-      // If an answer is confirmed, prevent further selections
       return;
     }
     const newAnswers = [...userAnswers];
     newAnswers[currentQuestionIndex] = choiceIndex;
     setUserAnswers(newAnswers);
-    // No need to set answerConfirmed to false here since it's already handled
   };
 
   const handleConfirmAnswer = () => {
@@ -122,9 +119,9 @@ const TakeExamPage = () => {
           <div>
             {currentQuestion.choices.map((choice, index) => (
               <QuestionChoice
-                key={choice._id} // using the unique MongoDB _id field for the key
+                key={choice._id}
                 index={index}
-                choiceText={choice.text} // passing only the text to be rendered
+                choiceText={choice.text}
                 isSelected={userAnswers[currentQuestionIndex] === index}
                 onSelect={() => handleAnswerSelect(index)}
               />
@@ -133,7 +130,7 @@ const TakeExamPage = () => {
               <Typography
                 sx={{
                   color: feedback.isCorrect ? "green" : "black",
-                  mt: 2, // Margin top for spacing
+                  mt: 2,
                   fontWeight: "bold",
                 }}
               >
@@ -145,10 +142,9 @@ const TakeExamPage = () => {
             className="question--footnote"
             sx={{
               display: "flex",
-              justifyContent: "space-between", // This ensures that the space between all items is equal
+              justifyContent: "space-between",
               "& > button": {
-                // This applies the styling to all direct button children
-                margin: "0 8px", // Adjusts spacing around each button equally
+                margin: "0 8px",
               },
               fontSize: "1.5rem",
             }}

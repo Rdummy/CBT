@@ -8,7 +8,7 @@ import {
   MenuItem,
   Button,
   Grid,
-  Paper, // Import Paper from Material-UI
+  Paper,
 } from "@mui/material";
 
 const AddExamForm = () => {
@@ -16,7 +16,6 @@ const AddExamForm = () => {
     title: "",
     description: "",
     status: "not taken",
-    // Add more fields as needed
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -31,9 +30,9 @@ const AddExamForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission here (e.g., send data to backend)
+
     console.log("Form submitted with data:", formData);
-    setFormData(initialFormData); // Reset form after submission
+    setFormData(initialFormData);
   };
 
   return (
@@ -75,8 +74,6 @@ const AddExamForm = () => {
                 <MenuItem value="completed">Completed</MenuItem>
               </Select>
             </FormControl>
-
-            {/* Add more Material-UI components for additional fields */}
 
             <Button
               variant="contained"

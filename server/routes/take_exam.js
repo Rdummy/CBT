@@ -7,7 +7,6 @@ router.get("/take-exam/:examId", async (req, res) => {
   try {
     const { examId } = req.params;
 
-    // Assuming examId is the _id field of the exam
     const data = await ExamModel.findById(examId);
 
     if (!data) {

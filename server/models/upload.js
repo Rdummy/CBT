@@ -2,13 +2,13 @@ import mongoose from "mongoose";
 
 const UploadSchema = new mongoose.Schema({
   examId: {
-    type: mongoose.Schema.Types.ObjectId, // Assuming examId is an ObjectId
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: "Exam", // Assuming you have an Exam model
+    ref: "Exam",
   },
   urlLink: {
     type: String,
-    required: true, // Assuming you want this field to be required
+    required: true,
   },
 });
 

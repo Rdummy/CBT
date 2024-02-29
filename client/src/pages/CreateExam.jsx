@@ -375,7 +375,7 @@ const CreateExam = () => {
               backgroundColor: "#e71e4a",
               color: "white",
             }}
-            onClick={() => saveExam(examId, questions)} // Pass examId and questions here
+            onClick={() => saveExam(examId, questions)}
           >
             Save Exam
           </Button>

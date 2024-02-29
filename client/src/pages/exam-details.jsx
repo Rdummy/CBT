@@ -47,14 +47,8 @@ function ExamDetailsPage() {
     const updatedExams = examList.filter((exams) => exams._id !== examId);
     setExamList(updatedExams);
     navigate("/dashboard");
-    // You might add a confirmation message or notification for successful deletion
   };
 
-  const handleEditExam = () => {
-    navigate(`/dashboard/exams/${examId}/edit`);
-    // You might also pass the selectedExam data to the edit page if needed
-    // navigate(`/dashboard/exams/${examId}/edit`, { state: { selectedExam } });
-  };
   const handleCreateContentClick = () => {
     navigate(`/dashboard/exams/${examId}/create-content`, {
       state: { examId: examId },

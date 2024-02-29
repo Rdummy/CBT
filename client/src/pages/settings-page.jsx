@@ -27,13 +27,12 @@ export default function Settings() {
     user_role: "",
     email: "",
     department: "",
-    imageUrl: "", // Add this line
+    imageUrl: "",
   });
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
-    // Fetch user data using axios
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -47,7 +46,7 @@ export default function Settings() {
           }
         );
         const { username, user_type, user_role, email, department, imageUrl } =
-          response.data; // Include imageUrl
+          response.data;
         setUserData({
           username,
           user_type,
@@ -55,7 +54,7 @@ export default function Settings() {
           email,
           department,
           imageUrl,
-        }); // Update state with imageUrl
+        });
         localStorage.setItem("userData", JSON.stringify(response.data));
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -92,13 +91,12 @@ export default function Settings() {
     if (file) {
       setSelectedFile(file);
       const formData = new FormData();
-      formData.append("image", file); // Make sure this matches the backend expectation
+      formData.append("image", file);
 
-      // Retrieve the token just before you use it
       const token = localStorage.getItem("token");
       if (!token) {
         console.error("Token not found");
-        return; // Exit the function if no token is found
+        return;
       }
 
       try {
@@ -108,15 +106,13 @@ export default function Settings() {
           {
             headers: {
               "Content-Type": "multipart/form-data",
-              Authorization: token, // Correctly include the token in the Authorization header
+              Authorization: token,
             },
           }
         );
         console.log("File uploaded successfully:", response.data);
-        // Optionally, refresh user data or update UI state here
       } catch (error) {
         console.error("Error uploading file:", error);
-        // Handle error appropriately
       }
     }
   };

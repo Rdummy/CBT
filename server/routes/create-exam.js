@@ -14,9 +14,8 @@ router.post("/create-exam/:examId/questions", async (req, res) => {
     let exam = await ExamModel.findOne({ _id: examId });
 
     if (exam) {
-      // If exam exists, append the questions...
-      exam.questions.push(...questions); // Use push to add the new questions
-      await exam.save(); // Save the updated exam document
+      exam.questions.push(...questions);
+      await exam.save();
       res.status(200).json({ message: "Questions added to exam successfully" });
     } else {
       console.log(`No exam found with id: ${examId}`);

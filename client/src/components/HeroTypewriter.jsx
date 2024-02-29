@@ -21,20 +21,17 @@ const HeroTypewriter = () => {
 
   useEffect(() => {
     const typingInterval = setTimeout(() => {
-      // Check if current string is finished typing
       if (currentCharIndex === typedStrings[currentIndex]?.length) {
-        // Update current index and reset typed text
         setCurrentIndex((currentIndex + 1) % typedStrings.length);
         setTypedText("");
         setCurrentCharIndex(0);
       } else if (currentCharIndex < typedStrings[currentIndex]?.length) {
-        // Continue typing current string
         setTypedText(
           typedText + typedStrings[currentIndex].charAt(currentCharIndex)
         );
         setCurrentCharIndex(currentCharIndex + 1);
       }
-    }, 150); // adjust speed here
+    }, 150);
 
     return () => clearTimeout(typingInterval);
   }, [currentCharIndex, typedText, currentIndex]);

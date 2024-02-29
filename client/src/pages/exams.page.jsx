@@ -23,14 +23,13 @@ function ExamPage() {
   const [page, setPage] = useState(1);
   const examsPerPage = 4;
   const [openModal, setOpenModal] = useState(false);
-  const [exams, setExams] = useState([]); // Initial exams data
+  const [exams, setExams] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     _id: "",
   });
 
-  // State to manage exams
   useEffect(() => {
     getExams().then((exams) => {
       if (exams) {
@@ -72,26 +71,24 @@ function ExamPage() {
         );
       }
 
-      // Use await to wait for the axios call to resolve
       const response = await axios.get(
         "http://localhost:3001/exam/exam-title",
         {
           headers: {
-            Authorization: `Bearer ${token}`, // token should be a string
+            Authorization: `Bearer ${token}`,
           },
         }
       );
 
-      return response.data; // Now response is defined and data can be returned
+      return response.data;
     } catch (error) {
       console.error("Error fetching exams:", error);
-      // Handle errors, such as redirecting to login if the token isn't found
     }
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    // console.log("Form submitted with data:", formData);
+
     setOpenModal(false);
 
     try {
@@ -104,12 +101,10 @@ function ExamPage() {
         }
       );
 
-      // console.log(response);
       if (response.statusText === "Created") {
         console.log("Exam added successfully");
       }
 
-      // Assuming the response includes the newly created exam data
       const newExam = response.data;
 
       setExams((prevExams) => [
@@ -156,6 +151,7 @@ function ExamPage() {
               <ExamCard
                 key={`${exam.id}-${index}`}
                 exam={exam}
+                updatedAt={exam.updatedAt}
                 style={{ minHeight: "300px" }}
               />
             </div>

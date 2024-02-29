@@ -11,7 +11,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchUserType = async () => {
       try {
-        const token = localStorage.getItem("token"); // Assuming you store the token in localStorage
+        const token = localStorage.getItem("token");
         const response = await axios.get(
           "http://localhost:3001/auth/user_type",
           {
@@ -24,7 +24,6 @@ function Dashboard() {
         setUserType(response.data.user_type);
       } catch (error) {
         console.error("Error fetching user type:", error);
-        // Handle error, e.g., redirect to login page
       }
     };
 

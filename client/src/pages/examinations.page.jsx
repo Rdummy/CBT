@@ -26,7 +26,6 @@ function ExamPage() {
     _id: "",
   });
 
-  // State to manage exams (using actual data only)
   const [exams, setExams] = useState([]);
 
   const displayedExams = exams.slice(
@@ -81,12 +80,10 @@ function ExamPage() {
         }
       );
 
-      // console.log(response);
       if (response.statusText === "Created") {
         console.log("Exam added successfully");
       }
 
-      // Assuming the response includes the newly created exam data
       const newExam = response.data;
 
       setExams((prevExams) => [

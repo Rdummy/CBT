@@ -65,19 +65,6 @@ export default function Sidebar() {
       >
         <Toolbar />
         <Box className="sidebar-box-wrapper" sx={{ overflow: "auto" }}>
-          {/* <Typography
-            style={{
-              fontWeight: "700",
-              fontFamily: "Inter",
-              fontSize: " 1.4rem",
-              marginTop: "0.8rem",
-              marginBottom: "0.5rem",
-              marginLeft: "1rem",
-              color: "#0f398e",
-            }}
-          >
-            Admin Dashboard
-          </Typography> */}
           <Divider />
           <List>
             {["Overview", "Create Content", "Examinations", "Employees"].map(

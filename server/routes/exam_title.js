@@ -27,8 +27,7 @@ router.post("/exam-title", async (req, res) => {
 
 router.get("/content/exam-title", async (req, res) => {
   try {
-    const { department } = req.query; // Get the department from query parameters
-
+    const { department } = req.query;
     let query = {};
     if (department) {
       query.$or = [
@@ -50,14 +49,12 @@ router.get("/exam-title", async (req, res) => {
     return res.status(401).json({ message: "Unauthorized - Missing token" });
   }
 
-  const token = authHeader.split(" ")[1]; // Get the token part of the header
+  const token = authHeader.split(" ")[1];
 
   try {
-    // Verify the token to get the authenticated user's department
-    const decoded = jwt.verify(token, "secret"); // Replace with your actual secret key
-    const userDepartment = decoded.department; // Assuming the token includes the department
+    const decoded = jwt.verify(token, "secret");
+    const userDepartment = decoded.department;
 
-    // Create a query to find exams either assigned to the user's department or 'General'
     const query = {
       $or: [
         { assignedDepartment: userDepartment },

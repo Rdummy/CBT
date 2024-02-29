@@ -9,8 +9,8 @@ const ExamResultPage = () => {
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [resultPosted, setResultPosted] = useState(false); // State to track if the result has been posted
-  const postAttempted = useRef(false); // useRef to track the post attempt
+  const [resultPosted, setResultPosted] = useState(false);
+  const postAttempted = useRef(false);
 
   useEffect(() => {
     setLoading(true);
@@ -32,9 +32,8 @@ const ExamResultPage = () => {
 
   useEffect(() => {
     const postResult = async () => {
-      // Function to post exam result
       if (parseFloat(score) >= 80 && !postAttempted.current) {
-        postAttempted.current = true; // Set flag to true to block any further attempts
+        postAttempted.current = true;
         try {
           const response = await axios.post(
             "http://localhost:3001/user/examResult",
@@ -50,14 +49,14 @@ const ExamResultPage = () => {
             }
           );
           console.log("Result posted successfully:", response.data);
-          setResultPosted(true); // Update the state to reflect the result has been posted
+          setResultPosted(true);
         } catch (error) {
           console.error("Error posting exam result:", error);
         }
       }
     };
     postResult();
-  }, [score]); // Depend only on score to avoid re-posting when examId changes
+  }, [score]);
 
   const getResultLabel = () => (parseFloat(score) >= 80 ? "PASSED" : "FAIL");
 
@@ -90,7 +89,7 @@ const ExamResultPage = () => {
           }
         );
         console.log("Result posted successfully:", response.data);
-        setResultPosted(true); // Set resultPosted to true to avoid re-posting
+        setResultPosted(true);
       } catch (error) {
         console.error("Error posting exam result:", error);
       }

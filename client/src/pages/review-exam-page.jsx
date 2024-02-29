@@ -19,19 +19,14 @@ const ReviewExamPage = () => {
 
   useEffect(() => {
     if (reviewState?.retake) {
-      // Logic to handle the page as a retake review
-      // This might include setting up the state to allow the user to review their answers before retaking
     }
-    // Any additional setup based on passed state
   }, [reviewState, examId]);
 
   useEffect(() => {
     try {
-      // Check if location.state is available and not null
       if (location.state?.details?.reviewerContent?.slides) {
         const slides = location.state.details.reviewerContent.slides;
 
-        // Ensure slides is an array before attempting to map
         if (Array.isArray(slides)) {
           const data = slides.map((item) => ({
             header: item.title,
@@ -44,12 +39,9 @@ const ReviewExamPage = () => {
         }
       } else {
         throw new Error("Invalid or missing data in location.state");
-        // Handle the case where location.state is null or missing
-        // For example, redirect the user to a default page or show an error message
       }
     } catch (error) {
       console.error("Error in useEffect:", error.message);
-      // Handle the error gracefully, show a user-friendly message, etc.
     }
   }, [location.state]);
 
@@ -85,7 +77,6 @@ const ReviewExamPage = () => {
             style={{ transform: `translate(-${activeIndex * 100}%)` }}
           >
             {items.map((item, index) => {
-              // Add a unique key prop to each rendered CarouselItem
               return <CarouselItem key={index} item={item} width={"100%"} />;
             })}
           </div>
@@ -106,7 +97,6 @@ const ReviewExamPage = () => {
                     key={index}
                     className="indicator-buttons"
                     onClick={() => {
-                      // Add a condition to prevent moving the radio buttons
                       if (index !== activeIndex) {
                         updateIndex(index);
                       }
@@ -144,8 +134,8 @@ const ReviewExamPage = () => {
                   px: 3,
                   py: 2,
                   mx: 0.5,
-                  opacity: isLastSlide ? 1 : 0.5, // Set opacity when disabled
-                  cursor: isLastSlide ? "pointer" : "not-allowed", // Set cursor when disabled
+                  opacity: isLastSlide ? 1 : 0.5,
+                  cursor: isLastSlide ? "pointer" : "not-allowed",
                 }}
                 disabled={!isLastSlide}
               >

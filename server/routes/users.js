@@ -9,7 +9,6 @@ router.post("/signup", async (req, res) => {
   const { username, password, email, user_role, user_type, department } =
     req.body;
 
-  // Define a default image URL
   const defaultImageUrl =
     "https://example.com/path/to/default/profile/image.png";
 
@@ -29,7 +28,7 @@ router.post("/signup", async (req, res) => {
       user_role,
       user_type,
       department,
-      imageUrl: defaultImageUrl, // Set the default imageUrl for new users
+      imageUrl: defaultImageUrl,
     });
 
     await newUser.save();
@@ -56,16 +55,15 @@ router.post("/signin", async (req, res) => {
       return res.status(401).json({ message: "Invalid username or password" });
     }
 
-    // Include the department in the JWT token
     const token = jwt.sign(
       {
         id: user._id,
         username: user.username,
         user_type: user.user_type,
-        department: user.department, // Add this line
+        department: user.department,
       },
-      "secret", // Replace "secret" with your actual secret, ideally from an environment variable
-      { expiresIn: "48h" } // Optional: Set an expiration for the token
+      "secret",
+      { expiresIn: "48h" }
     );
 
     res.json({
@@ -87,8 +85,7 @@ router.get("/user_type", async (req, res) => {
   }
 
   try {
-    // Verify the token to get the authenticated user ID
-    const decoded = jwt.verify(token, "secret"); // Replace with your actual secret key
+    const decoded = jwt.verify(token, "secret");
     const authenticatedUserId = decoded.id;
 
     const user = await UserModel.findById(authenticatedUserId);
@@ -112,8 +109,7 @@ router.get("/username", async (req, res) => {
   }
 
   try {
-    // Verify the token to get the authenticated user ID and username
-    const decoded = jwt.verify(token, "secret"); // Replace with your actual secret key
+    const decoded = jwt.verify(token, "secret");
     const authenticatedUserId = decoded.id;
 
     const user = await UserModel.findById(authenticatedUserId);

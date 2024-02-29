@@ -12,7 +12,6 @@ const __dirname = path.dirname(__filename);
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    // This path should navigate from the server directory up two levels and then to client/public/uploads
     cb(null, path.join(__dirname, "../../client/public/uploads"));
   },
   filename: function (req, file, cb) {
@@ -101,10 +100,11 @@ router.put("/updateUserData", async (req, res) => {
     res.status(401).json({ message: "Unauthorized - Invalid token" });
   }
 });
+
 router.post("/uploadProfileImage", upload.single("image"), async (req, res) => {
   const token = req.header("Authorization");
 
-  console.log("Received token:", token); // For debugging purposes
+  console.log("Received token:", token); // debugging
 
   if (!token) {
     return res.status(401).json({ message: "Unauthorized - Missing token" });
@@ -115,10 +115,9 @@ router.post("/uploadProfileImage", upload.single("image"), async (req, res) => {
   }
 
   try {
-    const decoded = jwt.verify(token, "secret"); // Use your actual secret key
+    const decoded = jwt.verify(token, "secret");
     const userId = decoded.id;
 
-    // Assuming the images are accessible from the /uploads directory
     const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${
       req.file.filename
     }`;

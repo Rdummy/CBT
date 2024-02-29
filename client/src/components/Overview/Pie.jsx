@@ -4,7 +4,6 @@ import { PieChart, Pie, Tooltip, Cell } from "recharts";
 const COLORS = ["#82ca9d", "#8884d8"];
 
 const PieChartCustom = ({ selectedBar, onClick }) => {
-  // Adjust the data based on the selected bar
   const data = selectedBar
     ? [
         { name: "Completed", value: selectedBar.Completed },

@@ -29,11 +29,10 @@ const EmployeesAdmin = () => {
   const rowsPerPage = 5;
 
   useEffect(() => {
-    // Fetch data from the database using Axios
     axios
       .get("http://localhost:3001/table/users")
       .then((response) => {
-        setData(response.data); // Update state with fetched data
+        setData(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -46,26 +45,23 @@ const EmployeesAdmin = () => {
   };
 
   const handleDeleteConfirm = () => {
-    // Use Axios to send a DELETE request to the backend
     axios
       .delete(`http://localhost:3001/table/users/${deleteUserId}`)
       .then((response) => {
-        // Update state only if the deletion is successful
         if (response.status === 200) {
           setData(data.filter((item) => item._id !== deleteUserId));
         }
-        // Close the dialog
+
         setDeleteDialogOpen(false);
       })
       .catch((error) => {
         console.error("Error deleting user:", error);
-        // Close the dialog even if there's an error
+
         setDeleteDialogOpen(false);
       });
   };
 
   const handleDeleteCancel = () => {
-    // Close the dialog without deleting
     setDeleteUserId(null);
     setDeleteDialogOpen(false);
   };

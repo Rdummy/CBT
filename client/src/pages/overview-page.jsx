@@ -60,8 +60,8 @@ function OverviewAdmin() {
       const clickedExam = exams.find(
         (exam) => exam.examTitle === data.activeLabel
       );
-      console.log("Clicked exam data:", clickedExam); // For debugging
-      setSelectedExam(clickedExam); // This is asynchronous
+      console.log("Clicked exam data:", clickedExam);
+      setSelectedExam(clickedExam);
       if (clickedExam && clickedExam._id) {
         await fetchUsersByExam(clickedExam._id, clickedExam.assignedDepartment);
       } else {

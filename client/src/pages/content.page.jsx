@@ -87,13 +87,10 @@ function CreateContentPage() {
         console.log("Exam added successfully");
       }
 
-      // Assuming the response includes the newly created exam data
       const newExam = response.data;
 
-      // Update displayedExams state to include the new exam
       setExams((prevExams) => [...prevExams, newExam]);
 
-      // Update displayedExams directly without refreshing the page
       setDisplayedExams((prevDisplayedExams) => [
         ...prevDisplayedExams,
         newExam,
@@ -132,6 +129,7 @@ function CreateContentPage() {
               <ContentCard
                 key={`${exam.id}-${index}`}
                 exam={exam}
+                updatedAt={exam.updatedAt} // Ensure this data is available
                 style={{ minHeight: "300px" }}
               />
             </div>

@@ -5,7 +5,7 @@ import NotesList from "../components/Create Content Components/NotesList";
 import ViewCarousel from "../components/Create Content Components/ViewCarousel";
 import Search from "../components/Create Content Components/Search";
 import "../assets/styles/create-content.css";
-import { useNavigate, useParams } from "react-router-dom"; // Import useParams here
+import { useNavigate, useParams } from "react-router-dom";
 import Card from "@mui/material/Card";
 
 function CreateContent() {
@@ -13,7 +13,7 @@ function CreateContent() {
   const [searchText, setSearchText] = useState("");
   const [displayMode, setDisplayMode] = useState("notes");
   const navigate = useNavigate();
-  const { examId } = useParams(); // Capture the examId from the route
+  const { examId } = useParams();
 
   const addAnote = (title, description, imageUrl) => {
     const newNote = {
@@ -37,7 +37,7 @@ function CreateContent() {
           }
         : note
     );
-    setNotes([...updatedNotes]); // Use spread operator to create a new array
+    setNotes([...updatedNotes]);
   };
 
   const deleteNote = (id) => {
@@ -47,7 +47,6 @@ function CreateContent() {
 
   const saveContent = async () => {
     try {
-      // Validate the data before sending (add your own validation logic)
       const isValid = notes.every((note) => {
         return (
           note.title.trim() !== "" &&
@@ -61,7 +60,6 @@ function CreateContent() {
         return;
       }
 
-      // Transform the frontend data to match the slideSchema in reviewerContent
       const slideData = {
         reviewerContent: {
           slides: notes.map((note) => ({
@@ -72,25 +70,21 @@ function CreateContent() {
         },
       };
 
-      // Include the examId in the PUT request URL
       const response = await axios.put(
-        `http://localhost:3001/create-content/slides/${examId}`, // Adjusted URL to include examId
+        `http://localhost:3001/create-content/slides/${examId}`,
         slideData
       );
 
-      console.log(response.data); // Log the server response if needed
+      console.log(response.data);
 
-      // Optionally, you can reset the notes state after saving
       setNotes([]);
       navigate("/dashboard");
     } catch (error) {
       console.error("Error saving content:", error.message);
-      // Handle the error gracefully, show a user-friendly message, etc.
     }
   };
 
   return (
-    // <div className="exam-details--wrapper">
     <Card sx={{ height: "100%", width: "70vw", m: 2 }}>
       <h2
         style={{

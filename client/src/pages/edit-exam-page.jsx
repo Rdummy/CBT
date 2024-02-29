@@ -33,25 +33,20 @@ const EditExamPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Find the index of the exam in the examsData array
+
     const examIndex = exams.findIndex((exam) => exam.id === examId);
 
-    // Create a copy of the examsData array to avoid directly mutating state
     const updatedExams = [...exams];
 
-    // Update the selected exam's title and description
     updatedExams[examIndex] = {
       ...updatedExams[examIndex],
       title: formData.title,
       description: formData.description,
     };
 
-    // Update the state or perform any necessary actions like API calls to update the data
-    // For simplicity, here we're just logging the updated data
     console.log("Updated Exams Data:", updatedExams);
 
-    // Redirect to a different route after successful update
-    navigate("/dashboard"); // You may navigate to a specific route
+    navigate("/dashboard");
   };
 
   return (

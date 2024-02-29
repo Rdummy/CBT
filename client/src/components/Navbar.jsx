@@ -33,7 +33,7 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    // Perform logout actions...
+   
     try {
       localStorage.removeItem("token");
       localStorage.removeItem("userData");
@@ -41,14 +41,14 @@ export default function Navbar() {
       console.error("Error during logout:", error);
     }
 
-    // For the example, let's update the state to simulate logout
+   
     setAuth(false);
-    setAnchorEl(null); // Close the menu after logout
-    navigate("/"); // Redirect to your login page
+    setAnchorEl(null); 
+    navigate("/"); 
   };
 
   React.useEffect(() => {
-    // Fetch user information when the component mounts
+    
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -71,7 +71,7 @@ export default function Navbar() {
     };
 
     fetchUserData();
-  }, []); // Empty dependency array means this effect runs only once on mount
+  }, []); 
 
   React.useEffect(() => {
     console.log(examId, "examId in navbar");

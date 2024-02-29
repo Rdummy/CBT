@@ -174,11 +174,10 @@ function ContentDetailsPage() {
             </Typography>
 
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              {/* Status */}
               <Typography variant="body2">
                 Status: {selectedExam.status}
               </Typography>
-              {/* Created Date */}
+
               <Typography variant="body2">
                 Created: {selectedExam.createdAt}
               </Typography>

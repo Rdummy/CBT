@@ -12,12 +12,37 @@ import {
 import { CiClock1 } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 
-function ExamCard({ exam, displayedExams }) {
+function ExamCard({ exam, updatedAt }) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
     navigate(`/dashboard/exams/${exam._id}/`);
   };
+  function timeSince(date) {
+    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+    let interval = seconds / 31536000;
+
+    if (interval > 1) {
+      return Math.floor(interval) + " year(s) ago";
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+      return Math.floor(interval) + " month(s) ago";
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+      return Math.floor(interval) + " day(s) ago";
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+      return Math.floor(interval) + " hour(s) ago";
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+      return Math.floor(interval) + " minute(s) ago";
+    }
+    return Math.floor(seconds) + " second(s) ago";
+  }
 
   return (
     <Button style={{ textTransform: "none" }} onClick={handleCardClick}>
@@ -25,7 +50,7 @@ function ExamCard({ exam, displayedExams }) {
         sx={{
           display: "flex",
           flexDirection: "column",
-          height: "350px", // Set a fixed height for the Card
+          height: "350px",
           maxHeight: "100% !important",
           mx: 1,
         }}
@@ -60,7 +85,7 @@ function ExamCard({ exam, displayedExams }) {
               <CiClock1 />
             </SvgIcon>
             <Typography color="text.secondary" display="inline" variant="body2">
-              Updated 2hr ago
+              Updated {timeSince(new Date(updatedAt))}
             </Typography>
           </Stack>
           <Stack alignItems="center" direction="row" spacing={1}>
@@ -70,7 +95,7 @@ function ExamCard({ exam, displayedExams }) {
               variant="body2"
               style={{ textTransform: "capitalize" }}
             >
-              Department: {exam.department}
+              Department: {exam.assignedDepartment}
             </Typography>
           </Stack>
         </Stack>

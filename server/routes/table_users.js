@@ -17,7 +17,6 @@ router.delete("/users/:_id", async (req, res) => {
   const userId = req.params._id;
 
   try {
-    // Find the user by ID and remove it from the database
     const deletedUser = await UserModel.findByIdAndDelete(userId);
 
     if (!deletedUser) {
