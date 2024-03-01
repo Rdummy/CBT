@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Card, CardContent, Typography, Button } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import QuestionChoice from "../components/ExamComponents/QuestionChoice.jsx";
@@ -17,6 +28,7 @@ const TakeExamPage = () => {
   const [feedback, setFeedback] = useState({ isCorrect: null, message: "" });
   const { setExamId } = useCustomContext();
   const [farthestQuestionReached, setFarthestQuestionReached] = useState(0);
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     axios
@@ -29,7 +41,25 @@ const TakeExamPage = () => {
       });
 
     setExamId(examId);
+
+    // Prevent back navigation
+    window.history.pushState(null, document.title, window.location.href);
+    window.addEventListener("popstate", handleBackNavigation);
+
+    return () => {
+      window.removeEventListener("popstate", handleBackNavigation);
+    };
   }, [examId]);
+
+  const handleBackNavigation = (event) => {
+    event.preventDefault();
+    setOpenDialog(true); // Open the dialog instead of alert
+    window.history.pushState(null, document.title, window.location.href);
+  };
+
+  const handleClose = () => {
+    setOpenDialog(false);
+  };
 
   if (!examData) return <div>Loading...</div>;
 
@@ -190,6 +220,25 @@ const TakeExamPage = () => {
             >
               Submit
             </Button>
+
+            <Dialog
+              open={openDialog}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{"Notice"}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  You cannot go back during the exam. Please finish the exam.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} autoFocus>
+                  OK
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Box>
         </CardContent>
       </Card>

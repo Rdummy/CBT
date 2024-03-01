@@ -78,7 +78,7 @@ function CreateContent() {
       console.log(response.data);
 
       setNotes([]);
-      navigate("/dashboard");
+      navigate("/dashboard/create-content");
     } catch (error) {
       console.error("Error saving content:", error.message);
     }

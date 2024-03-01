@@ -15,7 +15,6 @@ import {
   Pagination,
 } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
-
 import ExamCard from "../components/ExamCard";
 import "../assets/styles/dashboard.css";
 

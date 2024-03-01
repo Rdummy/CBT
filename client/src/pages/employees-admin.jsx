@@ -17,7 +17,9 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Card,
 } from "@mui/material";
+import "../assets/styles/ExamRoutes.css";
 import { Pagination } from "@mui/material";
 
 const EmployeesAdmin = () => {
@@ -79,100 +81,102 @@ const EmployeesAdmin = () => {
   };
 
   return (
-    <Grid
-      container
-      direction="column"
-      spacing={2}
-      style={{ marginTop: "10px" }}
-    >
-      <Grid item>
-        <TextField
-          label="Search by name"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          variant="outlined"
-          style={{ margin: "1px", width: "100%" }}
-        />
-      </Grid>
-      <Grid item style={{ overflow: "hidden" }}>
-        <TableContainer
-          component={Paper}
-          style={{
-            maxHeight: "calc(100vh - 128px)",
-            overflowY: "auto",
-          }}
-        >
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow style={{ backgroundColor: "#e71e4a" }}>
-                <TableCell style={{ color: "white" }}>ID</TableCell>
-                <TableCell style={{ color: "white" }}>Username</TableCell>
-                <TableCell align="left" style={{ color: "white" }}>
-                  Email
-                </TableCell>
-                <TableCell style={{ color: "white" }}>User Role</TableCell>
-                <TableCell style={{ color: "white" }}>User Type</TableCell>
-                <TableCell align="center" style={{ color: "white" }}>
-                  Actions
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {currentRows.map((row) => (
-                <TableRow key={row._id}>
-                  <TableCell component="th" scope="row">
-                    {row._id}
+    <div className="exam-details--wrapper">
+      <Grid
+        container
+        direction="column"
+        spacing={2}
+        style={{ marginTop: "10px" }}
+      >
+        <Grid item>
+          <TextField
+            label="Search by name"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            variant="outlined"
+            style={{ margin: "1px", width: "100%" }}
+          />
+        </Grid>
+        <Grid item style={{ overflow: "hidden" }}>
+          <TableContainer
+            component={Paper}
+            style={{
+              maxHeight: "calc(100vh - 128px)",
+              overflowY: "auto",
+            }}
+          >
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow style={{ backgroundColor: "#e71e4a" }}>
+                  <TableCell style={{ color: "white" }}>ID</TableCell>
+                  <TableCell style={{ color: "white" }}>Username</TableCell>
+                  <TableCell align="left" style={{ color: "white" }}>
+                    Email
                   </TableCell>
-                  <TableCell>{row.username}</TableCell>
-                  <TableCell align="left">{row.email}</TableCell>
-                  <TableCell>{row.user_role}</TableCell>
-                  <TableCell>{row.user_type}</TableCell>
-                  <TableCell align="right">
-                    <Button
-                      variant="contained"
-                      color="error"
-                      onClick={() => handleDelete(row._id)}
-                    >
-                      Delete
-                    </Button>
+                  <TableCell style={{ color: "white" }}>User Role</TableCell>
+                  <TableCell style={{ color: "white" }}>User Type</TableCell>
+                  <TableCell align="center" style={{ color: "white" }}>
+                    Actions
                   </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Box display="flex" justifyContent="center" mt={2}>
-          <Pagination
-            count={Math.ceil(filteredData.length / rowsPerPage)}
-            page={page}
-            onChange={handleChangePage}
-            color="primary"
-          />
-        </Box>
+              </TableHead>
+              <TableBody>
+                {currentRows.map((row) => (
+                  <TableRow key={row._id}>
+                    <TableCell component="th" scope="row">
+                      {row._id}
+                    </TableCell>
+                    <TableCell>{row.username}</TableCell>
+                    <TableCell align="left">{row.email}</TableCell>
+                    <TableCell>{row.user_role}</TableCell>
+                    <TableCell>{row.user_type}</TableCell>
+                    <TableCell align="right">
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => handleDelete(row._id)}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Box display="flex" justifyContent="center" mt={2}>
+            <Pagination
+              count={Math.ceil(filteredData.length / rowsPerPage)}
+              page={page}
+              onChange={handleChangePage}
+              color="primary"
+            />
+          </Box>
+        </Grid>
+        {/* Delete Confirmation Dialog */}
+        <Dialog
+          open={isDeleteDialogOpen}
+          onClose={handleDeleteCancel}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">Delete User</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to delete this user?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDeleteCancel} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleDeleteConfirm} color="error" autoFocus>
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Grid>
-      {/* Delete Confirmation Dialog */}
-      <Dialog
-        open={isDeleteDialogOpen}
-        onClose={handleDeleteCancel}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">Delete User</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this user?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDeleteCancel} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleDeleteConfirm} color="error" autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Grid>
+    </div>
   );
 };
 

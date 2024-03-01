@@ -33,7 +33,6 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-   
     try {
       localStorage.removeItem("token");
       localStorage.removeItem("userData");
@@ -41,14 +40,12 @@ export default function Navbar() {
       console.error("Error during logout:", error);
     }
 
-   
     setAuth(false);
-    setAnchorEl(null); 
-    navigate("/"); 
+    setAnchorEl(null);
+    navigate("/");
   };
 
   React.useEffect(() => {
-    
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -71,11 +68,9 @@ export default function Navbar() {
     };
 
     fetchUserData();
-  }, []); 
+  }, []);
 
-  React.useEffect(() => {
-    console.log(examId, "examId in navbar");
-  }, [examId]);
+  React.useEffect(() => {}, [examId]);
 
   return (
     <Box sx={{ width: "4rem", marginBottom: "3rem" }}>
