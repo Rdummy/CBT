@@ -1,5 +1,6 @@
 import express from "express";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 import { ExamModel } from "../models/exam.js";
 import { UserModel } from "../models/users.js";
 
@@ -54,18 +55,42 @@ router.get("/exam-title", async (req, res) => {
 
   try {
     const decoded = jwt.verify(token, "secret");
-    const userDepartment = decoded.department;
+    const userId = decoded.id; // Assuming your token includes the user ID
 
-    const query = {
+    const user = await UserModel.findById(userId).exec();
+    const completedExamsIds = user.usersExams
+      .filter((exam) => exam.status === "Completed")
+      .map((exam) => new mongoose.Types.ObjectId(exam.examId)); // Convert string to ObjectId
+
+    // Exams that are not completed
+    const availableExamsQuery = {
       $or: [
-        { assignedDepartment: userDepartment },
+        { assignedDepartment: user.department },
         { assignedDepartment: "General" },
       ],
+      _id: { $nin: completedExamsIds },
     };
+    const availableExams = await ExamModel.find(availableExamsQuery);
 
-    const exams = await ExamModel.find(query);
+    // Exams that the user has completed
+    const passedExamsQuery = { _id: { $in: completedExamsIds } };
+    const passedExams = await ExamModel.find(passedExamsQuery).lean();
 
-    res.json(exams);
+    const passedExamsWithScores = passedExams.map((exam) => {
+      const userExam = user.usersExams.find(
+        (uExam) => uExam.examId === exam._id.toString()
+      );
+      return {
+        ...exam,
+        score: userExam ? userExam.score : null,
+        status: userExam ? userExam.status : "Unknown",
+      };
+    });
+
+    res.json({
+      availableExams: availableExams,
+      passedExams: passedExamsWithScores,
+    });
   } catch (error) {
     console.error(error);
     if (error.name === "JsonWebTokenError") {
@@ -73,22 +98,6 @@ router.get("/exam-title", async (req, res) => {
     } else {
       res.status(500).json({ message: "Internal server error" });
     }
-  }
-});
-
-router.get("/content-title/:examId", async (req, res) => {
-  try {
-    const { examId } = req.params;
-    console.log(examId);
-    const data = await ExamModel.findById(examId);
-    console.log(data);
-    if (!data) {
-      return res.status(404).json({ message: "Content not found" });
-    }
-
-    res.json(data);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
   }
 });
 

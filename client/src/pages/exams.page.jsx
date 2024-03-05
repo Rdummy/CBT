@@ -13,7 +13,15 @@ import {
   Toolbar,
   Typography,
   Pagination,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from "@mui/material";
+
 import { v4 as uuidv4 } from "uuid";
 import ExamCard from "../components/ExamCard";
 import "../assets/styles/dashboard.css";
@@ -23,16 +31,26 @@ function ExamPage() {
   const examsPerPage = 4;
   const [openModal, setOpenModal] = useState(false);
   const [exams, setExams] = useState([]);
+  const [completedExams, setCompletedExams] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     _id: "",
   });
 
+  // useEffect(() => {
+  //   getExams().then((exams) => {
+  //     if (exams) {
+  //       setExams(exams);
+  //     }
+  //   });
+  // }, []);
+
   useEffect(() => {
-    getExams().then((exams) => {
-      if (exams) {
-        setExams(exams);
+    getExams().then((data) => {
+      if (data) {
+        setExams(data.availableExams);
+        setCompletedExams(data.passedExams); // Update this line
       }
     });
   }, []);
@@ -133,16 +151,17 @@ function ExamPage() {
         <Typography className="exams-category--header--text">
           Examinations
         </Typography>
-        {/* <div>
-          <Button variant="contained" color="primary" onClick={handleOpenModal}>
-            Add Exam
-          </Button>
-        </div> */}
       </Toolbar>
+      {exams.length === 0 && (
+        <Typography variant="h6" align="center" style={{ marginTop: 20 }}>
+          No Exams Available
+        </Typography>
+      )}
+
       <Grid
         container
         style={{ gridAutoFlow: "column", backgroundColor: "#d4d4d4" }}
-        sx={{ py: 2, px: 1 }}
+        sx={{ py: 2, px: 1, minHeight: "200px" }}
       >
         {displayedExams.map((exam, index) => (
           <Grid item xs={3} key={`${exam.id}-${index}`}>
@@ -175,6 +194,31 @@ function ExamPage() {
           boxShadow: "10px 5px 5px rgba(0, 0, 0, 0.1)",
         }}
       />
+      <TableContainer
+        component={Paper}
+        style={{ marginTop: "10px", marginBottom: "10px" }}
+      >
+        <Table>
+          <TableHead>
+            <TableRow style={{ backgroundColor: "#e71e4a" }}>
+              <TableCell style={{ color: "white" }}>Exam Title</TableCell>
+              <TableCell style={{ color: "white" }}>Deparment</TableCell>
+              <TableCell style={{ color: "white" }}>Score</TableCell>
+              <TableCell style={{ color: "white" }}>Status</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {completedExams.map((exam) => (
+              <TableRow key={exam._id}>
+                <TableCell>{exam.title}</TableCell>
+                <TableCell>{exam.assignedDepartment}</TableCell>
+                <TableCell>{exam.score}</TableCell>
+                <TableCell>{exam.status}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       <Dialog open={openModal} onClose={handleCloseModal}>
         <form onSubmit={handleFormSubmit}>

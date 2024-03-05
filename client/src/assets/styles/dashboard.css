@@ -16,6 +16,10 @@
 
 .exams-category--header{
     background-color: #fff;
+    min-width: 900px;
+    min-height: 800px;
+    /* margin-bottom: 20px; */
+
 }
 .exams-category--header--text{
     font-weight: 600 !important;
