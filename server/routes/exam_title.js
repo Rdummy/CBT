@@ -55,14 +55,13 @@ router.get("/exam-title", async (req, res) => {
 
   try {
     const decoded = jwt.verify(token, "secret");
-    const userId = decoded.id; // Assuming your token includes the user ID
+    const userId = decoded.id;
 
     const user = await UserModel.findById(userId).exec();
     const completedExamsIds = user.usersExams
       .filter((exam) => exam.status === "Completed")
-      .map((exam) => new mongoose.Types.ObjectId(exam.examId)); // Convert string to ObjectId
+      .map((exam) => new mongoose.Types.ObjectId(exam.examId));
 
-    // Exams that are not completed
     const availableExamsQuery = {
       $or: [
         { assignedDepartment: user.department },
@@ -72,7 +71,6 @@ router.get("/exam-title", async (req, res) => {
     };
     const availableExams = await ExamModel.find(availableExamsQuery);
 
-    // Exams that the user has completed
     const passedExamsQuery = { _id: { $in: completedExamsIds } };
     const passedExams = await ExamModel.find(passedExamsQuery).lean();
 

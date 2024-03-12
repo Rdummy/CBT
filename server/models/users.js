@@ -8,6 +8,11 @@ const examToTakeSchema = new mongoose.Schema({
     enum: ["Completed", "Incomplete"],
     required: true,
   },
+  attempts: {
+    type: Number,
+    default: 0, // Start with 0 attempts
+    required: true,
+  },
   completionDate: {
     type: Date,
     required: false,

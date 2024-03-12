@@ -24,6 +24,7 @@ function CreateContentPage() {
   const examsPerPage = 4;
   const [openModal, setOpenModal] = useState(false);
   const [exams, setExams] = useState([]); // Initial exams data
+  const [DisplayedExams, setDisplayedExams] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
