@@ -6,4 +6,5 @@ react-icons === npm install react-icons
 formik === npm i formik
 yup === npm i yup
 axios === npm i axios
-carousel
+dompurify
+ckeditor
