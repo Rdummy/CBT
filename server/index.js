@@ -3,6 +3,7 @@ import * as dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
 import mongoose from "mongoose";
+import multer from "multer";
 import { userRouter } from "./routes/users.js";
 import { tableRouter } from "./routes/table_users.js";
 import { examTitleRouter } from "./routes/exam_title.js";
@@ -16,6 +17,7 @@ import { overviewRouter } from "./routes/overview.js";
 import { assignExamRouter } from "./routes/assign-exam.js";
 import { createExamRouter } from "./routes/create-exam.js";
 import { userExamRouter } from "./routes/userExam.js";
+// import { ckeditorRouter } from "./routes/ckeditor.js";
 
 import { fileURLToPath } from "url";
 // import bodyParser from "body-parser";
@@ -29,10 +31,19 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the public directory
-app.use(express.static(path.join(__dirname, "../client/public")));
+const uploadPath = path.join(__dirname, "../client/public/uploads");
+app.use("/uploads", express.static(uploadPath));
 
-app.use(express.json({ limit: "100mb" }));
-app.use(express.urlencoded({ limit: "100mb", extended: true }));
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadPath);
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth", userRouter);
 app.use("/table", tableRouter);
@@ -47,6 +58,7 @@ app.use("/content", assignExamRouter);
 app.use("/exam", createExamRouter);
 app.use("/user", userExamRouter);
 app.use("/overview", overviewRouter);
+// app.use(ckeditorRouter);
 
 mongoose.connect(
   "mongodb+srv://raineheartcajes:cbtexam@novatechset.pmauabk.mongodb.net/cbtdb?retryWrites=true&w=majority"

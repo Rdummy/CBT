@@ -1,176 +1,186 @@
 /* General card styles */
-.top-title {
-  font-size: 50px;
-  text-align: center;
-  padding: 0%;
-  margin: 0%;
-}
-.create-content-app {
-  min-width: 650px;
-  margin: 0 auto;
-  padding-top: 10px;
-  padding-left: 50px;
-  padding-right: 50px;
-  padding-bottom: 0px;
-  background-color: rgba(170, 170, 170, 0.411);
-  border-radius: 0px 0px 20px 20px;
-  border-width: 5px;
-}
 
-.create-card-form {
-  max-width: 900px;
-  margin: 0 auto;
-  margin-bottom: 30px;
-  padding: 20px;
-}
-
-.cards-grid {
-  margin-top: 30px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
-
-.create-title,
-.create-media,
-.create-description {
-  margin-bottom: 20px;
-}
-
-.create-media {
-  width: 250px;
-  line-height: 1.8;
-  background-color: rgba(129, 129, 129, 0.267);
-  padding: 20px;
-  border-radius: 5px;
-}
-
-.card-container {
-  /* Size & Space */
-  width: 350px;
-  min-height: 300px;
-  max-height: 350px;
-  margin-bottom: 20px;
-  padding: 10px;
-
-  /* Border & Box */
-  border: 2px solid #49494993;
-  border-radius: 5px;
-
-  /* Layout & Overflow */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden;
-
-  /* Text & Content */
-  text-align: left;
-  word-wrap: break-word;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.card-title {
-  text-align: center;
-  padding: 0%;
-  margin: 0%;
-}
-
-.card-media,
-.card-description {
-  overflow: hidden;
-  max-height: 50px;
-}
-
-.card-button {
-  margin-top: 10px;
-}
-
-.card-media-image,
-.card-media-video {
-  max-width: 100%;
+body{
   height: auto;
-  object-fit: cover;
-  overflow: hidden;
-}
-
-.card-media-ppt {
-  text-align: center;
-}
-
-.card-ppt-preview {
-  max-width: 100%;
-  height: auto;
-}
-
-.card-ppt-filename {
-  display: block;
-  margin-top: 10px;
-}
-
-/* Styles for buttons in cards */
-.card-button {
-  margin-top: 10px;
-}
-
-.card-button-edit {
-  margin-right: 10px;
-}
-
-/* Modal component styles */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1050;
-}
-
-.modal-content {
-  background: white;
-  border-radius: 4px;
-  padding: 20px;
-  min-width: 900px;
-  max-width: 1500px;
-  max-height: 80vh;
-  overflow-y: auto;
-}
-
-/* Styles for the content within the modal */
-.modal-content img,
-.modal-content video {
-  display: block;
-  margin: 0 auto;
-  max-width: 900px;
-  height: auto;
-}
-
-.modal-content h2 {
-  text-align: center;
-}
-
-.modal-content table {
-  margin: 0 auto;
-  text-align: center;
-  width: 50%;
-  border-collapse: collapse;
-}
-
-.modal-content th,
-.modal-content td {
-  border: 1px solid black;
-  padding: 8px;
-}
-
-.modal-content blockquote {
-  padding: 10px;
-  margin: 20px 0;
-  border-left: 5px solid #eee;
-  background-color: #f9f9f9;
-}
+ }
+ 
+ .top-title {
+   margin-top: auto;
+   font-size: 30px;
+   text-align: center;
+   padding-top: 1rem;
+  
+ }
+ .create-content-app {
+   min-width: 650px;
+   min-height: 300px;
+   margin-top: 30px;
+   margin-bottom: 30px;
+   height: auto;
+   padding-left: 50px;
+   padding-right: 50px;
+   padding-bottom: 0px;
+   background-color: rgba(170, 170, 170, 0.411);
+   border-radius: 20px 20px 20px 20px;
+   border-width: 5px;
+ }
+ 
+ .create-card-form {
+   max-width: 900px;
+   /* margin: 0 auto; */
+   margin-bottom: 30px;
+   /* padding: 20px; */
+ }
+ 
+ .cards-grid {
+   margin-top: 30px;   
+   display: flex;
+   flex-wrap: wrap;
+   gap: 20px;
+   justify-content: center;
+ }
+ 
+ .create-title,
+ .create-media,
+ .create-description {
+   margin-bottom: 20px;
+ }
+ 
+ .create-media {
+   width: 250px;
+   line-height: 1.8;
+   background-color: rgba(129, 129, 129, 0.267);
+   padding: 20px;
+   border-radius: 5px;
+ }
+ 
+ .card-container {
+   /* Size & Space */
+   width: 350px;
+   min-height: 300px;
+   max-height: 350px;
+   margin-bottom: 20px;
+   margin-top: 20px;
+   padding: 10px;
+ 
+   /* Border & Box */
+   border: 2px solid #49494993;
+   border-radius: 5px;
+ 
+   /* Layout & Overflow */
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   overflow: hidden;
+ 
+   /* Text & Content */
+   text-align: left;
+   word-wrap: break-word;
+   white-space: nowrap;
+   text-overflow: ellipsis;
+ }
+ 
+ .card-title {
+   text-align: center;
+   padding: 0%;
+   margin: 0%;
+ }
+ 
+ .card-media,
+ .card-description {
+   overflow: hidden;
+   max-height: 50px;
+ }
+ 
+ .card-button {
+   margin-top: 10px;
+ }
+ 
+ .card-media-image,
+ .card-media-video {
+   max-width: 100%;
+   height: auto;
+   object-fit: cover;
+   overflow: hidden;
+ }
+ 
+ .card-media-ppt {
+   text-align: center;
+ }
+ 
+ .card-ppt-preview {
+   max-width: 100%;
+   height: auto;
+ }
+ 
+ .card-ppt-filename {
+   display: block;
+   margin-top: 10px;
+ }
+ 
+ /* Styles for buttons in cards */
+ .card-button {
+   margin-top: 10px;
+ }
+ 
+ .card-button-edit {
+   margin-right: 10px;
+ }
+ 
+ /* Modal component styles */
+ .modal-overlay {
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background-color: rgba(0, 0, 0, 0.5);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   z-index: 1050;
+ }
+ 
+ .modal-content {
+   background: white;
+   border-radius: 4px;
+   padding: 20px;
+   min-width: 900px;
+   max-width: 1500px;
+   max-height: 80vh;
+   overflow-y: auto;
+ }
+ 
+ /* Styles for the content within the modal */
+ .modal-content img,
+ .modal-content video {
+   display: block;
+   margin: 0 auto;
+   max-width: 900px;
+   height: auto;
+ }
+ 
+ .modal-content h2 {
+   text-align: center;
+ }
+ 
+ .modal-content table {
+   margin: 0 auto;
+   text-align: center;
+   width: 50%;
+   border-collapse: collapse;
+ }
+ 
+ .modal-content th,
+ .modal-content td {
+   border: 1px solid black;
+   padding: 8px;
+ }
+ 
+ .modal-content blockquote {
+   padding: 10px;
+   margin: 20px 0;
+   border-left: 5px solid #eee;
+   background-color: #f9f9f9;
+ }
+ 

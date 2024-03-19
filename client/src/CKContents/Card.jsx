@@ -11,43 +11,47 @@ function Card({ card, editCard, deleteCard }) {
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
-  const renderMediaPreview = () => {
-    if (!card.media) {
-      return <div>No Media Provided</div>;
-    } else if (card.media.type.startsWith("image")) {
-      return (
-        <img
-          src={card.media.url}
-          alt="Media content"
-          className="card-media-image" // Use class for styling
-        />
-      );
-    } else if (card.media.type.startsWith("video")) {
-      return (
-        <video
-          src={card.media.url}
-          controls
-          className="card-media-video" // Use class for styling
-        />
-      );
-    } else if (
-      card.media.type.includes("powerpoint") ||
-      card.media.type.includes("presentationml")
-    ) {
-      // Placeholder for PowerPoint files
-      return (
-        <div className="card-media-ppt">
-          <img
-            src="/public/ppt-icon.png" // Path to your PowerPoint preview image
-            alt="PowerPoint Placeholder"
-            className="card-ppt-preview" // Use class for styling
-          />
-          <span className="card-ppt-filename">{card.media.fileName}</span>
-        </div>
-      );
-    } else {
-      return null;
-    }
+  const renderMediaPreview = (mediaArray) => {
+    // Iterate over each media item and create appropriate previews
+    return mediaArray.map((mediaItem, index) => {
+      const mediaType = mediaItem.type.split("/")[0]; // Split mimetype to get the type
+
+      switch (mediaType) {
+        case "image":
+          return (
+            <img
+              key={index}
+              src={mediaItem.url}
+              alt={`Media content ${index}`}
+              className="card-media-image"
+            />
+          );
+        case "video":
+          return (
+            <video
+              key={index}
+              src={mediaItem.url} // This should now be a blob URL for previewing
+              controls
+              className="card-media-video"
+            >
+              Your browser does not support the video tag.
+            </video>
+          );
+        case "application": // Assuming application is for PowerPoint presentations
+          return (
+            <div key={index} className="card-media-ppt">
+              <img
+                src="/public/ppt-icon.png"
+                alt={`PowerPoint content ${index}`}
+                className="card-ppt-preview"
+              />
+              <span className="card-ppt-filename">{mediaItem.fileName}</span>
+            </div>
+          );
+        default:
+          return <div key={index}>Unsupported media type</div>;
+      }
+    });
   };
 
   return (
@@ -57,7 +61,11 @@ function Card({ card, editCard, deleteCard }) {
           className="card-title"
           dangerouslySetInnerHTML={createMarkup(card.title)}
         ></h3>
-        {renderMediaPreview()}
+        {Array.isArray(card.media) && card.media.length ? (
+          renderMediaPreview(card.media)
+        ) : (
+          <div>No Media Provided</div>
+        )}
         <div
           className="card-description"
           dangerouslySetInnerHTML={createMarkup(card.description)}
@@ -80,11 +88,12 @@ function Card({ card, editCard, deleteCard }) {
 
       <Modal isOpen={isModalOpen} onClose={toggleModal}>
         <h2 dangerouslySetInnerHTML={createMarkup(card.title)}></h2>
-        {renderMediaPreview()}
+        {Array.isArray(card.media) && card.media.length ? (
+          renderMediaPreview(card.media)
+        ) : (
+          <div>No Media Provided</div>
+        )}
         <div dangerouslySetInnerHTML={createMarkup(card.description)}></div>
-        {card.media && card.media.type.includes("powerpoint") ? (
-          <p>PowerPoint slideshow would be here.</p> // Placeholder text, replace with your slideshow component
-        ) : null}
       </Modal>
     </>
   );
