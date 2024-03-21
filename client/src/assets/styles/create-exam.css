@@ -3,7 +3,7 @@ body {
   display: flex;
   align-items: center; /* Vertically center the content */
   justify-content: center; /* Horizontally center the content */
-  height: 100vh; /* Set to viewport height to fill the screen */
+  height: auto; /* Set to viewport height to fill the screen */
   margin: 0;
   font-family: Arial, sans-serif;
 }

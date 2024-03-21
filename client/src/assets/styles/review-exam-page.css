@@ -28,30 +28,33 @@ body {
 }
 
 .carousel-item {
-  position: relative;
+  /* position: relative; */
   display: inline-flex;
   align-items: center;
   justify-content: center;
   height: 490px;
+  min-width: 900px;
   background-color: #fff;
 }
 
 .carousel-item-head {
   position: absolute;
   top: 3.5rem;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 600;
 }
 .carousel-item-body {
-  font-size: 1rem;
+  font-size: 1.5rem;
   margin: 30px 0 30px 0;
   padding: 0 20px 0 20px;
   white-space: normal;
-  color: #617d98;
+  color: #17181a;
 }
 .carousel-visual {
-  width: 250px;
+  width: 500px;
   padding: 0 20px 0 20px;
+  display: flex;
+  justify-content: center;
 }
 
 /* final stage */

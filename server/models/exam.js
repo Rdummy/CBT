@@ -1,9 +1,19 @@
 import mongoose from "mongoose";
 
+const mediaSchema = new mongoose.Schema({
+  type: {
+    type: String,
+    enum: ["Image", "Video", "PowerPoint", "Other"],
+    required: true,
+  },
+  url: { type: String, required: true },
+  fileName: { type: String, required: true },
+});
+
 const slideSchema = new mongoose.Schema({
   title: String,
   description: String,
-  imageUrl: String,
+  media: [mediaSchema], // Changed from imageUrl to an array of media
 });
 
 const questionSchema = new mongoose.Schema({

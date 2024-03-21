@@ -1,14 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import CarouselItem from "./CarouselItem";
-import ReturnDashboard from "../components/ReturnDashboard";
 import "../assets/styles/review-exam-page.css";
 import Navbar from "../components/Navbar";
-import computerTraining from "../assets/Media/computer_training.png";
-import cyberlock from "../assets/Media/cyberlock.jpg";
-import phishing from "../assets/Media/Phishing-Awareness.jpg";
-import SoftwareUpdates from "../assets/Media/SoftwareUpdates.png";
-import Button from "@mui/material/Button";
 import { useLocation, useParams } from "react-router-dom";
+import Button from "@mui/material/Button";
 
 const ReviewExamPage = () => {
   const location = useLocation();
@@ -27,16 +22,13 @@ const ReviewExamPage = () => {
       if (location.state?.details?.reviewerContent?.slides) {
         const slides = location.state.details.reviewerContent.slides;
 
-        if (Array.isArray(slides)) {
-          const data = slides.map((item) => ({
-            header: item.title,
-            body: item.description,
-            visual: item.imageUrl,
-          }));
-          setItems(data);
-        } else {
-          console.error("Slides is not an array:", slides);
-        }
+        const data = slides.map((slide) => ({
+          header: slide.title,
+          body: slide.description,
+          // Assuming media is an array with at least one object with a url property
+          visual: slide.media.length > 0 ? slide.media[0].url : null,
+        }));
+        setItems(data);
       } else {
         throw new Error("Invalid or missing data in location.state");
       }
