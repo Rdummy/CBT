@@ -22,7 +22,7 @@ import Navbar from "./components/Navbar.jsx";
 import PrivateRoute from "./components/Auth/PrivateRoute.jsx";
 import { AuthProvider, useAuth } from "./contexts/auth-context.jsx";
 import CreateExam from "./pages/CreateExam.jsx";
-import CreateContent from "./pages/create-content.jsx";
+import CKCreateContent from "./CKContents/CKCreateContent.jsx";
 import OverviewAdmin from "./pages/overview-page.jsx";
 import SettingsAdmin from "./pages/settings-page.jsx";
 import EmployeesAdmin from "./pages/employees-admin.jsx";
@@ -76,7 +76,7 @@ function CBTRoute() {
         },
         {
           path: "/dashboard/create-content/:examId/create-review",
-          element: <CreateContent />,
+          element: <CKCreateContent />,
         },
         {
           path: "/dashboard/create-content/:examId/create-exam",

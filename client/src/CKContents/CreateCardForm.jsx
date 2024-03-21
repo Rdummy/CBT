@@ -4,7 +4,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 function CreateCardForm({ addCard }) {
   const [title, setTitle] = useState("");
-  const [media, setMedia] = useState({ file: null, type: "", fileName: "" });
+  const [media, setMedia] = useState([]);
   const [description, setDescription] = useState("");
   const fileInputRef = useRef();
 
@@ -14,45 +14,35 @@ function CreateCardForm({ addCard }) {
   };
 
   const handleMediaChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setMedia({
-        file: file,
-        type: file.type,
-        fileName: file.name,
-      });
-    }
+    // Create object URLs for preview
+    const fileURLs = Array.from(e.target.files).map((file) =>
+      Object.assign(file, {
+        url: URL.createObjectURL(file),
+      })
+    );
+    setMedia(fileURLs);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Create a new card object
     const cardData = {
       title,
-      media: media.file
-        ? {
-            type: media.type,
-            url: URL.createObjectURL(media.file),
-            fileName: media.fileName,
-          }
-        : null, // Handle the case where media might not be provided
+      media, // No need to transform here, we'll handle files directly in the parent
       description,
     };
 
     addCard(cardData);
+    // Reset form
     setTitle("");
-    setMedia({ file: null, type: "", fileName: "" });
+    setMedia([]);
     setDescription("");
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+    fileInputRef.current.value = ""; // Reset file input
   };
 
   return (
     <form onSubmit={handleSubmit} className="create-card-form">
       <div className="create-title">
-        <label>Title</label>
+        <label style={{ fontSize: "13px" }}>Title</label>
         <CKEditor
           editor={ClassicEditor}
           config={editorConfiguration}
@@ -69,11 +59,12 @@ function CreateCardForm({ addCard }) {
           type="file"
           onChange={handleMediaChange}
           accept="image/*,video/*,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
+          multiple
           ref={fileInputRef}
         />
       </div>
       <div className="create-description">
-        <label>Description (max 100 words)</label>
+        <label style={{ fontSize: "13px" }}>Description (max 200 words)</label>
         <CKEditor
           editor={ClassicEditor}
           data={description}
@@ -83,7 +74,7 @@ function CreateCardForm({ addCard }) {
           }}
         />
       </div>
-      <button type="submit">Create Slide Card</button>
+      <button type="submit">Add Slide</button>
     </form>
   );
 }
