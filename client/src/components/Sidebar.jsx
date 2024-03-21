@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { IoIosPeople } from "react-icons/io";
 import { SlFolderAlt, SlGraph } from "react-icons/sl";
 import { CiSettings } from "react-icons/ci";
+import "../assets/styles/sidebar.css";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -32,64 +33,40 @@ export default function Sidebar() {
       case "Employees":
         navigate("/dashboard/employees");
         break;
+      case "Settings":
+        navigate(`/dashboard/settings`),
+          {
+            state: { userId: userId },
+          };
       default:
         break;
     }
   };
 
-  const handleSettingsClick = () => {
-    navigate(`/dashboard/settings`),
-      {
-        state: { userId: userId },
-      };
-  };
-
   return (
-    <Box sx={{ display: "flex", width: "100%" }}>
-      <Drawer
-        className="test"
-        variant="permanent"
-        sx={{
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: {
-            width: "calc(100vw/7)",
-            boxSizing: "border-box",
-          },
-        }}
-      >
-        <Toolbar />
-        <Box className="sidebar-box-wrapper" sx={{ overflow: "auto" }}>
-          <Divider />
+    <Box className="test">
+      <Drawer variant="permanent" className="draw">
+        {/* <Toolbar /> */}
+        <Box className="sidebar-box-wrapper">
+          <Divider>SIDE BAR</Divider>
           <List>
-            {["Overview", "Create Content", "Examinations", "Employees"].map(
-              (text, index) => (
-                <ListItem key={text} disablePadding>
-                  <ListItemButton onClick={() => handleSidebarClick(text)}>
-                    <ListItemIcon className="sidebar--icons">
-                      {index === 0 && <SlGraph size={"1.5rem"} />}
-                      {index === 1 && <SlFolderAlt size={"1.5rem"} />}
-                      {index === 2 && <MdDashboard size={"1.5rem"} />}
-                      {index === 3 && <IoIosPeople size={"1.5rem"} />}
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={text}
-                      style={{ fontWeight: "700" }}
-                      className="sidebar--text"
-                    />
-                  </ListItemButton>
-                </ListItem>
-              )
-            )}
-          </List>
-          <Divider />
-          <List>
-            {["Settings"].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton onClick={() => handleSettingsClick()}>
-                  <ListItemIcon>
-                    {index === 0 && <CiSettings size={"1.5rem"} />}
+            {[
+              "Overview",
+              "Create Content",
+              "Examinations",
+              "Employees",
+              "Settings",
+            ].map((text, index) => (
+              <ListItem key={text} className="sidebar-list-items">
+                <ListItemButton onClick={() => handleSidebarClick(text)}>
+                  <ListItemIcon className="sidebar-icons">
+                    {index === 0 && <SlGraph />}
+                    {index === 1 && <SlFolderAlt />}
+                    {index === 2 && <MdDashboard />}
+                    {index === 3 && <IoIosPeople />}
+                    {index === 4 && <CiSettings />}
                   </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemText primary={text} className="sidebar-text" />
                 </ListItemButton>
               </ListItem>
             ))}

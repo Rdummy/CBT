@@ -38,14 +38,6 @@ function ExamPage() {
     _id: "",
   });
 
-  // useEffect(() => {
-  //   getExams().then((exams) => {
-  //     if (exams) {
-  //       setExams(exams);
-  //     }
-  //   });
-  // }, []);
-
   useEffect(() => {
     getExams().then((data) => {
       if (data) {
@@ -160,11 +152,12 @@ function ExamPage() {
 
       <Grid
         container
-        style={{ gridAutoFlow: "column", backgroundColor: "#d4d4d4" }}
-        sx={{ py: 2, px: 1, minHeight: "200px" }}
+        spacing={1} // Adjust spacing as needed for design
+        alignItems="center"
+        justifyContent="center"
       >
         {displayedExams.map((exam, index) => (
-          <Grid item xs={3} key={`${exam.id}-${index}`}>
+          <Grid item xs={12} sm={6} md={4} lg={3} key={`${exam.id}-${index}`}>
             <div className="grid-item--wrapper">
               <ExamCard
                 key={`${exam.id}-${index}`}
@@ -176,24 +169,6 @@ function ExamPage() {
           </Grid>
         ))}
       </Grid>
-      <Pagination
-        count={Math.ceil(exams.length / examsPerPage)}
-        page={page}
-        onChange={handlePageChange}
-        sx={{
-          "& ul li button ": {
-            color: "#4a4a4a",
-          },
-          "& ul li button svg": {
-            fill: "#4a4a4a",
-          },
-          py: 1,
-          display: "flex",
-          justifyContent: "flex-end",
-          backgroundColor: "#fff",
-          boxShadow: "10px 5px 5px rgba(0, 0, 0, 0.1)",
-        }}
-      />
       <TableContainer
         component={Paper}
         style={{ marginTop: "10px", marginBottom: "10px" }}
@@ -219,36 +194,6 @@ function ExamPage() {
           </TableBody>
         </Table>
       </TableContainer>
-
-      <Dialog open={openModal} onClose={handleCloseModal}>
-        <form onSubmit={handleFormSubmit}>
-          <DialogTitle>Add New Exam</DialogTitle>
-          <DialogContent>
-            <TextField
-              label="Title"
-              name="title"
-              value={formData.title}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Description"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseModal}>Cancel</Button>
-            <Button type="submit" color="primary">
-              Submit
-            </Button>
-          </DialogActions>
-        </form>
-      </Dialog>
     </Container>
   );
 }

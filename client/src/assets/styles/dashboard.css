@@ -1,62 +1,69 @@
-@import '@fontsource/inter/700.css';
+@import "@fontsource/inter/700.css";
 
-.navbar--wrapper{
-    background-color: #E71E4A !important;}
-.user-details--wrapper{
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    align-content: center;
+.navbar--wrapper {
+  background-color: #e71e4a !important;
 }
-/* .dashboard-content{
-    padding-top: 3rem;
-    background-color: aliceblue;
-    width: 100%;
-    height: calc(100vh)
-} */
-
-.exams-category--header{
-    background-color: #fff;
-    min-width: 900px;
-    min-height: 800px;
-    /* margin-bottom: 20px; */
-
+.user-details--wrapper {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-content: center;
 }
-.exams-category--header--text{
-    font-weight: 600 !important;
-    font-family: 'Inter' !important;
-    color: #504d4e !important;
-    font-size: 1.5rem !important;
+.exams-category--header {
+  background-color: #ffffff;
+  min-width: 900px;
+  min-height: 800px;
+  margin-bottom: 20px;
+  border-style: none none solid;
+  border-color: #8888886c;
+}
+.exams-category--header--text {
+  font-weight: 600 !important;
+  font-family: "Inter" !important;
+  color: #181818 !important;
+  font-size: 3rem !important;
 }
 .dashboard-content {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Ensure full viewport height */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure full viewport height */
+}
+
+/* Admin layout with sidebar */
+.dashboard__admin {
+  display: grid;
+  grid-template-columns: 1fr 6fr;
+  margin-top: 2rem;
+}
+.dashboard__user {
+  display: flex;
+  margin-top: 2rem;
+}
+
+.dashboard__admin .Sidebar {
+  width: 100%;
+}
+.dashboard__user .outlet--full-width {
+  width: 100%;
+}
+@media only screen and (max-width: 1050px) {
+  .exams-category--header {
+    min-width: 800px;
   }
-  
-  /* Admin layout with sidebar */
-  .dashboard__admin {
-    display: grid;
-    grid-template-columns: 1fr 6fr;
-    margin-top: 2rem;
+}
+@media only screen and (max-width: 950px) {
+  .exams-category--header {
+    min-width: 700px;
   }
-  .dashboard__user {
-    display: flex;
-    margin-top: 2rem;
+}
+
+@media only screen and (max-width: 850px) {
+  .exams-category--header {
+    min-width: 600px;
   }
-  
-  .dashboard__admin .Sidebar {
-/*     
-    width: 250px;
-    min-height: 100vh; 
-     */
-     width: 100%;
+}
+
+@media only screen and (max-width: 750px) {
+  .exams-category--header {
+    min-width: 500px;
   }
-/*   
-  .dashboard__admin .outlet--with-sidebar {
-    width: calc(100% - 250px); 
-  }
-   */
-  /* User layout without sidebar */
-   .dashboard__user .outlet--full-width {
-    width: 100%; 
-  } 
+}

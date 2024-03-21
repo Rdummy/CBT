@@ -1,0 +1,53 @@
+.sidebar-box-wrapper {
+  margin-top: 100px;
+  overflow: hidden;
+  outline: none;
+}
+
+.sidebar-text .MuiListItemText-primary {
+  color: rgb(0, 0, 0);
+  font-size: 1.5rem !important;
+}
+
+.sidebar-icons {
+  font-size: 2rem;
+  padding: 5px;
+}
+.sidebar-list-items {
+  padding: 0 !important;
+}
+
+@media only screen and (max-width: 1200px) {
+  .test .MuiBox-root {
+    width: 150px;
+  }
+  .draw {
+    width: 150px;
+  }
+  .sidebar-text .MuiListItemText-primary {
+    font-size: 12px !important;
+  }
+  .sidebar-icons {
+    font-size: 1.5rem;
+    padding: 0px;
+    margin-right: -20px;
+  }
+}
+
+@media only screen and (max-width: 1100px) {
+  .test .MuiBox-root {
+    width: 100px;
+  }
+  .draw {
+    width: 100px;
+  }
+  .sidebar-text .MuiListItemText-primary {
+    font-size: 10px !important;
+  }
+  .sidebar-icons {
+    font-size: 1rem;
+    padding: 0px;
+    margin-right: -30px;
+    margin-left: -10px;
+  }
+}
