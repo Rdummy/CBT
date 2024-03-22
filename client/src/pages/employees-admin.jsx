@@ -8,7 +8,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Button,
   Box,
   TextField,
   Grid,
@@ -17,8 +16,12 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Card,
+  IconButton,
+  Menu,
+  MenuItem,
+  Button,
 } from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import "../assets/styles/ExamRoutes.css";
 import { Pagination } from "@mui/material";
 
@@ -28,6 +31,8 @@ const EmployeesAdmin = () => {
   const [page, setPage] = useState(1);
   const [deleteUserId, setDeleteUserId] = useState(null);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [menuUserId, setMenuUserId] = useState(null); // Track which user's menu is open
   const rowsPerPage = 5;
 
   useEffect(() => {
@@ -41,9 +46,13 @@ const EmployeesAdmin = () => {
       });
   }, []);
 
-  const handleDelete = (_id) => {
-    setDeleteUserId(_id);
+  const handleDelete = (userId) => {
+    // Set user ID for deletion
+    setDeleteUserId(userId);
+    // Open delete dialog
     setDeleteDialogOpen(true);
+    // Close the menu
+    handleClose();
   };
 
   const handleDeleteConfirm = () => {
@@ -53,12 +62,10 @@ const EmployeesAdmin = () => {
         if (response.status === 200) {
           setData(data.filter((item) => item._id !== deleteUserId));
         }
-
         setDeleteDialogOpen(false);
       })
       .catch((error) => {
         console.error("Error deleting user:", error);
-
         setDeleteDialogOpen(false);
       });
   };
@@ -66,6 +73,22 @@ const EmployeesAdmin = () => {
   const handleDeleteCancel = () => {
     setDeleteUserId(null);
     setDeleteDialogOpen(false);
+  };
+
+  const handleClick = (event, userId) => {
+    // Set the element that was clicked and the user ID for the menu actions
+    setAnchorEl(event.currentTarget);
+    setMenuUserId(userId);
+  };
+
+  const handleClose = () => {
+    // Reset anchorEl and menuUserId when the menu is closed
+    setAnchorEl(null);
+    setMenuUserId(null);
+  };
+  const handleSetCoAdmin = () => {
+    console.log("Setting user as co-admin:", deleteUserId);
+    handleClose(true); // Close the menu after the action
   };
 
   const filteredData = data.filter((row) =>
@@ -131,13 +154,28 @@ const EmployeesAdmin = () => {
                     <TableCell>{row.user_role}</TableCell>
                     <TableCell>{row.user_type}</TableCell>
                     <TableCell align="right">
-                      <Button
-                        variant="contained"
-                        color="error"
-                        onClick={() => handleDelete(row._id)}
+                      <IconButton
+                        aria-label="more"
+                        aria-controls="action-menu"
+                        aria-haspopup="true"
+                        onClick={(event) => handleClick(event, row._id)}
                       >
-                        Delete
-                      </Button>
+                        <MoreVertIcon />
+                      </IconButton>
+                      <Menu
+                        id={`action-menu-${row._id}`}
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl && menuUserId === row._id)}
+                        onClose={handleClose}
+                      >
+                        <MenuItem onClick={() => handleSetCoAdmin(menuUserId)}>
+                          Set to Co-admin
+                        </MenuItem>
+                        <MenuItem onClick={() => handleDelete(menuUserId)}>
+                          Delete
+                        </MenuItem>
+                      </Menu>
                     </TableCell>
                   </TableRow>
                 ))}

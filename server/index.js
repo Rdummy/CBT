@@ -4,6 +4,7 @@ import cors from "cors";
 import path from "path";
 import mongoose from "mongoose";
 import multer from "multer";
+import multer from "multer";
 import { userRouter } from "./routes/users.js";
 import { tableRouter } from "./routes/table_users.js";
 import { examTitleRouter } from "./routes/exam_title.js";
@@ -31,6 +32,19 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the public directory
+const uploadPath = path.join(__dirname, "../client/public/uploads");
+app.use("/uploads", express.static(uploadPath));
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadPath);
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+app.use(express.urlencoded({ extended: true }));
 const uploadPath = path.join(__dirname, "../client/public/uploads");
 app.use("/uploads", express.static(uploadPath));
 

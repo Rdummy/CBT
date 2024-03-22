@@ -19,24 +19,34 @@ import BarChartCustom from "../components/Overview/Bar";
 import PieChartCustom from "../components/Overview/Pie";
 
 function OverviewAdmin() {
-  const [userData, setUserData] = useState([]);
   const [exams, setExams] = useState([]);
   const [selectedExam, setSelectedExam] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedBar, setSelectedBar] = useState(null);
+  const [statusUpdated, setStatusUpdated] = useState(false);
+  const [data, setData] = useState([]);
 
+  // Fetch exams data only once, or when statusUpdated changes
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/overview/barchart")
-      .then((response) => {
-        setExams(response.data);
-      })
-      .catch((error) => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3001/overview/barchart"
+        );
+        setExams(response.data); // We use only one state to hold exam data
+      } catch (error) {
         console.error("Error fetching exams data:", error);
-      });
-  }, []);
+      }
+    };
+    fetchData();
+  }, [statusUpdated]);
+
+  // Call this function whenever an exam status is updated
+  const updateStatus = () => {
+    setStatusUpdated(true);
+  };
 
   const fetchUsersByExam = async (examId, assignedDepartment) => {
     try {
@@ -116,6 +126,7 @@ function OverviewAdmin() {
             >
               <Typography variant="h6"></Typography>
               <BarChartCustom
+                data={exams} // Pass the exams data as props
                 onBarHover={handleBarHover}
                 onBarClick={onExamBarClick}
               />
