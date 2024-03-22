@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@ckeditor/ckeditor5-react": "^6.2.0",
+    "dompurify": "^3.0.10"
+  }
+}
