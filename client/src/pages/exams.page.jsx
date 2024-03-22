@@ -138,7 +138,7 @@ function ExamPage() {
     <Container maxWidth="xxl">
       <Toolbar
         className="exams-category--header"
-        sx={{ justifyContent: "space-between" }}
+        sx={{ justifyContent: "center" }}
       >
         <Typography className="exams-category--header--text">
           Examinations

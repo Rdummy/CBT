@@ -10,8 +10,10 @@
 }
 .exams-category--header {
   background-color: #ffffff;
-  min-width: 900px;
+  max-width: 10000px;
   min-height: 800px;
+  margin-right: 0px;
+  margin-left: 8px;
   margin-bottom: 20px;
   border-style: none none solid;
   border-color: #8888886c;
