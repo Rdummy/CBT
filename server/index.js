@@ -44,18 +44,18 @@ const storage = multer.diskStorage({
   },
 });
 
-app.use(express.urlencoded({ extended: true }));
-const uploadPath = path.join(__dirname, "../client/public/uploads");
-app.use("/uploads", express.static(uploadPath));
+// app.use(express.urlencoded({ extended: true }));
+// const uploadPath = path.join(__dirname, "../client/public/uploads");
+// app.use("/uploads", express.static(uploadPath));
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadPath);
-  },
-  filename: function (req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, uploadPath);
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, `${Date.now()}-${file.originalname}`);
+//   },
+// });
 
 app.use(express.urlencoded({ extended: true }));
 
