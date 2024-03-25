@@ -81,7 +81,7 @@ function CreateContentPage() {
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" sx={{ alignItems: "center" }}>
       <Toolbar
         className="exams-category--header"
         sx={{ justifyContent: "space-between" }}
@@ -91,18 +91,26 @@ function CreateContentPage() {
         </Typography>
         <Typography className="exams-category--header--text">TOPICS</Typography>
 
-        <Button variant="contained" color="primary" onClick={handleOpenModal}>
+        <Button className="create-topic-button" onClick={handleOpenModal}>
           Create Topic
         </Button>
       </Toolbar>
       <Grid
         container
-        spacing={1} // Adjust spacing as needed for design
+        spacing={0.5} // Adjust spacing as needed for design
         alignItems="center"
         justifyContent="center"
       >
         {exams.map((exam, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={exam._id || index}>
+          <Grid
+            className="grid-card-content"
+            vitem
+            xs={12}
+            sm={6}
+            md={4}
+            lg={3}
+            key={exam._id || index}
+          >
             <ContentCard
               exam={exam}
               updatedAt={exam.updatedAt} // Ensure this data is available

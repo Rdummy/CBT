@@ -135,7 +135,7 @@ function ExamPage() {
   };
 
   return (
-    <Container maxWidth="xxl">
+    <Container maxWidth="xxl" sx={{ alignItems: "center" }}>
       <Toolbar
         className="exams-category--header"
         sx={{ justifyContent: "center" }}
@@ -157,7 +157,15 @@ function ExamPage() {
         justifyContent="center"
       >
         {displayedExams.map((exam, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={`${exam.id}-${index}`}>
+          <Grid
+            className="grid-card-content"
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={3}
+            key={`${exam.id}-${index}`}
+          >
             <div className="grid-item--wrapper">
               <ExamCard
                 key={`${exam.id}-${index}`}
