@@ -4,7 +4,7 @@ import cors from "cors";
 import path from "path";
 import mongoose from "mongoose";
 import multer from "multer";
-import multer from "multer";
+
 import { userRouter } from "./routes/users.js";
 import { tableRouter } from "./routes/table_users.js";
 import { examTitleRouter } from "./routes/exam_title.js";
