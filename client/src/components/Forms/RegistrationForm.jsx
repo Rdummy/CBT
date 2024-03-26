@@ -36,9 +36,6 @@ const RegistrationForm = () => {
       await axios.post("http://localhost:3001/auth/signup", formData);
       alert("Registration Completed");
 
-      // localStorage.setItem("user_type", formData.user_type);
-      // localStorage.setItem("username", formData.username);
-
       setFormData({
         email: "",
         password: "",
