@@ -10,7 +10,7 @@
 }
 .exams-category--header {
   background-color: #ffffff;
-  width: auto;
+  width: 100%;
   min-height: 800px;
   margin-right: 0px;
   margin-bottom: 20px;
@@ -26,12 +26,13 @@
 .dashboard-content {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Ensure full viewport height */
+  width: auto;
 }
 
 /* Admin layout with sidebar */
 .dashboard__admin {
-  display: grid;
+  display: flex;
+  flex-grow: 1;
   grid-template-columns: 1fr 6fr;
   margin-top: 2rem;
 }
@@ -81,6 +82,7 @@ html .create-topic-button:focus {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
 }
+
 @media only screen and (min-width: 900px) and (max-width: 2000px) {
   html .exams-category--header {
     margin-top: 25px;

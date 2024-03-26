@@ -122,7 +122,7 @@ function ExamPage() {
   };
 
   return (
-    <Container maxWidth="xxl" sx={{ alignItems: "center" }}>
+    <Container maxWidth="lg" sx={{ alignItems: "center" }}>
       <Toolbar
         className="exams-category--header"
         sx={{ justifyContent: "center" }}

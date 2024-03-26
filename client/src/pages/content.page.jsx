@@ -95,12 +95,7 @@ function CreateContentPage() {
           Create Topic
         </Button>
       </Toolbar>
-      <Grid
-        container
-        spacing={0.5} // Adjust spacing as needed for design
-        alignItems="center"
-        justifyContent="center"
-      >
+      <Grid container spacing={0.5} alignItems="center" justifyContent="center">
         {exams.map((exam, index) => (
           <Grid
             className="grid-card-content"

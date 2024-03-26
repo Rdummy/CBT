@@ -35,8 +35,9 @@ export default function Navbar() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, marginBottom: "3rem" }}>
+    <Box sx={{ width: "4rem", marginBottom: "3rem" }}>
       <AppBar
+        className="navbar--wrapper"
         position="fixed"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
