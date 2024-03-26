@@ -12,7 +12,6 @@ function Dashboard() {
       <div className="dashboard-content">
         <Navbar />
 
-        {/* Use isAdmin() to conditionally render the Sidebar for admin users */}
         {isAdmin() && <Sidebar />}
 
         <div className={isAdmin() ? "dashboard__admin" : "dashboard__user"}>
