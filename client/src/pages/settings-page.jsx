@@ -1,7 +1,25 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../contexts/auth-context"; // Adjust the import path as necessary
-// Other imports remain unchanged
+import AspectRatio from "@mui/joy/AspectRatio";
+import Box from "@mui/joy/Box";
+import Button from "@mui/joy/Button";
+import Divider from "@mui/joy/Divider";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
+import Input from "@mui/joy/Input";
+import IconButton from "@mui/joy/IconButton";
+import Stack from "@mui/joy/Stack";
+import Typography from "@mui/joy/Typography";
+import Card from "@mui/joy/Card";
+import CardActions from "@mui/joy/CardActions";
+import CardOverflow from "@mui/joy/CardOverflow";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import ReturnDashboard from "../components/ReturnDashboard";
+import "../assets/styles/settings.css";
 
 export default function Settings() {
   const { token, user, setUser, setUserType } = useAuth(); // Assuming setUser is implemented to update user in your AuthProvider
