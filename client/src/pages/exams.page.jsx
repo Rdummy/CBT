@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { useAuth } from "../contexts/auth-context";
 import axios from "axios";
 import {
   Container,
@@ -27,6 +27,7 @@ import ExamCard from "../components/ExamCard";
 import "../assets/styles/dashboard.css";
 
 function ExamPage() {
+  const { token } = useAuth(); // This should be placed at the top level of your component
   const [page, setPage] = useState(1);
   const examsPerPage = 4;
   const [openModal, setOpenModal] = useState(false);
@@ -39,13 +40,15 @@ function ExamPage() {
   });
 
   useEffect(() => {
-    getExams().then((data) => {
-      if (data) {
-        setExams(data.availableExams);
-        setCompletedExams(data.passedExams); // Update this line
-      }
-    });
-  }, []);
+    if (token) {
+      getExams(token).then((data) => {
+        if (data) {
+          setExams(data.availableExams);
+          setCompletedExams(data.passedExams);
+        }
+      });
+    }
+  }, [token]);
 
   const displayedExams = exams.slice(
     (page - 1) * examsPerPage,
@@ -71,66 +74,50 @@ function ExamPage() {
       [name]: value,
     });
   };
-  const getExams = async () => {
+  async function getExams(authToken) {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        throw new Error(
-          "No token found. User must be logged in to view exams."
-        );
-      }
-
       const response = await axios.get(
         "http://localhost:3001/exam/exam-title",
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authToken}`,
           },
         }
       );
-
       return response.data;
     } catch (error) {
       console.error("Error fetching exams:", error);
     }
-  };
+  }
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
-    setOpenModal(false);
-
-    try {
-      const response = await axios.post(
-        "http://localhost:3001/exam/exam-title",
-        {
-          title: formData.title,
-          description: formData.description,
-          id: uuidv4(),
+    if (token) {
+      try {
+        const response = await axios.post(
+          "http://localhost:3001/exam/exam-title",
+          {
+            title: formData.title,
+            description: formData.description,
+            id: uuidv4(),
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.statusText === "Created") {
+          console.log("Exam added successfully");
         }
-      );
-
-      if (response.statusText === "Created") {
-        console.log("Exam added successfully");
+        const newExam = response.data;
+        setExams([...exams, newExam]);
+        setFormData({ title: "", description: "", _id: "" });
+      } catch (error) {
+        console.error("Error adding new exam:", error);
+      } finally {
+        setOpenModal(false);
       }
-
-      const newExam = response.data;
-
-      setExams((prevExams) => [
-        ...prevExams,
-        {
-          id: newExam.id,
-          title: newExam.title,
-          description: newExam.description,
-        },
-      ]);
-
-      setFormData({
-        title: "",
-        description: "",
-      });
-    } catch (error) {
-      console.error("Error adding new exam:", error);
     }
   };
 

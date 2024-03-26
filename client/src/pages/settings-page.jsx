@@ -1,75 +1,54 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import AspectRatio from "@mui/joy/AspectRatio";
-import Box from "@mui/joy/Box";
-import Button from "@mui/joy/Button";
-import Divider from "@mui/joy/Divider";
-import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
-import Input from "@mui/joy/Input";
-import IconButton from "@mui/joy/IconButton";
-import Stack from "@mui/joy/Stack";
-import Typography from "@mui/joy/Typography";
-import Card from "@mui/joy/Card";
-import CardActions from "@mui/joy/CardActions";
-import CardOverflow from "@mui/joy/CardOverflow";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
-import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import ReturnDashboard from "../components/ReturnDashboard";
-import "../assets/styles/settings.css";
+import { useAuth } from "../contexts/auth-context"; // Adjust the import path as necessary
+// Other imports remain unchanged
 
 export default function Settings() {
-  const [userData, setUserData] = useState({
-    username: "",
-    user_type: "",
-    user_role: "",
-    email: "",
-    department: "",
-    imageUrl: "",
-  });
+  const { token, user, setUser, setUserType } = useAuth(); // Assuming setUser is implemented to update user in your AuthProvider
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
+  // Initialize userData from the user context or set defaults
+  const [userData, setUserData] = useState({
+    username: user?.username || "",
+    user_type: user?.user_type || "",
+    user_role: user?.user_role || "",
+    email: user?.email || "",
+    department: user?.department || "",
+    imageUrl: user?.imageUrl || "",
+  });
+
   useEffect(() => {
     const fetchUserData = async () => {
+      if (!token) {
+        console.error("Token not found");
+        return;
+      }
       try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          throw new Error("Token not found");
-        }
         const response = await axios.get(
           "http://localhost:3001/settings/profile",
           {
             headers: { Authorization: token },
           }
         );
-        const { username, user_type, user_role, email, department, imageUrl } =
-          response.data;
-        setUserData({
-          username,
-          user_type,
-          user_role,
-          email,
-          department,
-          imageUrl,
-        });
-        localStorage.setItem("userData", JSON.stringify(response.data));
+        setUserData(response.data);
+        // Update user in context to reflect fetched data
+        setUser(response.data);
+        setUserType(response.data.user_type); // Update userType in context for role-based UI elements
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
     fetchUserData();
-  }, []);
+  }, [token, setUser, setUserType]); // Added setUserType to dependency array
 
   const handleSubmit = async () => {
+    if (!token) {
+      console.error("Token not found");
+      return;
+    }
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        throw new Error("Token not found");
-      }
-      const response = await axios.put(
+      await axios.put(
         "http://localhost:3001/settings/updateUserData",
         userData,
         {
@@ -77,27 +56,20 @@ export default function Settings() {
         }
       );
       setOpenSnackbar(true);
+      // Update user in context to reflect updated data
+      setUser(userData);
+      setUserType(userData.user_type); // Ensure userType in context is updated
     } catch (error) {
       console.error("Error updating user data:", error);
     }
   };
 
-  const handleSnackbarClose = () => {
-    setOpenSnackbar(false);
-  };
-
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
-    if (file) {
+    if (file && token) {
       setSelectedFile(file);
       const formData = new FormData();
       formData.append("image", file);
-
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("Token not found");
-        return;
-      }
 
       try {
         const response = await axios.post(
@@ -111,10 +83,16 @@ export default function Settings() {
           }
         );
         console.log("File uploaded successfully:", response.data);
+        // Update user image URL in context to reflect new image
+        setUser((prev) => ({ ...prev, imageUrl: response.data.imageUrl }));
       } catch (error) {
         console.error("Error uploading file:", error);
       }
     }
+  };
+
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
   };
 
   return (

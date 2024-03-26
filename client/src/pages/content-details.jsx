@@ -251,7 +251,7 @@ function ContentDetailsPage() {
           sx={{ width: "auto", maxWidth: "none" }}
         >
           <form onSubmit={handleAssignExam}>
-            <DialogTitle>Assign Department</DialogTitle>
+            <DialogTitle>Assign</DialogTitle>
             <DialogContent>
               <Select
                 label="Department"

@@ -1,5 +1,4 @@
 import * as React from "react";
-import Axios from "axios";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -10,15 +9,12 @@ import Menu from "@mui/material/Menu";
 import NTS_Logo from "../assets/images/NTS_Logo.png";
 import { useNavigate } from "react-router-dom";
 import { MdAccountCircle } from "react-icons/md";
-import axios from "axios";
-import { useCustomContext } from "../main";
+import { useAuth } from "../contexts/auth-context"; // Ensure the path is correct
 
 export default function Navbar() {
-  const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [username, setUsername] = React.useState("");
+  const { user, isAuthenticated, logout } = useAuth(); // Use context
   const navigate = useNavigate();
-  const { examId } = useCustomContext();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -27,55 +23,20 @@ export default function Navbar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const handleClick = () => {
     setAnchorEl(null);
     navigate("/dashboard/settings");
   };
 
   const handleLogout = () => {
-    try {
-      localStorage.removeItem("token");
-      localStorage.removeItem("userData");
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
-
-    setAuth(false);
-    setAnchorEl(null);
+    logout();
     navigate("/");
   };
 
-  React.useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = localStorage.getItem("token");
-
-        if (!token) {
-          throw new Error("Token not found");
-        }
-
-        const response = await Axios.get(
-          "http://localhost:3001/auth/username",
-          {
-            headers: { Authorization: token },
-          }
-        );
-
-        setUsername(response.data.username);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchUserData();
-  }, []);
-
-  React.useEffect(() => {}, [examId]);
-
   return (
-    <Box sx={{ width: "4rem", marginBottom: "3rem" }}>
+    <Box sx={{ flexGrow: 1, marginBottom: "3rem" }}>
       <AppBar
-        className="navbar--wrapper"
         position="fixed"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
@@ -88,7 +49,7 @@ export default function Navbar() {
           >
             nLearning
           </Typography>
-          {auth && (
+          {isAuthenticated && (
             <div>
               <div className="user-details--wrapper" onClick={handleMenu}>
                 <IconButton
@@ -110,21 +71,15 @@ export default function Navbar() {
                     alignSelf: "center",
                   }}
                 >
-                  {username || "User Name"}
+                  {user?.username || "User Name"}
                 </Typography>
               </div>
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
                 keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >

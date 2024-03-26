@@ -1,55 +1,24 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 import Navbar from "../components/Navbar";
-import "../assets/styles/dashboard.css";
-import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+import { Outlet } from "react-router-dom";
+import { useAuth } from "../contexts/auth-context"; // Ensure the path is correct
 
 function Dashboard() {
-  const [userType, setUserType] = useState("");
-
-  useEffect(() => {
-    const fetchUserType = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          "http://localhost:3001/auth/user_type",
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
-
-        setUserType(response.data.user_type);
-      } catch (error) {
-        console.error("Error fetching user type:", error);
-      }
-    };
-
-    fetchUserType();
-  }, []);
-
-  const shouldRenderSidebar = () => {
-    return userType === "admin";
-  };
+  const { isAdmin } = useAuth(); // Use isAdmin method
 
   return (
     <>
       <div className="dashboard-content">
         <Navbar />
 
-        <div
-          className={
-            shouldRenderSidebar() ? "dashboard__admin" : "dashboard__user"
-          }
-        >
-          {shouldRenderSidebar() && <Sidebar />}
+        {/* Use isAdmin() to conditionally render the Sidebar for admin users */}
+        {isAdmin() && <Sidebar />}
+
+        <div className={isAdmin() ? "dashboard__admin" : "dashboard__user"}>
           <Outlet
             className={
-              shouldRenderSidebar()
-                ? "outlet--with-sidebar"
-                : "outlet--full-width"
+              isAdmin() ? "outlet--with-sidebar" : "outlet--full-width"
             }
           />
         </div>
