@@ -10,8 +10,9 @@
 }
 .exams-category--header {
   background-color: #ffffff;
-  min-width: 900px;
+  width: auto;
   min-height: 800px;
+  margin-right: 0px;
   margin-bottom: 20px;
   border-style: none none solid;
   border-color: #8888886c;
@@ -45,25 +46,85 @@
 .dashboard__user .outlet--full-width {
   width: 100%;
 }
-@media only screen and (max-width: 1050px) {
-  .exams-category--header {
-    min-width: 800px;
+
+.grid-card-content {
+  align-items: center;
+  justify-content: center;
+  width: auto;
+}
+
+html .create-topic-button {
+  height: 77px;
+  width: auto;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #ffffff;
+  background-color: #007bff;
+  border: 2px solid #007bff;
+  border-radius: 0;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin-right: -24px;
+}
+html .create-topic-button:hover,
+html .create-topic-button:focus {
+  background-color: #0056b3;
+  border-color: #850021;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #4a4a4a; /* Dark gray text color for subtlety */
+  background-color: #e0e0e0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+@media only screen and (min-width: 900px) and (max-width: 2000px) {
+  html .exams-category--header {
+    margin-top: 25px;
   }
 }
-@media only screen and (max-width: 950px) {
-  .exams-category--header {
-    min-width: 700px;
+@media only screen and (min-width: 700px) and (max-width: 900px) {
+  .exams-category--header--text {
+    font-size: 2rem !important;
+  }
+  .grid-card-content {
+    width: 20px;
+  }
+  html .create-topic-button {
+    padding: 10px 13px;
+    font-size: 0.5;
+  }
+  html .create-topic-button {
+    padding: 10px 20px;
+    font-size: 12px;
   }
 }
 
-@media only screen and (max-width: 850px) {
-  .exams-category--header {
-    min-width: 600px;
+@media only screen and (min-width: 600px) and (max-width: 700px) {
+  .exams-category--header--text {
+    font-size: 2rem !important;
+  }
+  html .create-topic-button {
+    padding: 8px 16px;
+    font-size: 11px;
+    width: 90px;
+    box-sizing: border-box;
   }
 }
 
-@media only screen and (max-width: 750px) {
-  .exams-category--header {
-    min-width: 500px;
+@media only screen and (max-width: 600px) {
+  .exams-category--header--text {
+    font-size: 1.5rem !important;
+    margin-left: -40px !important;
+  }
+  html .create-topic-button {
+    padding: 5px 13px;
+    font-size: 12px;
+    width: 80px;
+    box-sizing: border-box;
+    margin-right: -15px;
   }
 }

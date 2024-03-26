@@ -17,7 +17,7 @@
   padding: 0 !important;
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (min-width: 1280px) and (max-width: 1500px) {
   .test .MuiBox-root {
     width: 150px;
   }
@@ -34,12 +34,29 @@
   }
 }
 
-@media only screen and (max-width: 1100px) {
+@media only screen and (min-width: 1000px) and (max-width: 1280px) {
   .test .MuiBox-root {
-    width: 100px;
+    width: 150px;
   }
   .draw {
-    width: 100px;
+    width: 150px;
+  }
+  .sidebar-text .MuiListItemText-primary {
+    font-size: 12px !important;
+  }
+  .sidebar-icons {
+    font-size: 1.5rem;
+    padding: 0px;
+    margin-right: -20px;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .test .MuiBox-root {
+    width: 125px;
+  }
+  .draw {
+    width: 125px;
   }
   .sidebar-text .MuiListItemText-primary {
     font-size: 10px !important;

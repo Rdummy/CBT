@@ -48,7 +48,6 @@ export default function Sidebar() {
       <Drawer variant="permanent" className="draw">
         {/* <Toolbar /> */}
         <Box className="sidebar-box-wrapper">
-          <Divider>SIDE BAR</Divider>
           <List>
             {[
               "Overview",
