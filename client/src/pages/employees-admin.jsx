@@ -14,16 +14,20 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   IconButton,
   Menu,
   MenuItem,
   Button,
+  FormGroup,
+  FormControlLabel,
+  Switch,
+  DialogContentText,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import "../assets/styles/ExamRoutes.css";
 import { Pagination } from "@mui/material";
+import { useAuth } from "../contexts/auth-context"; // Make sure this path is correct
 
 const EmployeesAdmin = () => {
   const [data, setData] = useState([]);
@@ -32,7 +36,9 @@ const EmployeesAdmin = () => {
   const [deleteUserId, setDeleteUserId] = useState(null);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [menuUserId, setMenuUserId] = useState(null); // Track which user's menu is open
+  const [menuUserId, setMenuUserId] = useState(null);
+  const [isAccessModalOpen, setAccessModalOpen] = useState(false);
+  const { accessFeatures, updateAccessFeatures } = useAuth(); // Use accessFeatures and updateAccessFeatures from AuthContext
   const rowsPerPage = 5;
 
   useEffect(() => {
@@ -47,11 +53,8 @@ const EmployeesAdmin = () => {
   }, []);
 
   const handleDelete = (userId) => {
-    // Set user ID for deletion
     setDeleteUserId(userId);
-    // Open delete dialog
     setDeleteDialogOpen(true);
-    // Close the menu
     handleClose();
   };
 
@@ -76,19 +79,31 @@ const EmployeesAdmin = () => {
   };
 
   const handleClick = (event, userId) => {
-    // Set the element that was clicked and the user ID for the menu actions
     setAnchorEl(event.currentTarget);
     setMenuUserId(userId);
   };
 
   const handleClose = () => {
-    // Reset anchorEl and menuUserId when the menu is closed
     setAnchorEl(null);
     setMenuUserId(null);
   };
-  const handleSetCoAdmin = () => {
-    console.log("Setting user as co-admin:", deleteUserId);
-    handleClose(true); // Close the menu after the action
+
+  const handleSetCoAdmin = (userId) => {
+    axios
+      .put(`http://localhost:3001/table/users/${userId}/co-admin`)
+      .then((response) => {
+        if (response.status === 200) {
+          const updatedData = data.map((user) =>
+            user._id === userId ? { ...user, user_type: "co-admin" } : user
+          );
+          setData(updatedData);
+          setAccessModalOpen(true);
+        }
+      })
+      .catch((error) => {
+        console.error("Error updating user to co-admin:", error);
+      });
+    handleClose();
   };
 
   const filteredData = data.filter((row) =>
@@ -210,6 +225,84 @@ const EmployeesAdmin = () => {
             </Button>
             <Button onClick={handleDeleteConfirm} color="error" autoFocus>
               Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog
+          open={isAccessModalOpen}
+          onClose={() => setAccessModalOpen(false)}
+        >
+          <DialogTitle>Set Co-Admin Access Features</DialogTitle>
+          <DialogContent>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={accessFeatures.allowEditContent}
+                    onChange={(event) => {
+                      updateAccessFeatures({
+                        ...accessFeatures,
+                        allowEditContent: event.target.checked,
+                      });
+                    }}
+                  />
+                }
+                label="Allow edit content"
+              />
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={accessFeatures.allowDeleteExam}
+                    onChange={(event) => {
+                      updateAccessFeatures({
+                        ...accessFeatures,
+                        allowDeleteExam: event.target.checked,
+                      });
+                    }}
+                  />
+                }
+                label="Allow delete exam"
+              />
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={accessFeatures.allowAddCreateExam}
+                    onChange={(event) => {
+                      updateAccessFeatures({
+                        ...accessFeatures,
+                        allowAddCreateExam: event.target.checked,
+                      });
+                    }}
+                  />
+                }
+                label="Allow add/create exam"
+              />
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={accessFeatures.allowCreateContent}
+                    onChange={(event) => {
+                      updateAccessFeatures({
+                        ...accessFeatures,
+                        allowCreateContent: event.target.checked,
+                      });
+                    }}
+                  />
+                }
+                label="Allow create content"
+              />
+            </FormGroup>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setAccessModalOpen(false)}>Cancel</Button>
+            <Button
+              onClick={() => {
+                console.log("Access Features:", accessFeatures);
+                setAccessModalOpen(false);
+              }}
+            >
+              Save
             </Button>
           </DialogActions>
         </Dialog>

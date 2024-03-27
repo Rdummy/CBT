@@ -29,4 +29,24 @@ router.delete("/users/:_id", async (req, res) => {
   }
 });
 
+router.put("/users/:_id/co-admin", async (req, res) => {
+  const userId = req.params._id;
+
+  try {
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      userId,
+      { $set: { user_type: "co-admin" } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: "User updated to co-admin successfully", updatedUser });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 export { router as tableRouter };

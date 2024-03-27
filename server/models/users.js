@@ -25,7 +25,11 @@ const UserSchema = new mongoose.Schema({
   imageUrl: { type: String, required: true },
   email: { type: String, required: true },
   user_role: { type: String, required: true },
-  user_type: { type: String, enum: ["admin", "user"], required: true },
+  user_type: {
+    type: String,
+    enum: ["admin", "user", "co-admin"],
+    required: true,
+  },
   department: {
     type: String,
     enum: ["Technology", "Production", "HR", "Quality"],
