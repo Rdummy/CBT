@@ -20,14 +20,13 @@ h2 {
 .create-exam-container {
   border-radius: 20px;
   min-width: 300px;
-  
+
   padding: 30px;
   background-color: #f8f1f3;
   display: flex;
   flex-direction: column;
   align-items: center; /* Center children horizontally */
 }
-
 
 /* Styling input fields with consistent font and colors */
 .input-div {
@@ -145,7 +144,7 @@ button:disabled {
   overflow-wrap: break-word;
   overflow: hidden; /* You can change it to 'auto' if you want to provide scrollbars instead */
   max-width: 100%; /* Ensure the choice items do not exceed the container width */
-  flex: 0 1 auto; 
+  flex: 0 1 auto;
   margin-right: 10px;
   border: 1px solid #ccc;
   padding: 10px;
@@ -198,4 +197,77 @@ select {
   overflow: hidden;
   text-align: center;
   transition: height 2s ease;
+}
+/* create-exam.css */
+
+.exam-settings {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.exam-settings input[type="number"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 150px; /* Adjust width as needed */
+}
+
+.exam-settings button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.exam-settings button:hover {
+  background-color: #0056b3;
+}
+
+/* Assuming this modal CSS is added to create-exam.css */
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 400px; /* Adjust based on your content */
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-header h2 {
+  margin: 0;
+}
+
+.modal-close-btn {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: 1.2rem;
+}
+
+.modal-body {
+  /* Styles for the modal body */
 }
