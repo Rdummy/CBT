@@ -36,10 +36,10 @@
 
 @media only screen and (min-width: 1000px) and (max-width: 1280px) {
   .test .MuiBox-root {
-    width: 150px;
+    width: 170px;
   }
   .draw {
-    width: 150px;
+    width: 170px;
   }
   .sidebar-text .MuiListItemText-primary {
     font-size: 12px !important;

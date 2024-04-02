@@ -18,25 +18,31 @@ const CreateExam = () => {
   const [editingIndex, setEditingIndex] = useState(null);
   const [editingChoiceIndex, setEditingChoiceIndex] = useState(null);
   const [editingChoiceText, setEditingChoiceText] = useState("");
+  const [attemptLimits, setAttemptLimits] = useState("");
+  const [passingScore, setPassingScore] = useState("");
+  const [showAssignParticipantsModal, setShowAssignParticipantsModal] =
+    useState(false);
 
   const handleAddQuestion = () => {
     setShowInput(true);
   };
 
-  const saveExam = async (examId, questions) => {
+  const saveExam = async () => {
     const backendApiUrl = `http://localhost:3001/exam/create-exam/${examId}/questions`;
 
     try {
       const response = await axios.post(backendApiUrl, {
         questions,
+        attemptLimits,
+        passingScore,
+        // Include participant data as needed
       });
 
       console.log("Exam saved successfully:", response.data);
+      navigate(`/dashboard/create-content/${examId}`);
     } catch (error) {
       console.error("Error saving exam:", error);
     }
-
-    navigate(`/dashboard/create-content/${examId}`);
   };
 
   const handleQuestionChange = (e) => {
@@ -166,8 +172,25 @@ const CreateExam = () => {
     setSelectedChoice(null);
     setErrorMessage("");
   };
-  const indexToLetter = (index) => {
-    return String.fromCharCode(97 + index);
+
+  const AssignParticipantsModal = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+
+    return (
+      <div className="modal-backdrop">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h2>Assign Participants</h2>
+            <button className="modal-close-btn" onClick={onClose}>
+              ×
+            </button>
+          </div>
+          <div className="modal-body">
+            {/* Participant assignment logic goes here */}
+          </div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -176,6 +199,28 @@ const CreateExam = () => {
         <div className="create-exam-container">
           <h1 className="create-exam-title">Create Exam</h1>
 
+          <div className="exam-settings">
+            <input
+              type="number"
+              placeholder="Attempt Limits"
+              value={attemptLimits}
+              onChange={(e) => setAttemptLimits(e.target.value)}
+            />
+            <input
+              type="number"
+              placeholder="Passing Score"
+              value={passingScore}
+              onChange={(e) => setPassingScore(e.target.value)}
+            />
+            <button onClick={() => setShowAssignParticipantsModal(true)}>
+              Assign Participants
+            </button>
+          </div>
+
+          <AssignParticipantsModal
+            isOpen={showAssignParticipantsModal}
+            onClose={() => setShowAssignParticipantsModal(false)}
+          />
           <button onClick={handleAddQuestion} className="exam-button">
             Add Question
           </button>
