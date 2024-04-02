@@ -126,4 +126,33 @@ router.get("/username", async (req, res) => {
   }
 });
 
+router.put("/users/:userId/update", async (req, res) => {
+  const { userId } = req.params;
+  const { user_type, permissions } = req.body; // Expecting both user_type and permissions
+
+  // Basic validation
+  if (!permissions || typeof permissions.allowEditContent !== "boolean") {
+    return res.status(400).json({ message: "Invalid permissions data" });
+  }
+  if (user_type !== "co-admin") {
+    return res.status(400).json({ message: "Invalid user type" });
+  }
+
+  // Authorization check (Implement according to your auth system)
+  // For example, ensure the requester is an admin
+
+  try {
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      userId,
+      { user_type, permissions },
+      { new: true }
+    );
+    res.json(updatedUser);
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: "Error updating user", error: error.message });
+  }
+});
+
 export { router as userRouter };

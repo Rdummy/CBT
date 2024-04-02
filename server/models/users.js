@@ -1,5 +1,12 @@
 import mongoose from "mongoose";
 
+const permissionSchema = new mongoose.Schema({
+  allowEditContent: Boolean,
+  allowDeleteExam: Boolean,
+  allowAddCreateExam: Boolean,
+  allowCreateContent: Boolean,
+});
+
 const examToTakeSchema = new mongoose.Schema({
   examId: String,
   score: Number,
@@ -37,6 +44,7 @@ const UserSchema = new mongoose.Schema({
   },
 
   usersExams: [examToTakeSchema],
+  permissions: permissionSchema,
 });
 
 export const UserModel = mongoose.model("users", UserSchema);

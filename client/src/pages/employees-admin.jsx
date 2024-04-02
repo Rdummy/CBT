@@ -38,6 +38,7 @@ const EmployeesAdmin = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [menuUserId, setMenuUserId] = useState(null);
   const [isAccessModalOpen, setAccessModalOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
   const { accessFeatures, updateAccessFeatures } = useAuth(); // Use accessFeatures and updateAccessFeatures from AuthContext
   const rowsPerPage = 5;
 
@@ -73,6 +74,47 @@ const EmployeesAdmin = () => {
       });
   };
 
+  const handleSavePermissions = () => {
+    const permissionsToUpdate = {
+      allowEditContent: accessFeatures.allowEditContent,
+      allowDeleteExam: accessFeatures.allowDeleteExam,
+      allowAddCreateExam: accessFeatures.allowAddCreateExam,
+      allowCreateContent: accessFeatures.allowCreateContent,
+    };
+
+    axios
+      .put(`http://localhost:3001/auth/users/${selectedUserId}/update`, {
+        user_type: "co-admin",
+        permissions: permissionsToUpdate,
+      })
+      .then((response) => {
+        console.log("User and permissions updated:", response.data);
+        // Update your data state or context here as necessary
+        setData(
+          data.map((user) =>
+            user._id === selectedUserId
+              ? {
+                  ...user,
+                  user_type: "co-admin",
+                  permissions: permissionsToUpdate,
+                }
+              : user
+          )
+        );
+        setAccessModalOpen(false); // Close the modal after successful update
+        setSelectedUserId(null); // Reset selected user ID
+        setAnchorEl(null); // Close the menu
+      })
+      .catch((error) => {
+        console.error("Error updating user and permissions:", error);
+      });
+  };
+
+  const handleOpenAccessModal = (userId) => {
+    setSelectedUserId(userId); // Store the selected user's ID
+    setAccessModalOpen(true); // Open the modal
+  };
+
   const handleDeleteCancel = () => {
     setDeleteUserId(null);
     setDeleteDialogOpen(false);
@@ -86,24 +128,6 @@ const EmployeesAdmin = () => {
   const handleClose = () => {
     setAnchorEl(null);
     setMenuUserId(null);
-  };
-
-  const handleSetCoAdmin = (userId) => {
-    axios
-      .put(`http://localhost:3001/table/users/${userId}/co-admin`)
-      .then((response) => {
-        if (response.status === 200) {
-          const updatedData = data.map((user) =>
-            user._id === userId ? { ...user, user_type: "co-admin" } : user
-          );
-          setData(updatedData);
-          setAccessModalOpen(true);
-        }
-      })
-      .catch((error) => {
-        console.error("Error updating user to co-admin:", error);
-      });
-    handleClose();
   };
 
   const filteredData = data.filter((row) =>
@@ -184,7 +208,9 @@ const EmployeesAdmin = () => {
                         open={Boolean(anchorEl && menuUserId === row._id)}
                         onClose={handleClose}
                       >
-                        <MenuItem onClick={() => handleSetCoAdmin(menuUserId)}>
+                        <MenuItem
+                          onClick={() => handleOpenAccessModal(row._id)}
+                        >
                           Set to Co-admin
                         </MenuItem>
                         <MenuItem onClick={() => handleDelete(menuUserId)}>
@@ -296,14 +322,7 @@ const EmployeesAdmin = () => {
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setAccessModalOpen(false)}>Cancel</Button>
-            <Button
-              onClick={() => {
-                console.log("Access Features:", accessFeatures);
-                setAccessModalOpen(false);
-              }}
-            >
-              Save
-            </Button>
+            <Button onClick={handleSavePermissions}>Save</Button>
           </DialogActions>
         </Dialog>
       </Grid>
