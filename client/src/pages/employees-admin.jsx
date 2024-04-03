@@ -27,7 +27,7 @@ import {
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import "../assets/styles/ExamRoutes.css";
 import { Pagination } from "@mui/material";
-import { useAuth } from "../contexts/auth-context"; // Make sure this path is correct
+import { useAuth } from "../contexts/auth-context";
 
 const EmployeesAdmin = () => {
   const [data, setData] = useState([]);
@@ -39,7 +39,7 @@ const EmployeesAdmin = () => {
   const [menuUserId, setMenuUserId] = useState(null);
   const [isAccessModalOpen, setAccessModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
-  const { accessFeatures, updateAccessFeatures } = useAuth(); // Use accessFeatures and updateAccessFeatures from AuthContext
+  const { accessFeatures, updateAccessFeatures } = useAuth();
   const rowsPerPage = 5;
 
   useEffect(() => {
@@ -89,7 +89,7 @@ const EmployeesAdmin = () => {
       })
       .then((response) => {
         console.log("User and permissions updated:", response.data);
-        // Update your data state or context here as necessary
+
         setData(
           data.map((user) =>
             user._id === selectedUserId
@@ -101,9 +101,9 @@ const EmployeesAdmin = () => {
               : user
           )
         );
-        setAccessModalOpen(false); // Close the modal after successful update
-        setSelectedUserId(null); // Reset selected user ID
-        setAnchorEl(null); // Close the menu
+        setAccessModalOpen(false);
+        setSelectedUserId(null);
+        setAnchorEl(null);
       })
       .catch((error) => {
         console.error("Error updating user and permissions:", error);
@@ -111,8 +111,8 @@ const EmployeesAdmin = () => {
   };
 
   const handleOpenAccessModal = (userId) => {
-    setSelectedUserId(userId); // Store the selected user's ID
-    setAccessModalOpen(true); // Open the modal
+    setSelectedUserId(userId);
+    setAccessModalOpen(true);
   };
 
   const handleDeleteCancel = () => {
@@ -232,7 +232,7 @@ const EmployeesAdmin = () => {
             />
           </Box>
         </Grid>
-        {/* Delete Confirmation Dialog */}
+
         <Dialog
           open={isDeleteDialogOpen}
           onClose={handleDeleteCancel}

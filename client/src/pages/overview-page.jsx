@@ -35,7 +35,10 @@ function OverviewAdmin() {
         const response = await axios.get(
           "http://localhost:3001/overview/barchart"
         );
-        setExams(response.data); // We use only one state to hold exam data
+        setExams(response.data);
+        
+        // Log the data received from the server
+        console.log("Exams data fetched:", response.data);
       } catch (error) {
         console.error("Error fetching exams data:", error);
       }
@@ -70,7 +73,10 @@ function OverviewAdmin() {
       const clickedExam = exams.find(
         (exam) => exam.examTitle === data.activeLabel
       );
+
+      // Log when a bar is clicked
       console.log("Clicked exam data:", clickedExam);
+
       setSelectedExam(clickedExam);
       if (clickedExam && clickedExam._id) {
         await fetchUsersByExam(clickedExam._id, clickedExam.assignedDepartment);
