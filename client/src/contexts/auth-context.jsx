@@ -3,10 +3,13 @@ import { createContext, useContext, useState, useEffect } from "react";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  // Initialize accessFeatures from localStorage
+  
+  const initialUser = JSON.parse(localStorage.getItem("user"));
+  const initialToken = localStorage.getItem("token");
+
+  const [user, setUser] = useState(initialUser);
+  const [token, setToken] = useState(initialToken);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!initialToken);
   const [accessFeatures, setAccessFeatures] = useState(() => {
     const savedFeatures = localStorage.getItem("accessFeatures");
     return savedFeatures
@@ -20,13 +23,18 @@ export const AuthProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    // Persist accessFeatures changes to localStorage
+   
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("token", token);
+  }, [user, token]);
+
+  useEffect(() => {
+    
     localStorage.setItem("accessFeatures", JSON.stringify(accessFeatures));
   }, [accessFeatures]);
 
   const login = (userData, token) => {
     setUser(userData);
-    console.log("Logged in user data:", userData);
     setToken(token);
     setIsAuthenticated(true);
   };
@@ -35,6 +43,9 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setToken(null);
     setIsAuthenticated(false);
+   
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
   };
 
   const isAdmin = () => {

@@ -12,9 +12,9 @@ function Card({ card, editCard, deleteCard }) {
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
   const renderMediaPreview = (mediaArray) => {
-    // Iterate over each media item and create appropriate previews
+    
     return mediaArray.map((mediaItem, index) => {
-      const mediaType = mediaItem.type.split("/")[0]; // Split mimetype to get the type
+      const mediaType = mediaItem.type.split("/")[0]; 
 
       switch (mediaType) {
         case "image":
@@ -30,14 +30,14 @@ function Card({ card, editCard, deleteCard }) {
           return (
             <video
               key={index}
-              src={mediaItem.url} // This should now be a blob URL for previewing
+              src={mediaItem.url} 
               controls
               className="card-media-video"
             >
               Your browser does not support the video tag.
             </video>
           );
-        case "application": // Assuming application is for PowerPoint presentations
+        case "application": 
           return (
             <div key={index} className="card-media-ppt">
               <img

@@ -15,9 +15,9 @@ function CKCreateContent() {
       const formData = new FormData();
       formData.append("title", card.title);
       formData.append("description", card.description);
-      // Handle multiple media files
+     
       card.media.forEach((file, index) => {
-        formData.append(`media${index}`, file, file.name); // This must match multerFields
+        formData.append(`media${index}`, file, file.name); 
       });
 
       try {

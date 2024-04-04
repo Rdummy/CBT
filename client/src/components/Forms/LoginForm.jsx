@@ -13,7 +13,7 @@ import {
 import NTS_Logo from "../../assets/images/NTS_Logo.png";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useAuth } from "../../contexts/auth-context"; // Make sure to update this path to where your AuthProvider is located
+import { useAuth } from "../../contexts/auth-context"; 
 
 const LoginSchema = Yup.object().shape({
   Username: Yup.string().required("Username is required"),
@@ -34,7 +34,7 @@ const LoginForm = () => {
     resolver: yupResolver(LoginSchema),
   });
   const navigate = useNavigate();
-  const { login } = useAuth(); // Use the login function from your AuthProvider
+  const { login } = useAuth(); 
 
   useEffect(() => {
     if (loginAttempts >= 5) {
@@ -42,7 +42,7 @@ const LoginForm = () => {
       const timer = setTimeout(() => {
         setLocked(false);
         setLoginAttempts(0);
-      }, 300000); // Lock for 5 minutes
+      }, 300000); 
       return () => clearTimeout(timer);
     }
   }, [loginAttempts]);
@@ -59,10 +59,10 @@ const LoginForm = () => {
         password: data.password,
       });
 
-      // Use the login method from your context to set the user data and token
+     
       login(response.data, response.data.token);
 
-      // Redirect to the dashboard
+      
       navigate("/dashboard");
     } catch (error) {
       console.error("Login error:", error.message);

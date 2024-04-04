@@ -28,14 +28,17 @@ function OverviewAdmin() {
   const [statusUpdated, setStatusUpdated] = useState(false);
   const [data, setData] = useState([]);
 
-  // Fetch exams data only once, or when statusUpdated changes
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
           "http://localhost:3001/overview/barchart"
         );
-        setExams(response.data); // We use only one state to hold exam data
+        setExams(response.data);
+        
+        
+        console.log("Exams data fetched:", response.data);
       } catch (error) {
         console.error("Error fetching exams data:", error);
       }
@@ -43,7 +46,7 @@ function OverviewAdmin() {
     fetchData();
   }, [statusUpdated]);
 
-  // Call this function whenever an exam status is updated
+ 
   const updateStatus = () => {
     setStatusUpdated(true);
   };
@@ -70,7 +73,10 @@ function OverviewAdmin() {
       const clickedExam = exams.find(
         (exam) => exam.examTitle === data.activeLabel
       );
+
+      
       console.log("Clicked exam data:", clickedExam);
+
       setSelectedExam(clickedExam);
       if (clickedExam && clickedExam._id) {
         await fetchUsersByExam(clickedExam._id, clickedExam.assignedDepartment);
@@ -126,7 +132,7 @@ function OverviewAdmin() {
             >
               <Typography variant="h6"></Typography>
               <BarChartCustom
-                data={exams} // Pass the exams data as props
+                data={exams} 
                 onBarHover={handleBarHover}
                 onBarClick={onExamBarClick}
               />

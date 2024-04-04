@@ -10,35 +10,34 @@ import NTS_Logo from "../assets/images/NTS_Logo.png";
 import { useNavigate } from "react-router-dom";
 import { MdAccountCircle } from "react-icons/md";
 import { useAuth } from "../contexts/auth-context";
-import axios from "axios"; // Make sure to import axios
+import axios from "axios"; 
 
 export default function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { user, isAuthenticated, logout, token } = useAuth(); // Assuming 'token' is made available in useAuth
+  const { user, isAuthenticated, logout, token } = useAuth(); 
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
 
   useEffect(() => {
-    // Fetch the username only if the user is authenticated
+    
     if (isAuthenticated && token) {
       axios
         .get("http://localhost:3001/auth/username", {
-          // Make sure the URL is correct according to your API's baseURL
+          
           headers: {
-            Authorization: token, // Assuming the token is in a suitable format; adjust as necessary
+            Authorization: token,
           },
         })
         .then((response) => {
-          // Assuming the API responds with { username: "User's Name" }
+          
           setUsername(response.data.username);
         })
         .catch((error) => {
           console.error("Fetching username failed:", error);
-          // Handle error appropriately (show message, log out user, etc.)
+          
         });
     }
-  }, [isAuthenticated, token]); // Dependency array: Fetch username when these values change
-
+  }, [isAuthenticated, token]); 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -95,7 +94,7 @@ export default function Navbar() {
                     alignSelf: "center",
                   }}
                 >
-                  {username || "User Name"} {/* Display the fetched username */}
+                  {username || "User Name"} 
                 </Typography>
               </div>
               <Menu

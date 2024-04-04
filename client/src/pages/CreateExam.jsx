@@ -35,7 +35,7 @@ const CreateExam = () => {
         questions,
         attemptLimits,
         passingScore,
-        // Include participant data as needed
+       
       });
 
       console.log("Exam saved successfully:", response.data);

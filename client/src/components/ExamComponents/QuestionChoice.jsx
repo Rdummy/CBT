@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Typography, IconButton } from "@mui/material";
 
 const QuestionChoice = ({ choiceText, isSelected, onSelect, index }) => {
-  // Convert the choice's index to a letter (0 -> A, 1 -> B, etc.)
+  
   const letter = String.fromCharCode(65 + index);
 
   return (
@@ -16,7 +16,7 @@ const QuestionChoice = ({ choiceText, isSelected, onSelect, index }) => {
         display: "flex",
         alignItems: "center",
         cursor: "pointer",
-        marginBottom: "8px", // Add some space between choices
+        marginBottom: "8px",
       }}
     >
       <Typography variant="h6" sx={{ marginRight: "16px" }}>

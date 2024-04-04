@@ -48,7 +48,7 @@ const [departments, setDepartments] = useState(["HR", "Tech", "Sales"]); // Exam
   const [menuUserId, setMenuUserId] = useState(null);
   const [isAccessModalOpen, setAccessModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
-  const { accessFeatures, updateAccessFeatures } = useAuth(); // Use accessFeatures and updateAccessFeatures from AuthContext
+  const { accessFeatures, updateAccessFeatures } = useAuth();
   const rowsPerPage = 5;
 
   useEffect(() => {
@@ -126,7 +126,7 @@ const [departments, setDepartments] = useState(["HR", "Tech", "Sales"]); // Exam
       })
       .then((response) => {
         console.log("User and permissions updated:", response.data);
-        // Update your data state or context here as necessary
+
         setData(
           data.map((user) =>
             user._id === selectedUserId
@@ -138,9 +138,9 @@ const [departments, setDepartments] = useState(["HR", "Tech", "Sales"]); // Exam
               : user
           )
         );
-        setAccessModalOpen(false); // Close the modal after successful update
-        setSelectedUserId(null); // Reset selected user ID
-        setAnchorEl(null); // Close the menu
+        setAccessModalOpen(false);
+        setSelectedUserId(null);
+        setAnchorEl(null);
       })
       .catch((error) => {
         console.error("Error updating user and permissions:", error);
@@ -148,8 +148,8 @@ const [departments, setDepartments] = useState(["HR", "Tech", "Sales"]); // Exam
   };
 
   const handleOpenAccessModal = (userId) => {
-    setSelectedUserId(userId); // Store the selected user's ID
-    setAccessModalOpen(true); // Open the modal
+    setSelectedUserId(userId);
+    setAccessModalOpen(true);
   };
 
   const handleDeleteCancel = () => {
@@ -303,7 +303,7 @@ const [departments, setDepartments] = useState(["HR", "Tech", "Sales"]); // Exam
             />
           </Box>
         </Grid>
-        {/* Delete Confirmation Dialog */}
+
         <Dialog
           open={isDeleteDialogOpen}
           onClose={handleDeleteCancel}

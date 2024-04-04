@@ -27,8 +27,8 @@ function ContentDetailsPage() {
   const [openModal, setOpenModal] = useState(false);
   const [exams, setExams] = useState([]);
   const [examList, setExamList] = useState(exams);
-  const [selectedDepartment, setSelectedDepartment] = useState(""); // Initialize the state
-  const [numberOfParticipants, setNumberOfParticipants] = useState(""); // New state for number of participants
+  const [selectedDepartment, setSelectedDepartment] = useState(""); 
+  const [numberOfParticipants, setNumberOfParticipants] = useState(""); 
 
   useEffect(() => {
     getExams().then((response) => {});
@@ -44,7 +44,7 @@ function ContentDetailsPage() {
         setExamList(response.data);
       }
     } catch (error) {
-      // Handle error
+      
       console.error(
         "Error getting exams:",
         error.response ? error.response.data.error : error.message
@@ -59,13 +59,13 @@ function ContentDetailsPage() {
         `http://localhost:3001/content/assign-exam/${examId}`,
         {
           assignedDepartment: selectedDepartment,
-          numberOfParticipants: numberOfParticipants, // Include this in the POST request
+          numberOfParticipants: numberOfParticipants, 
         }
       );
 
       console.log(response.data.message);
       handleCloseModal();
-      navigate(`/dashboard/create-content/${examId}`); // Update the route accordingly
+      navigate(`/dashboard/create-content/${examId}`); 
     } catch (error) {
       console.error(
         "Error assigning exam:",
@@ -96,8 +96,7 @@ function ContentDetailsPage() {
       const response = await axios.delete(
         `http://localhost:3001/exam/delete-exam/${examId}`
       );
-      console.log(response.data); // Log or handle response data as needed
-      // After successful deletion, update the UI or redirect as needed
+      console.log(response.data);
       navigate("/dashboard/create-content");
     } catch (error) {
       console.error(
@@ -109,8 +108,7 @@ function ContentDetailsPage() {
 
   const handleEditExam = () => {
     navigate(`/dashboard/exams/${examId}/edit`);
-    // You might also pass the selectedExam data to the edit page if needed
-    // navigate(`/dashboard/exams/${examId}/edit`, { state: { selectedExam } });
+    
   };
   const handleCreateContentClick = () => {
     navigate(`/dashboard/create-content/${examId}/create-review`, {

@@ -31,20 +31,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from the public directory
-// const uploadPath = path.join(__dirname, "../client/public/uploads");
-// app.use("/uploads", express.static(uploadPath));
 
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, uploadPath);
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, `${Date.now()}-${file.originalname}`);
-//   },
-// });
-
-// app.use(express.urlencoded({ extended: true }));
 const uploadPath = path.join(__dirname, "../client/public/uploads");
 app.use("/uploads", express.static(uploadPath));
 
@@ -79,3 +66,4 @@ mongoose.connect(
 );
 
 app.listen(3001, () => console.log("Server Started"));
+  

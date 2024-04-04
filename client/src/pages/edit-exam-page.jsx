@@ -13,7 +13,7 @@ const EditExamPage = () => {
   });
 
   useEffect(() => {
-    // Fetch the specific exam data based on the examId
+   
     const selectedExam = exams.find((exam) => exam.id === examId);
     if (selectedExam) {
       setFormData({

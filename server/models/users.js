@@ -17,7 +17,7 @@ const examToTakeSchema = new mongoose.Schema({
   },
   attempts: {
     type: Number,
-    default: 0, // Start with 0 attempts
+    default: 0, 
     required: true,
   },
   completionDate: {

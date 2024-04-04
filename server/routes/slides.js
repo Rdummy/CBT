@@ -6,14 +6,14 @@ import path from "path";
 
 const router = express.Router();
 
-// Define the base URL
+
 const baseURL = "http://localhost:3001";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    // Go up one level from the routes directory and then into the uploads directory
+   
     cb(null, path.join(__dirname, "../uploads"));
   },
   filename: function (req, file, cb) {
@@ -23,7 +23,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-const maxFiles = 12; // Set this to the maximum number of files you expect
+const maxFiles = 12; 
 const multerFields = [];
 for (let i = 0; i < maxFiles; i++) {
   multerFields.push({ name: `media${i}` });
@@ -49,7 +49,7 @@ router.post(
                 file.mimetype.includes("presentationml")
               ? "PowerPoint"
               : "Other",
-            url: `${baseURL}/uploads/${file.filename}`, // Prepend the base URL
+            url: `${baseURL}/uploads/${file.filename}`, 
             fileName: file.originalname,
           });
         }
