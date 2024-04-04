@@ -53,7 +53,7 @@ const TakeExamPage = () => {
 
   const handleBackNavigation = (event) => {
     event.preventDefault();
-    setOpenDialog(true); // Open the dialog instead of alert
+    setOpenDialog(true);
     window.history.pushState(null, document.title, window.location.href);
   };
 

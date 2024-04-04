@@ -8,13 +8,12 @@ function CreateCardForm({ addCard }) {
   const [description, setDescription] = useState("");
   const fileInputRef = useRef();
 
-  // Custom configuration for CKEditor to limit the toolbar items
   const editorConfiguration = {
     toolbar: ["Undo", "Redo", "Heading", "bold", "italic"],
   };
 
   const handleMediaChange = (e) => {
-    // Create object URLs for preview
+    
     const fileURLs = Array.from(e.target.files).map((file) =>
       Object.assign(file, {
         url: URL.createObjectURL(file),
@@ -27,16 +26,16 @@ function CreateCardForm({ addCard }) {
     e.preventDefault();
     const cardData = {
       title,
-      media, // No need to transform here, we'll handle files directly in the parent
+      media, 
       description,
     };
 
     addCard(cardData);
-    // Reset form
+   
     setTitle("");
     setMedia([]);
     setDescription("");
-    fileInputRef.current.value = ""; // Reset file input
+    fileInputRef.current.value = ""; 
   };
 
   return (

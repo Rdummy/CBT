@@ -22,11 +22,10 @@ import ReturnDashboard from "../components/ReturnDashboard";
 import "../assets/styles/settings.css";
 
 export default function Settings() {
-  const { token, user, setUser, setUserType } = useAuth(); // Assuming setUser is implemented to update user in your AuthProvider
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const { token, user, setUser, setUserType } = useAuth(); 
   const [selectedFile, setSelectedFile] = useState(null);
 
-  // Initialize userData from the user context or set defaults
+  
   const [userData, setUserData] = useState({
     username: user?.username || "",
     user_type: user?.user_type || "",
@@ -50,15 +49,15 @@ export default function Settings() {
           }
         );
         setUserData(response.data);
-        // Update user in context to reflect fetched data
+       
         setUser(response.data);
-        setUserType(response.data.user_type); // Update userType in context for role-based UI elements
+        setUserType(response.data.user_type); 
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
     fetchUserData();
-  }, [token, setUser, setUserType]); // Added setUserType to dependency array
+  }, [token, setUser, setUserType]); 
 
   const handleSubmit = async () => {
     if (!token) {
@@ -74,9 +73,9 @@ export default function Settings() {
         }
       );
       setOpenSnackbar(true);
-      // Update user in context to reflect updated data
+     
       setUser(userData);
-      setUserType(userData.user_type); // Ensure userType in context is updated
+      setUserType(userData.user_type); 
     } catch (error) {
       console.error("Error updating user data:", error);
     }
@@ -101,7 +100,7 @@ export default function Settings() {
           }
         );
         console.log("File uploaded successfully:", response.data);
-        // Update user image URL in context to reflect new image
+       
         setUser((prev) => ({ ...prev, imageUrl: response.data.imageUrl }));
       } catch (error) {
         console.error("Error uploading file:", error);
@@ -287,7 +286,7 @@ export default function Settings() {
         </Card>
       </Stack>
 
-      {/* Snackbar for showing success message */}
+      
       <Snackbar
         open={openSnackbar}
         autoHideDuration={6000}

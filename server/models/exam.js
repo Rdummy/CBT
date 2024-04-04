@@ -13,7 +13,7 @@ const mediaSchema = new mongoose.Schema({
 const slideSchema = new mongoose.Schema({
   title: String,
   description: String,
-  media: [mediaSchema], // Changed from imageUrl to an array of media
+  media: [mediaSchema], 
 });
 
 const questionSchema = new mongoose.Schema({

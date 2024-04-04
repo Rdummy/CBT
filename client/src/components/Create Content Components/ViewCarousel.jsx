@@ -41,7 +41,7 @@ const ViewCarousel = ({ notes }) => {
         style={{ transform: `translate(-${activeIndex * 100}%)` }}
       >
         {items.map((item, index) => {
-          // Add a unique key prop to CarouselItem component
+          
           return <CarouselItem key={index} item={item} width={"100%"} />;
         })}
       </div>

@@ -14,7 +14,7 @@ router.get("/barchart", async (req, res) => {
     for (let exam of exams) {
       const aggregation = await UserModel.aggregate([
         { $unwind: "$usersExams" },
-        // Ensure you match the examId as a string to the _id of the exam
+        
         { $match: { "usersExams.examId": exam._id.toString() } },
         {
           $group: {
@@ -24,11 +24,11 @@ router.get("/barchart", async (req, res) => {
         }
       ]);
 
-      // Find the count for Completed and Incomplete statuses
+    
       const completedCount = aggregation.find(group => group._id === "Completed")?.count || 0;
       const incompleteCount = aggregation.find(group => group._id === "Incomplete")?.count || 0;
 
-      // Calculate total participants based on the assigned department
+      
       let totalParticipants;
       if (exam.assignedDepartment === "General") {
         totalParticipants = totalUsers;
@@ -36,16 +36,16 @@ router.get("/barchart", async (req, res) => {
         totalParticipants = exam.numberOfParticipants || 10;
       }
 
-      // Calculate the actual incomplete count
+      
       const actualIncomplete = totalParticipants - completedCount;
 
-      // Log the detailed information
+      
       console.log(`Exam: ${exam.title}`);
       console.log(`Completed Count (via Aggregation): ${completedCount}`);
       console.log(`Incomplete Count (via Aggregation): ${incompleteCount}`);
       console.log(`Total Participants: ${totalParticipants}`);
 
-      // Push the compiled data for this exam to the array
+      
       data.push({
         _id: exam._id,
         examTitle: exam.title,
@@ -55,10 +55,10 @@ router.get("/barchart", async (req, res) => {
       });
     }
 
-    // Log the full bar chart data array
+    
     console.log("Bar Chart Data:", data);
 
-    // Send the array as the response
+   
     res.json(data);
   } catch (err) {
     console.error("Error at /barchart endpoint:", err);
@@ -75,7 +75,7 @@ router.get("/usersByExam/:examId", async (req, res) => {
       "usersExams.examId": examId,
     }).select("-password -__v");
 
-    // Enhanced logging to display status for each user
+    
     users.forEach(user => {
       const userExam = user.usersExams.find(ue => ue.examId.toString() === examId);
       console.log(`User: ${user._id}, Status: ${userExam ? userExam.status : 'Not Found'}`);

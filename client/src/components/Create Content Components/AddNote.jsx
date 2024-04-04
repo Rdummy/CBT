@@ -1,4 +1,4 @@
-// AddNote.jsx
+
 import { useState } from "react";
 import imageCompression from "browser-image-compression";
 
@@ -8,9 +8,9 @@ const AddNote = ({ handleAddnote }) => {
   const [imagePreview, setImagePreview] = useState("");
 
   const characterLimit = 1000;
-  const maxImageSizeMB = 5; // Adjust the maximum image size as needed
-  const maxImageWidth = 400; // Adjust the maximum displayed image width as needed
-  const maxImageHeight = 200; // Adjust the maximum displayed image height as needed
+  const maxImageSizeMB = 5;
+  const maxImageWidth = 400; 
+  const maxImageHeight = 200;
 
   const handleChangetitle = (event) => {
     setNoteTitle(event.target.value);
@@ -25,8 +25,8 @@ const AddNote = ({ handleAddnote }) => {
   const handleImgClick = async (e) => {
     const file = e.target.files[0];
     const options = {
-      maxSizeMB: 5, // Adjust the maximum size
-      maxWidthOrHeight: 1920, // Adjust according to your needs
+      maxSizeMB: 5, 
+      maxWidthOrHeight: 1920, 
       useWebWorker: true,
     };
 
@@ -53,20 +53,19 @@ const AddNote = ({ handleAddnote }) => {
   };
   const handleSaveClick = () => {
     if (noteTitle && noteDesc.trim().length > 0) {
-      // Retrieve the image data from localStorage
+      
       const storedImagePreview = localStorage.getItem("imagePreview");
       handleAddnote(noteTitle, noteDesc, storedImagePreview);
       setNoteTitle("");
       setNoteDesc("");
-      setImagePreview(""); // Clear the image preview
-      // Optionally, you may choose to keep the image data in localStorage
+      setImagePreview(""); 
       localStorage.removeItem("imagePreview");
     }
   };
 
   return (
     <div className="new">
-      {/* title text area */}
+      
       <textarea
         style={{
           width: "100%",

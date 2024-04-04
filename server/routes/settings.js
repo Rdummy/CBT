@@ -33,21 +33,21 @@ router.get("/profile", async (req, res) => {
   }
 
   try {
-    // Verify the token to get the authenticated user ID
-    const decoded = jwt.verify(token, "secret"); // Replace with your actual secret key
+    
+    const decoded = jwt.verify(token, "secret"); 
     const authenticatedUserId = decoded.id;
 
     const user = await UserModel.findById(authenticatedUserId);
 
     if (user) {
-      // Return the user profile information
+      
       res.json({
         username: user.username,
         user_type: user.user_type,
         user_role: user.user_role,
         email: user.email,
         department: user.department,
-        imageUrl: user.imageUrl, // Make sure this field exists in your UserModel
+        imageUrl: user.imageUrl, 
       });
     } else {
       res.status(404).json({ message: "User not found" });
@@ -66,15 +66,15 @@ router.put("/updateUserData", async (req, res) => {
   }
 
   try {
-    // Verify the token to get the authenticated user ID
-    const decoded = jwt.verify(token, "secret"); // Replace with your actual secret key
+    
+    const decoded = jwt.verify(token, "secret"); 
     const authenticatedUserId = decoded.id;
     const existingUser = await UserModel.findById(authenticatedUserId);
     const updatedData = {
       username: req.body.username,
       user_role: req.body.user_role,
       email: req.body.email,
-      imageUrl: existingUser.imageUrl, // Retain the existing imageUrl if not updating it
+      imageUrl: existingUser.imageUrl, 
     };
 
     const updatedUser = await UserModel.findByIdAndUpdate(
@@ -84,7 +84,7 @@ router.put("/updateUserData", async (req, res) => {
     );
 
     if (updatedUser) {
-      // Return the updated user profile information
+      
       res.json({
         username: updatedUser.username,
         user_type: updatedUser.user_type,
@@ -104,7 +104,7 @@ router.put("/updateUserData", async (req, res) => {
 router.post("/uploadProfileImage", upload.single("image"), async (req, res) => {
   const token = req.header("Authorization");
 
-  console.log("Received token:", token); // debugging
+  console.log("Received token:", token); 
 
   if (!token) {
     return res.status(401).json({ message: "Unauthorized - Missing token" });

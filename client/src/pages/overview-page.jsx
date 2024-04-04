@@ -28,7 +28,7 @@ function OverviewAdmin() {
   const [statusUpdated, setStatusUpdated] = useState(false);
   const [data, setData] = useState([]);
 
-  // Fetch exams data only once, or when statusUpdated changes
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -37,7 +37,7 @@ function OverviewAdmin() {
         );
         setExams(response.data);
         
-        // Log the data received from the server
+        
         console.log("Exams data fetched:", response.data);
       } catch (error) {
         console.error("Error fetching exams data:", error);
@@ -46,7 +46,7 @@ function OverviewAdmin() {
     fetchData();
   }, [statusUpdated]);
 
-  // Call this function whenever an exam status is updated
+ 
   const updateStatus = () => {
     setStatusUpdated(true);
   };
@@ -74,7 +74,7 @@ function OverviewAdmin() {
         (exam) => exam.examTitle === data.activeLabel
       );
 
-      // Log when a bar is clicked
+      
       console.log("Clicked exam data:", clickedExam);
 
       setSelectedExam(clickedExam);
@@ -132,7 +132,7 @@ function OverviewAdmin() {
             >
               <Typography variant="h6"></Typography>
               <BarChartCustom
-                data={exams} // Pass the exams data as props
+                data={exams} 
                 onBarHover={handleBarHover}
                 onBarClick={onExamBarClick}
               />

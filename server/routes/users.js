@@ -128,9 +128,9 @@ router.get("/username", async (req, res) => {
 
 router.put("/users/:userId/update", async (req, res) => {
   const { userId } = req.params;
-  const { user_type, permissions } = req.body; // Expecting both user_type and permissions
+  const { user_type, permissions } = req.body; 
 
-  // Basic validation
+  
   if (!permissions || typeof permissions.allowEditContent !== "boolean") {
     return res.status(400).json({ message: "Invalid permissions data" });
   }
@@ -138,8 +138,7 @@ router.put("/users/:userId/update", async (req, res) => {
     return res.status(400).json({ message: "Invalid user type" });
   }
 
-  // Authorization check (Implement according to your auth system)
-  // For example, ensure the requester is an admin
+  
 
   try {
     const updatedUser = await UserModel.findByIdAndUpdate(
