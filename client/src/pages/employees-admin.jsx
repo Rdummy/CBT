@@ -23,16 +23,25 @@ import {
   FormControlLabel,
   Switch,
   DialogContentText,
+  TableSortLabel,
+  Toolbar,
+  Typography,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import "../assets/styles/ExamRoutes.css";
+import AddEmployeeModal from "../components/AddEmployeeModal";
 import { Pagination } from "@mui/material";
-import { useAuth } from "../contexts/auth-context"; // Make sure this path is correct
+import { useAuth } from "../contexts/auth-context";
 
 const EmployeesAdmin = () => {
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
+  const [sortField, setSortField] = useState("username"); // Default sort field
+  const [sortDirection, setSortDirection] = useState("asc"); // Default sort direction
+  const [isModalOpen, setModalOpen] = useState(false);
+// State declarations and useEffect hooks...
+const [departments, setDepartments] = useState(["HR", "Tech", "Sales"]); // Example departments
   const [deleteUserId, setDeleteUserId] = useState(null);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -43,10 +52,12 @@ const EmployeesAdmin = () => {
   const rowsPerPage = 5;
 
   useEffect(() => {
+    // You can fetch the departments from your backend here
+    // axios.get('/api/departments').then(response => setDepartments(response.data));
     axios
       .get("http://localhost:3001/table/users")
       .then((response) => {
-        setData(response.data);
+        setData(response.data); // Ensure this always sets `data` as an array
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -59,6 +70,32 @@ const EmployeesAdmin = () => {
     handleClose();
   };
 
+  const handleOpenModal = () => setModalOpen(true); // Opens the modal
+  const handleCloseModal = () => setModalOpen(false); // Closes the modal
+  
+
+  // Sorting function
+  const handleSort = (field) => {
+    const isAsc = sortField === field && sortDirection === "asc";
+    setSortDirection(isAsc ? "desc" : "asc");
+    setSortField(field);
+  };
+
+  // Function to sort data
+  const sortData = (data) => {
+    if (!Array.isArray(data)) return []; // Safety check to ensure `data` is an array
+    return data.sort((a, b) => {
+      if (a[sortField] < b[sortField]) {
+        return sortDirection === "asc" ? -1 : 1;
+      }
+      if (a[sortField] > b[sortField]) {
+        return sortDirection === "asc" ? 1 : -1;
+      }
+      return 0;
+    });
+  };
+
+  
   const handleDeleteConfirm = () => {
     axios
       .delete(`http://localhost:3001/table/users/${deleteUserId}`)
@@ -130,8 +167,10 @@ const EmployeesAdmin = () => {
     setMenuUserId(null);
   };
 
-  const filteredData = data.filter((row) =>
-    row.username.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredData = sortData(
+    data.filter((row) => 
+      row.username.toLowerCase().includes(searchQuery.toLowerCase())
+    )
   );
 
   const indexOfLastRow = page * rowsPerPage;
@@ -144,20 +183,31 @@ const EmployeesAdmin = () => {
 
   return (
     <div className="exam-details--wrapper">
-      <Grid
-        container
-        direction="column"
-        spacing={2}
-        style={{ marginTop: "10px" }}
+       <Toolbar
+        className="exams-category--header"
+        sx={{ justifyContent: "center" }}
       >
-        <Grid item>
+        <Typography className="exams-category--header--text">
+          Employees
+        </Typography>
+      </Toolbar>
+      <Grid container direction="column" spacing={2} style={{ marginTop: "10px" }}>
+        <Grid item container justifyContent="space-between" alignItems="center">
           <TextField
             label="Search by name"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             variant="outlined"
-            style={{ margin: "1px", width: "100%" }}
+            fullWidth
+            style={{ marginRight: 16 }} // Ensure some spacing between the search bar and the button on smaller screens
           />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleOpenModal} // This is where handleOpenModal is used
+          >
+            Add Employee
+          </Button>
         </Grid>
         <Grid item style={{ overflow: "hidden" }}>
           <TableContainer
@@ -168,21 +218,42 @@ const EmployeesAdmin = () => {
             }}
           >
             <Table aria-label="simple table">
-              <TableHead>
-                <TableRow style={{ backgroundColor: "#e71e4a" }}>
-                  <TableCell style={{ color: "white" }}>ID</TableCell>
-                  <TableCell style={{ color: "white" }}>Username</TableCell>
-                  <TableCell align="left" style={{ color: "white" }}>
+            <TableHead>
+              <TableRow style={{ backgroundColor: "#e71e4a" }}>
+                {/* Sortable Table Headers */}
+                <TableCell style={{ color: "white" }}>ID</TableCell>
+                <TableCell style={{ color: "white" }}>
+                  <TableSortLabel
+                    active={sortField === "username"}
+                    direction={sortField === "username" ? sortDirection : 'asc'}
+                    onClick={() => handleSort('username')}
+                  >
+                    Username
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell align="left" style={{ color: "white" }}>
+                  <TableSortLabel
+                    active={sortField === "email"}
+                    direction={sortField === "email" ? sortDirection : 'asc'}
+                    onClick={() => handleSort('email')}
+                  >
                     Email
-                  </TableCell>
-                  <TableCell style={{ color: "white" }}>User Role</TableCell>
-                  <TableCell style={{ color: "white" }}>User Type</TableCell>
-                  <TableCell align="center" style={{ color: "white" }}>
-                    Actions
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell style={{ color: "white" }}>
+                  <TableSortLabel
+                    active={sortField === "user_role"}
+                    direction={sortField === "user_role" ? sortDirection : 'asc'}
+                    onClick={() => handleSort('user_role')}
+                  >
+                    User Role
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell style={{ color: "white" }}>User Type</TableCell>
+                <TableCell align="center" style={{ color: "white" }}>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
                 {currentRows.map((row) => (
                   <TableRow key={row._id}>
                     <TableCell component="th" scope="row">
@@ -308,7 +379,7 @@ const EmployeesAdmin = () => {
                 control={
                   <Switch
                     checked={accessFeatures.allowCreateContent}
-                    onChange={(event) => {
+                     onChange={(event) => {
                       updateAccessFeatures({
                         ...accessFeatures,
                         allowCreateContent: event.target.checked,
@@ -321,10 +392,18 @@ const EmployeesAdmin = () => {
             </FormGroup>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setAccessModalOpen(false)}>Cancel</Button>
+           <Button onClick={() => setAccessModalOpen(false)}>Cancel</Button>
             <Button onClick={handleSavePermissions}>Save</Button>
           </DialogActions>
         </Dialog>
+        <AddEmployeeModal
+  isOpen={isModalOpen} // Corrected from `isOpen={isOpen}`
+  handleClose={handleCloseModal}
+  departments={departments}
+  accessFeatures={accessFeatures} // Assuming this comes from `useAuth` or is appropriately defined
+  updateAccessFeatures={updateAccessFeatures} // Same as above
+/>
+
       </Grid>
     </div>
   );
