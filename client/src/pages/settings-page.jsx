@@ -24,7 +24,7 @@ import "../assets/styles/settings.css";
 export default function Settings() {
   const { token, user, setUser, setUserType } = useAuth(); 
   const [selectedFile, setSelectedFile] = useState(null);
-
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   
   const [userData, setUserData] = useState({
     username: user?.username || "",

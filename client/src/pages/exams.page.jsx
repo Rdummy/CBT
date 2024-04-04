@@ -20,7 +20,7 @@ import ExamCard from "../components/ExamCard";
 import "../assets/styles/dashboard.css";
 
 function ExamPage() {
-  const { token } = useAuth(); // This should be placed at the top level of your component
+  const { token } = useAuth(); 
   const [page, setPage] = useState(1);
   const examsPerPage = 4;
   const [openModal, setOpenModal] = useState(false);
@@ -132,7 +132,7 @@ function ExamPage() {
 
       <Grid
         container
-        spacing={1} // Adjust spacing as needed for design
+        spacing={1} 
         alignItems="center"
         justifyContent="center"
       >
