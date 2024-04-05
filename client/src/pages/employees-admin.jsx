@@ -382,6 +382,7 @@ const EmployeesAdmin = () => {
               <FormControlLabel
                 control={
                   <Switch
+                  
                     checked={accessFeatures.allowCreateContent}
                      onChange={(event) => {
                       updateAccessFeatures({
@@ -404,10 +405,7 @@ const EmployeesAdmin = () => {
   isOpen={isModalOpen} // Corrected from `isOpen={i sOpen}`
   handleClose={handleCloseModal}
   departments={departments}
-  accessFeatures={accessFeatures} // Assuming this comes from `useAuth` or is appropriately defined
-  updateAccessFeatures={updateAccessFeatures} // Same as above
 />
-
       </Grid>
     </div>
   );
