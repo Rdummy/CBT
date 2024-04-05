@@ -115,7 +115,7 @@ function ExamPage() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ alignItems: "center" }}>
+    <Container maxWidth="lg" sx={{ alignItems: "center", minWidth:"900px", minHeight: "70vh" }}>
       <Toolbar
         className="exams-category--header"
         sx={{ justifyContent: "center" }}
@@ -125,7 +125,7 @@ function ExamPage() {
         </Typography>
       </Toolbar>
       {exams.length === 0 && (
-        <Typography variant="h6" align="center" style={{ marginTop: 20 }}>
+        <Typography variant="h6" align="center" style={{ marginTop: 20, fontWeight: "bold", fontSize: "30px" }}>
           No Exams Available
         </Typography>
       )}

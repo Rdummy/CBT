@@ -40,8 +40,7 @@ const EmployeesAdmin = () => {
   const [sortField, setSortField] = useState("username"); // Default sort field
   const [sortDirection, setSortDirection] = useState("asc"); // Default sort direction
   const [isModalOpen, setModalOpen] = useState(false);
-// State declarations and useEffect hooks...
-const [departments, setDepartments] = useState(["HR", "Tech", "Sales"]); // Example departments
+  const [departments, setDepartments] = useState(["HR", "Tech", "Sales"]); // Example departments
   const [deleteUserId, setDeleteUserId] = useState(null);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -52,17 +51,22 @@ const [departments, setDepartments] = useState(["HR", "Tech", "Sales"]); // Exam
   const rowsPerPage = 5;
 
   useEffect(() => {
-    // You can fetch the departments from your backend here
-    // axios.get('/api/departments').then(response => setDepartments(response.data));
-    axios
-      .get("http://localhost:3001/table/users")
-      .then((response) => {
-        setData(response.data); // Ensure this always sets `data` as an array
-      })
-      .catch((error) => {
+    const fetchData = async () => {
+      try {
+        const usersResponse = await axios.get("http://localhost:3001/table/users");
+        setData(usersResponse.data);
+  
+        const departmentsResponse = await axios.get('http://localhost:3001/table/departments');
+        setDepartments(departmentsResponse.data); // Assuming this API returns an array of strings
+        console.log('Fetched departments:', departmentsResponse.data); // Debug line
+      } catch (error) {
         console.error("Error fetching data:", error);
-      });
+      }
+    };
+  
+    fetchData();
   }, []);
+
 
   const handleDelete = (userId) => {
     setDeleteUserId(userId);
@@ -221,7 +225,7 @@ const [departments, setDepartments] = useState(["HR", "Tech", "Sales"]); // Exam
             <TableHead>
               <TableRow style={{ backgroundColor: "#e71e4a" }}>
                 {/* Sortable Table Headers */}
-                <TableCell style={{ color: "white" }}>ID</TableCell>
+                <TableCell style={{ color: "white" }}>Employee ID</TableCell>
                 <TableCell style={{ color: "white" }}>
                   <TableSortLabel
                     active={sortField === "username"}
@@ -255,9 +259,9 @@ const [departments, setDepartments] = useState(["HR", "Tech", "Sales"]); // Exam
             </TableHead>
             <TableBody>
                 {currentRows.map((row) => (
-                  <TableRow key={row._id}>
+                  <TableRow key={row.empID}>
                     <TableCell component="th" scope="row">
-                      {row._id}
+                      {row.empID}
                     </TableCell>
                     <TableCell>{row.username}</TableCell>
                     <TableCell align="left">{row.email}</TableCell>
@@ -397,7 +401,7 @@ const [departments, setDepartments] = useState(["HR", "Tech", "Sales"]); // Exam
           </DialogActions>
         </Dialog>
         <AddEmployeeModal
-  isOpen={isModalOpen} // Corrected from `isOpen={isOpen}`
+  isOpen={isModalOpen} // Corrected from `isOpen={i sOpen}`
   handleClose={handleCloseModal}
   departments={departments}
   accessFeatures={accessFeatures} // Assuming this comes from `useAuth` or is appropriately defined

@@ -1,89 +1,111 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  Button,
-  DialogActions,
-  TextField,
-  FormGroup,
-  FormControlLabel,
-  Switch,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl
-} from '@mui/material';
+import React, { useState, useEffect } from "react";
+import { Dialog, DialogTitle, DialogContent, Button, DialogActions, TextField, FormGroup, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import axios from "axios";
 
-const AddEmployeeModal = ({ isOpen, handleClose, departments, accessFeatures, updateAccessFeatures }) => {
+const AddEmployeeModal = ({ isOpen, handleClose, departments }) => {
   const [employeeDetails, setEmployeeDetails] = useState({
-    name: '',
-    email: '',
-    role: '',
-    department: '',
-    isCoAdmin: false,
-    newDepartment: ''
+    empID: "",
+    fullname: "",
+    username: "",
+    email: "",
+    user_role: "",
+    department: "",
+    newDepartment: "",
   });
-  const [showCoAdminFeatures, setShowCoAdminFeatures] = useState(false);
 
   useEffect(() => {
+    // Make sure the state reset matches your state structure
     if (!isOpen) {
-      // Reset form and hide Co-Admin Features when the modal is closed
       setEmployeeDetails({
-        name: '',
-        email: '',
-        role: '',
-        department: '',
-        isCoAdmin: false,
-        newDepartment: ''
+        empID: "",
+        fullname: "",
+        username: "",
+        email: "",
+        user_role: "",
+        department: "",
+        newDepartment: "",
       });
-      setShowCoAdminFeatures(false);
     }
   }, [isOpen]);
 
   const handleChange = (e) => {
-    const { name, value, checked, type } = e.target;
+    const { name, value } = e.target;
     setEmployeeDetails(prevDetails => ({
       ...prevDetails,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: value,
     }));
-
-    if (name === "isCoAdmin") {
-      setShowCoAdminFeatures(checked);
-    }
   };
 
   const handleSave = async () => {
+    const { empID, fullname, username, email, user_role, department, newDepartment } = employeeDetails;
+  
+    if (!empID || !fullname || !username || !email || !user_role || (!department && !newDepartment)) {
+      console.error('Missing required fields');
+      // Handle error: show user a message or mark fields as required
+      return;
+    }
+  
+    // Include empID in the submissionData
     const submissionData = {
-      ...employeeDetails,
-      department: employeeDetails.newDepartment || employeeDetails.department,
-      // Include permission data if isCoAdmin is true
-      ...(employeeDetails.isCoAdmin && { permissions: accessFeatures }),
+      empID, // Added this line
+      fullname,
+      username,
+      email,
+      user_role,
+      department: newDepartment || department,
     };
-    // Optionally remove the newDepartment key if not needed for submission
-    delete submissionData.newDepartment;
+  
+    try {
+      const response = await axios.post('http://localhost:3001/table/addEmp', submissionData);
+      console.log('Employee added:', response.data);
+      handleClose();
+      // Update the employee list in the parent component if needed
+    } catch (error) {
+      console.error('Error adding employee:', error);
+    }
+};
 
-    console.log('Submission Data:', submissionData);
-    // Here, integrate with your backend to create the employee
-    // await axios.post('/api/employees', submissionData);
-    handleClose();
-  };
-
-  const isFormValid = employeeDetails.name && employeeDetails.email && employeeDetails.role && (employeeDetails.department || employeeDetails.newDepartment);
+  const isFormValid =
+    employeeDetails.empID &&
+    employeeDetails.fullname &&
+    employeeDetails.username &&
+    employeeDetails.email &&
+    employeeDetails.user_role &&
+    (employeeDetails.department || employeeDetails.newDepartment);
 
   return (
-    <Dialog open={isOpen} onClose={handleClose}>
-    <DialogTitle>Add New Employee</DialogTitle>
-    <DialogContent>
-      <FormGroup>
+    <Dialog open={isOpen} onClose={handleClose} fullWidth>
+      <DialogTitle>Add New Employee</DialogTitle>
+      <DialogContent>
+        <FormGroup>
+        <TextField
+  margin="dense"
+  label="Employee ID"
+  type="text"
+  fullWidth
+  variant="outlined"
+  name="empID" // Corrected to match the state key
+  value={employeeDetails.empID}
+  onChange={handleChange}
+/>
+        <TextField
+        margin="dense"
+        label="Full Name"
+        type="text"
+        fullWidth
+        variant="outlined"
+        name="fullname" // make sure this matches the state key
+        value={employeeDetails.fullname}
+        onChange={handleChange}
+         />
           <TextField
             margin="dense"
-            label="Name"
+            label="Username"
             type="text"
             fullWidth
             variant="outlined"
-            name="name"
-            value={employeeDetails.name}
+            name="username"
+            value={employeeDetails.username}
             onChange={handleChange}
           />
           <TextField
@@ -102,26 +124,35 @@ const AddEmployeeModal = ({ isOpen, handleClose, departments, accessFeatures, up
             type="text"
             fullWidth
             variant="outlined"
-            name="role"
-            value={employeeDetails.role}
+            name="user_role"
+            value={employeeDetails.user_role}
             onChange={handleChange}
           />
           <FormControl fullWidth margin="dense">
-          Department
+            <InputLabel id="department-label">Department</InputLabel>
             <Select
+              labelId="department-label"
               label="Department"
               name="department"
               value={employeeDetails.department}
               onChange={handleChange}
-              displayEmpty
+              // You might want to add this property if not already present
+              MenuProps={{
+                PaperProps: { 
+                  style: {
+                    maxHeight: "50%", // Adjust as needed
+                  },
+                },
+              }}
             >
-              {departments.map((dept) => (
-                <MenuItem key={dept} value={dept}>{dept}</MenuItem>
+              {departments.map((dept, index) => (
+                <MenuItem key={index} value={dept}>
+                  {dept}
+                </MenuItem>
               ))}
-              <MenuItem value="">-- Add New --</MenuItem>
             </Select>
           </FormControl>
-          {employeeDetails.department === '' && (
+          {employeeDetails.department === "" && (
             <TextField
               margin="dense"
               label="New Department"
@@ -133,73 +164,13 @@ const AddEmployeeModal = ({ isOpen, handleClose, departments, accessFeatures, up
               onChange={handleChange}
             />
           )}
-          <FormControlLabel
-            control={
-              <Switch
-                checked={employeeDetails.isCoAdmin}
-                onChange={handleChange}
-                name="isCoAdmin"
-              />
-            }
-            label="Set as Co-Admin"
-          />
-        {showCoAdminFeatures && (
-  <React.Fragment>
-    <FormControlLabel
-      control={
-        <Switch
-          checked={accessFeatures?.allowEditContent}
-          onChange={(event) => updateAccessFeatures({
-            ...accessFeatures,
-            allowEditContent: event.target.checked,
-          })}
-        />
-      }
-      label="Allow edit content"
-    />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={accessFeatures.allowDeleteExam}
-                    onChange={(event) => updateAccessFeatures({
-                      ...accessFeatures,
-                      allowDeleteExam: event.target.checked,
-                    })}
-                  />
-                }
-                label="Allow delete exam"
-              />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={accessFeatures.allowAddCreateExam}
-                    onChange={(event) => updateAccessFeatures({
-                      ...accessFeatures,
-                      allowAddCreateExam: event.target.checked,
-                    })}
-                  />
-                }
-                label="Allow add/create exam"
-              />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={accessFeatures.allowCreateContent}
-                    onChange={(event) => updateAccessFeatures({
-                      ...accessFeatures,
-                      allowCreateContent: event.target.checked,
-                    })}
-                  />
-                }
-                label="Allow create content"
-              />
-            </React.Fragment>
-          )}
         </FormGroup>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleSave} disabled={!isFormValid}>Save</Button>
+        <Button onClick={handleSave} disabled={!isFormValid}>
+          Save
+        </Button>
       </DialogActions>
     </Dialog>
   );
