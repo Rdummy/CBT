@@ -54,6 +54,7 @@
   align-items: center;
   justify-content: center;
   width: auto;
+  min-width: 300px;
 }
 
 html .create-topic-button {

@@ -7,39 +7,49 @@ import {
   DialogActions,
   TextField,
   FormGroup,
-  FormControlLabel,
-  Switch,
   Select,
   MenuItem,
-  InputLabel,
   FormControl
 } from '@mui/material';
+import "../assets/styles/ExamRoutes.css";
+import { CSSTransition } from 'react-transition-group';
 
-const AddEmployeeModal = ({ isOpen, handleClose, departments, accessFeatures, updateAccessFeatures }) => {
-  const [employeeDetails, setEmployeeDetails] = useState({
-    name: '',
-    email: '',
-    role: '',
-    department: '',
-    isCoAdmin: false,
-    newDepartment: ''
-  });
-  const [showCoAdminFeatures, setShowCoAdminFeatures] = useState(false);
+// Ensure TransitionComponent is defined correctly
+const TransitionComponent = React.forwardRef((props, ref) => (
+    <CSSTransition
+      in={props.in}
+      timeout={500}
+      classNames="my-animation"
+      unmountOnExit
+      nodeRef={ref}
+      {...props}
+    >
+      {props.children}
+    </CSSTransition>
+  ));
+  
 
-  useEffect(() => {
-    if (!isOpen) {
-      // Reset form and hide Co-Admin Features when the modal is closed
-      setEmployeeDetails({
-        name: '',
-        email: '',
-        role: '',
-        department: '',
-        isCoAdmin: false,
-        newDepartment: ''
-      });
-      setShowCoAdminFeatures(false);
-    }
-  }, [isOpen]);
+  const AddEmployeeModal = ({ isOpen, handleClose, departments }) => {
+    const [employeeDetails, setEmployeeDetails] = useState({
+      name: '',
+      email: '',
+      role: '',
+      department: '',
+      newDepartment: ''
+    });
+  
+    useEffect(() => {
+      if (!isOpen) {
+        setEmployeeDetails({
+          name: '',
+          email: '',
+          role: '',
+          department: '',
+          newDepartment: ''
+        });
+      }
+    }, [isOpen]);
+  
 
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target;
@@ -47,18 +57,12 @@ const AddEmployeeModal = ({ isOpen, handleClose, departments, accessFeatures, up
       ...prevDetails,
       [name]: type === 'checkbox' ? checked : value,
     }));
-
-    if (name === "isCoAdmin") {
-      setShowCoAdminFeatures(checked);
-    }
   };
 
   const handleSave = async () => {
     const submissionData = {
       ...employeeDetails,
       department: employeeDetails.newDepartment || employeeDetails.department,
-      // Include permission data if isCoAdmin is true
-      ...(employeeDetails.isCoAdmin && { permissions: accessFeatures }),
     };
     // Optionally remove the newDepartment key if not needed for submission
     delete submissionData.newDepartment;
@@ -72,7 +76,11 @@ const AddEmployeeModal = ({ isOpen, handleClose, departments, accessFeatures, up
   const isFormValid = employeeDetails.name && employeeDetails.email && employeeDetails.role && (employeeDetails.department || employeeDetails.newDepartment);
 
   return (
-    <Dialog open={isOpen} onClose={handleClose}>
+    <Dialog
+    open={isOpen}
+    onClose={handleClose}
+    TransitionComponent={TransitionComponent} // Use the custom TransitionComponent for animations
+  >
     <DialogTitle>Add New Employee</DialogTitle>
     <DialogContent>
       <FormGroup>
@@ -133,73 +141,11 @@ const AddEmployeeModal = ({ isOpen, handleClose, departments, accessFeatures, up
               onChange={handleChange}
             />
           )}
-          <FormControlLabel
-            control={
-              <Switch
-                checked={employeeDetails.isCoAdmin}
-                onChange={handleChange}
-                name="isCoAdmin"
-              />
-            }
-            label="Set as Co-Admin"
-          />
-        {showCoAdminFeatures && (
-  <React.Fragment>
-    <FormControlLabel
-      control={
-        <Switch
-          checked={accessFeatures?.allowEditContent}
-          onChange={(event) => updateAccessFeatures({
-            ...accessFeatures,
-            allowEditContent: event.target.checked,
-          })}
-        />
-      }
-      label="Allow edit content"
-    />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={accessFeatures.allowDeleteExam}
-                    onChange={(event) => updateAccessFeatures({
-                      ...accessFeatures,
-                      allowDeleteExam: event.target.checked,
-                    })}
-                  />
-                }
-                label="Allow delete exam"
-              />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={accessFeatures.allowAddCreateExam}
-                    onChange={(event) => updateAccessFeatures({
-                      ...accessFeatures,
-                      allowAddCreateExam: event.target.checked,
-                    })}
-                  />
-                }
-                label="Allow add/create exam"
-              />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={accessFeatures.allowCreateContent}
-                    onChange={(event) => updateAccessFeatures({
-                      ...accessFeatures,
-                      allowCreateContent: event.target.checked,
-                    })}
-                  />
-                }
-                label="Allow create content"
-              />
-            </React.Fragment>
-          )}
         </FormGroup>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleSave} disabled={!isFormValid}>Save</Button>
+        <Button onClick={handleClose} className="cancelButton">Cancel</Button>
+        <Button onClick={handleSave} disabled={!isFormValid} className="saveButton">Save</Button>
       </DialogActions>
     </Dialog>
   );

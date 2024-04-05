@@ -378,6 +378,7 @@ const [departments, setDepartments] = useState(["HR", "Tech", "Sales"]); // Exam
               <FormControlLabel
                 control={
                   <Switch
+                  
                     checked={accessFeatures.allowCreateContent}
                      onChange={(event) => {
                       updateAccessFeatures({
@@ -397,13 +398,10 @@ const [departments, setDepartments] = useState(["HR", "Tech", "Sales"]); // Exam
           </DialogActions>
         </Dialog>
         <AddEmployeeModal
-  isOpen={isModalOpen} // Corrected from `isOpen={isOpen}`
+  isOpen={isModalOpen}
   handleClose={handleCloseModal}
   departments={departments}
-  accessFeatures={accessFeatures} // Assuming this comes from `useAuth` or is appropriately defined
-  updateAccessFeatures={updateAccessFeatures} // Same as above
 />
-
       </Grid>
     </div>
   );
