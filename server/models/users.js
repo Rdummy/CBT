@@ -27,8 +27,8 @@ const examToTakeSchema = new mongoose.Schema({
 });
 
 const UserSchema = new mongoose.Schema({
-  empID: { type: String, required: true },
-  fullname: { type: String, required: true },
+  empID: { type: String},
+  fullname: { type: String},
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   imageUrl: { type: String, required: true },

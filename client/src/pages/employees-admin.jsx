@@ -37,7 +37,7 @@ const EmployeesAdmin = () => {
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
-  const [sortField, setSortField] = useState("username"); // Default sort field
+  const [sortField, setSortField] = useState("fullname");
   const [sortDirection, setSortDirection] = useState("asc"); // Default sort direction
   const [isModalOpen, setModalOpen] = useState(false);
   const [departments, setDepartments] = useState(["HR", "Tech", "Sales"]); // Example departments
@@ -173,7 +173,7 @@ const EmployeesAdmin = () => {
 
   const filteredData = sortData(
     data.filter((row) => 
-      row.username.toLowerCase().includes(searchQuery.toLowerCase())
+      row.username && row.username.toLowerCase().includes(searchQuery.toLowerCase())
     )
   );
 
@@ -227,14 +227,14 @@ const EmployeesAdmin = () => {
                 {/* Sortable Table Headers */}
                 <TableCell style={{ color: "white" }}>Employee ID</TableCell>
                 <TableCell style={{ color: "white" }}>
-                  <TableSortLabel
-                    active={sortField === "username"}
-                    direction={sortField === "username" ? sortDirection : 'asc'}
-                    onClick={() => handleSort('username')}
-                  >
-                    Username
-                  </TableSortLabel>
-                </TableCell>
+  <TableSortLabel
+    active={sortField === "fullname"} // Updated to "fullname"
+    direction={sortField === "fullname" ? sortDirection : 'asc'} // Updated to "fullname"
+    onClick={() => handleSort('fullname')} // Updated to "fullname"
+  >
+    Full Name
+  </TableSortLabel>
+</TableCell>
                 <TableCell align="left" style={{ color: "white" }}>
                   <TableSortLabel
                     active={sortField === "email"}
@@ -263,7 +263,7 @@ const EmployeesAdmin = () => {
                     <TableCell component="th" scope="row">
                       {row.empID}
                     </TableCell>
-                    <TableCell>{row.username}</TableCell>
+                    <TableCell>{row.fullname}</TableCell> 
                     <TableCell align="left">{row.email}</TableCell>
                     <TableCell>{row.user_role}</TableCell>
                     <TableCell>{row.user_type}</TableCell>
