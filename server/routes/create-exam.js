@@ -8,7 +8,7 @@ router.post("/create-exam/:examId/questions", async (req, res) => {
   const { examId } = req.params;
   const { questions } = req.body;
 
-  console.log(`Received update for examId: ${examId}`);
+  
 
   try {
     let exam = await ExamModel.findOne({ _id: examId });

@@ -104,7 +104,7 @@ router.put("/updateUserData", async (req, res) => {
 router.post("/uploadProfileImage", upload.single("image"), async (req, res) => {
   const token = req.header("Authorization");
 
-  console.log("Received token:", token); 
+  
 
   if (!token) {
     return res.status(401).json({ message: "Unauthorized - Missing token" });

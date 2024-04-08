@@ -38,7 +38,7 @@ function OverviewAdmin() {
         setExams(response.data);
         
         
-        console.log("Exams data fetched:", response.data);
+       
       } catch (error) {
         console.error("Error fetching exams data:", error);
       }
@@ -75,7 +75,7 @@ function OverviewAdmin() {
       );
 
       
-      console.log("Clicked exam data:", clickedExam);
+     
 
       setSelectedExam(clickedExam);
       if (clickedExam && clickedExam._id) {

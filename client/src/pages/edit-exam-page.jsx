@@ -44,7 +44,7 @@ const EditExamPage = () => {
       description: formData.description,
     };
 
-    console.log("Updated Exams Data:", updatedExams);
+    
 
     navigate("/dashboard");
   };

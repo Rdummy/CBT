@@ -40,10 +40,10 @@ router.get("/barchart", async (req, res) => {
       const actualIncomplete = totalParticipants - completedCount;
 
       
-      console.log(`Exam: ${exam.title}`);
-      console.log(`Completed Count (via Aggregation): ${completedCount}`);
-      console.log(`Incomplete Count (via Aggregation): ${incompleteCount}`);
-      console.log(`Total Participants: ${totalParticipants}`);
+      // console.log(`Exam: ${exam.title}`);
+      // console.log(`Completed Count (via Aggregation): ${completedCount}`);
+      // console.log(`Incomplete Count (via Aggregation): ${incompleteCount}`);
+      // console.log(`Total Participants: ${totalParticipants}`);
 
       
       data.push({

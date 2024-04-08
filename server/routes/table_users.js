@@ -60,7 +60,7 @@ router.get('/departments', async (req, res) => {
 
 router.post('/addEmp', async (req, res) => {
   const { empID, fullname, username, email, user_role, department, newDepartment } = req.body;
-  console.log(empID, fullname, username, email, user_role, department, newDepartment);
+  
   try {
     // Include empID in the destructuring
     const { empID, fullname, username, email, user_role, department, newDepartment } = req.body;

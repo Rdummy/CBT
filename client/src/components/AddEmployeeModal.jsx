@@ -57,7 +57,7 @@ const AddEmployeeModal = ({ isOpen, handleClose, departments }) => {
   
     try {
       const response = await axios.post('http://localhost:3001/table/addEmp', submissionData);
-      console.log('Employee added:', response.data);
+      
       handleClose();
       // Update the employee list in the parent component if needed
     } catch (error) {

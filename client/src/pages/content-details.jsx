@@ -63,7 +63,7 @@ function ContentDetailsPage() {
         }
       );
 
-      console.log(response.data.message);
+      
       handleCloseModal();
       navigate(`/dashboard/create-content/${examId}`); 
     } catch (error) {
@@ -96,7 +96,7 @@ function ContentDetailsPage() {
       const response = await axios.delete(
         `http://localhost:3001/exam/delete-exam/${examId}`
       );
-      console.log(response.data);
+      
       navigate("/dashboard/create-content");
     } catch (error) {
       console.error(

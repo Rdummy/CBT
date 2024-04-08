@@ -31,7 +31,7 @@ const AddExamForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log("Form submitted with data:", formData);
+    
     setFormData(initialFormData);
   };
 

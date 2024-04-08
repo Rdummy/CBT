@@ -68,7 +68,7 @@ function ExamPage() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted with data:", formData);
+    
     setOpenModal(false);
 
     try {
