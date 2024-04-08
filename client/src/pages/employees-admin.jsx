@@ -87,24 +87,18 @@ const EmployeesAdmin = () => {
 
   // Function to sort data
   const sortData = (data) => {
-    return [...data].sort((a, b) => {
-      let valA = a[sortField] || '';
-      let valB = b[sortField] || '';
-  
-      // Convert to uppercase for case-insensitive comparison
-      if (typeof valA === 'string') valA = valA.toUpperCase();
-      if (typeof valB === 'string') valB = valB.toUpperCase();
-  
-      if (sortField === 'empID' && valA && valB) {
-        // Use localeCompare with numeric option for alphanumeric strings
-        return sortDirection === 'asc' ? valA.localeCompare(valB, undefined, { numeric: true }) : valB.localeCompare(valA, undefined, { numeric: true });
-      } else if (sortDirection === 'asc') {
-        return valA < valB ? -1 : valA > valB ? 1 : 0;
-      } else {
-        return valA > valB ? -1 : valA < valB ? 1 : 0;
+    if (!Array.isArray(data)) return []; // Safety check to ensure `data` is an array
+    return data.sort((a, b) => {
+      if (a[sortField] < b[sortField]) {
+        return sortDirection === "asc" ? -1 : 1;
       }
+      if (a[sortField] > b[sortField]) {
+        return sortDirection === "asc" ? 1 : -1;
+      }
+      return 0;
     });
   };
+
   
   const handleDeleteConfirm = () => {
     axios
@@ -229,95 +223,79 @@ const EmployeesAdmin = () => {
           >
             <Table aria-label="simple table">
             <TableHead>
-  <TableRow style={{ backgroundColor: "#e71e4a" }}>
-    <TableCell style={{ color: "white" }}>
-      <TableSortLabel
-        active={sortField === "empID"}
-        direction={sortField === "empID" ? sortDirection : 'asc'}
-        onClick={() => handleSort('empID')}
-      >
-        Employee ID
-      </TableSortLabel>
-    </TableCell>
-    <TableCell style={{ color: "white" }}>
-      <TableSortLabel
-        active={sortField === "fullname"}
-        direction={sortField === "fullname" ? sortDirection : 'asc'}
-        onClick={() => handleSort('fullname')}
-      >
-        Full Name
-      </TableSortLabel>
-    </TableCell>
-    <TableCell align="left" style={{ color: "white" }}>
-      <TableSortLabel
-        active={sortField === "email"}
-        direction={sortField === "email" ? sortDirection : 'asc'}
-        onClick={() => handleSort('email')}
-      >
-        Email
-      </TableSortLabel>
-    </TableCell>
-    <TableCell style={{ color: "white" }}>
-      <TableSortLabel
-        active={sortField === "user_role"}
-        direction={sortField === "user_role" ? sortDirection : 'asc'}
-        onClick={() => handleSort('user_role')}
-      >
-        User Role
-      </TableSortLabel>
-    </TableCell>
-    <TableCell style={{ color: "white" }}>
-      <TableSortLabel
-        active={sortField === "user_type"}
-        direction={sortField === "user_type" ? sortDirection : 'asc'}
-        onClick={() => handleSort('user_type')}
-      >
-        User Type
-      </TableSortLabel>
-    </TableCell>
-    <TableCell align="center" style={{ color: "white" }}>
-      Actions
-    </TableCell>
-  </TableRow>
-</TableHead>
-
-<TableBody>
-  {currentRows.map((row, index) => (
-    <TableRow key={row.empID || index}>
-      <TableCell component="th" scope="row">
-        {row.empID}
-      </TableCell>
-      <TableCell>{row.fullname}</TableCell>
-      <TableCell align="left">{row.email}</TableCell>
-      <TableCell>{row.user_role}</TableCell>
-      <TableCell>{row.user_type}</TableCell>
-      <TableCell align="right">
-        <IconButton
-          aria-label="more"
-          aria-controls="action-menu"
-          aria-haspopup="true"
-          onClick={(event) => handleClick(event, row.empID)}
-        >
-          <MoreVertIcon />
-        </IconButton>
-        <Menu
-          id={`action-menu-${row.empID}`}
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl && menuUserId === row.empID)}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={() => handleOpenAccessModal(row.empID)}>
-            Set to Co-admin
-          </MenuItem>
-          <MenuItem onClick={() => handleDelete(row.empID)}>
-            Delete
-          </MenuItem>
-        </Menu>
-      </TableCell>
-    </TableRow>
-  ))}
-</TableBody>
+              <TableRow style={{ backgroundColor: "#e71e4a" }}>
+                {/* Sortable Table Headers */}
+                <TableCell style={{ color: "white" }}>Employee ID</TableCell>
+                <TableCell style={{ color: "white" }}>
+  <TableSortLabel
+    active={sortField === "fullname"} // Updated to "fullname"
+    direction={sortField === "fullname" ? sortDirection : 'asc'} // Updated to "fullname"
+    onClick={() => handleSort('fullname')} // Updated to "fullname"
+  >
+    Full Name
+  </TableSortLabel>
+</TableCell>
+                <TableCell align="left" style={{ color: "white" }}>
+                  <TableSortLabel
+                    active={sortField === "email"}
+                    direction={sortField === "email" ? sortDirection : 'asc'}
+                    onClick={() => handleSort('email')}
+                  >
+                    Email
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell style={{ color: "white" }}>
+                  <TableSortLabel
+                    active={sortField === "user_role"}
+                    direction={sortField === "user_role" ? sortDirection : 'asc'}
+                    onClick={() => handleSort('user_role')}
+                  >
+                    User Role
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell style={{ color: "white" }}>User Type</TableCell>
+                <TableCell align="center" style={{ color: "white" }}>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+                {currentRows.map((row) => (
+                  <TableRow key={row.empID}>
+                    <TableCell component="th" scope="row">
+                      {row.empID}
+                    </TableCell>
+                    <TableCell>{row.fullname}</TableCell> 
+                    <TableCell align="left">{row.email}</TableCell>
+                    <TableCell>{row.user_role}</TableCell>
+                    <TableCell>{row.user_type}</TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        aria-label="more"
+                        aria-controls="action-menu"
+                        aria-haspopup="true"
+                        onClick={(event) => handleClick(event, row._id)}
+                      >
+                        <MoreVertIcon />
+                      </IconButton>
+                      <Menu
+                        id={`action-menu-${row._id}`}
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl && menuUserId === row._id)}
+                        onClose={handleClose}
+                      >
+                        <MenuItem
+                          onClick={() => handleOpenAccessModal(row._id)}
+                        >
+                          Set to Co-admin
+                        </MenuItem>
+                        <MenuItem onClick={() => handleDelete(menuUserId)}>
+                          Delete
+                        </MenuItem>
+                      </Menu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
             </Table>
           </TableContainer>
           <Box display="flex" justifyContent="center" mt={2}>
