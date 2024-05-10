@@ -30,8 +30,6 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-
 const uploadPath = path.join(__dirname, "../client/public/uploads");
 app.use("/uploads", express.static(uploadPath));
 
@@ -60,7 +58,6 @@ app.use("/exam", createExamRouter);
 app.use("/user", userExamRouter);
 app.use("/overview", overviewRouter);
 app.use(ckeditorRouter);
-
 mongoose.connect(
   "mongodb+srv://raineheartcajes:cbtexam@novatechset.pmauabk.mongodb.net/cbtdb?retryWrites=true&w=majority"
 );
@@ -68,4 +65,3 @@ mongoose.connect(
 // Test Comment
 
 app.listen(3001, () => console.log("Server Started"));
-  

@@ -13,7 +13,7 @@ import {
 import NTS_Logo from "../../assets/images/NTS_Logo.png";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useAuth } from "../../contexts/auth-context"; 
+import { useAuth } from "../../contexts/auth-context";
 
 const LoginSchema = Yup.object().shape({
   Username: Yup.string().required("Username is required"),
@@ -34,7 +34,7 @@ const LoginForm = () => {
     resolver: yupResolver(LoginSchema),
   });
   const navigate = useNavigate();
-  const { login } = useAuth(); 
+  const { login } = useAuth();
 
   useEffect(() => {
     if (loginAttempts >= 5) {
@@ -42,7 +42,7 @@ const LoginForm = () => {
       const timer = setTimeout(() => {
         setLocked(false);
         setLoginAttempts(0);
-      }, 300000); 
+      }, 300000);
       return () => clearTimeout(timer);
     }
   }, [loginAttempts]);
@@ -59,10 +59,8 @@ const LoginForm = () => {
         password: data.password,
       });
 
-     
       login(response.data, response.data.token);
 
-      
       navigate("/dashboard");
     } catch (error) {
       console.error("Login error:", error.message);
